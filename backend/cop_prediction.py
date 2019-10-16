@@ -2,13 +2,12 @@ import pandas as pd
 import numpy as np
 from sklearn.externals import joblib
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
-from  sklearn.neighbors import KNeighborsRegressor
+from sklearn.neighbors import KNeighborsRegressor
 
 class COP:
         
     def fit_grupo_frio_1(self):
-        data = pd.read_excel("./Datasets/HVAC_limpio.xlsx", "HVAC_limpio", index_col=0)
+        data = pd.read_excel("../Datasets/HVAC_limpio.xlsx", "HVAC_limpio", index_col=0)
         data['Fecha- hora de lectura'] = (data['Fecha- hora de lectura'] - data['Fecha- hora de lectura'].min())  / np.timedelta64(1,'D')
         X = data[['POTENCIA GRUPO FRÍO 1', 'POTENCIA TERMICA GRUPO FRIO 1', 'TEMPERATURA EXTERIOR']]
         y = data['C_O_P MÁQUINA GRUPO FRÍO 1']
