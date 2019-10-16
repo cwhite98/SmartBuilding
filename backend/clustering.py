@@ -30,16 +30,30 @@ class KMeans_:
     def kmeans_carlos(self):
         obj = KMeans_()
         data = obj.dataset()
-
         dataCarlos = data[['POTENCIA BOMBA CALOR CARLOS', 'POTENCIA TERMICA BOMBA CALOR CARLOS',
                            'TEMPERATURA EXTERIOR', 'TEMPERATURA SALIDA BOMBA CALOR CARLOS']]
         kmeans = KMeans(4)
         kmeans.fit(dataCarlos)
-        joblib.dump(kmeans, 'kmeans.pkl')
+        joblib.dump(kmeans, 'kmeans_carlos.pkl')
         centroids = kmeans.cluster_centers_
         return str(centroids)
 
     def predict_carlos(self, X):
-        kmeans = joblib.load('kmeans.pkl')
+        kmeans = joblib.load('kmeans_carlos.pkl')
+        predicts = kmeans.predict(X)
+        return predicts
+
+    def kmeans_frio_1(self):
+        obj = KMeans_()
+        data = obj.dataset()
+        dataFrio1 = data[['POTENCIA GRUPO FRÍO 1', 'POTENCIA TERMICA GRUPO FRIO 1', 'TEMPERATURA EXTERIOR']]
+        kmeans = KMeans(4)
+        kmeans.fit(dataFrio1)
+        joblib.dump(kmeans, 'kmeans_frio_1.pkl')
+        centroids = kmeans.cluster_centers_
+        return str(centroids)
+
+    def predict_frio_1(self, X):
+        kmeans = joblib.load('kmeans_frio_1.pkl')
         predicts = kmeans.predict(X)
         return predicts

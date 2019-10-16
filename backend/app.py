@@ -10,6 +10,7 @@ PORT = 8081
 app = Flask(__name__)
 
 # Prediccion
+
 @app.route('/api/train', methods=['POST'])
 def train():
     cop_model = cop.COP()
@@ -28,18 +29,18 @@ def predict():
     return jsonify({'cop_grupo_frio_1': prediction[0]})
 
 # Clustering
-@app.route('/api/train_kmeans', methods=['POST'])
-def train_kmeans():
+@app.route('/api/train_kmeans_carlos', methods=['POST'])
+def train_kmeans_carlos():
     kmeans_ = clustering.KMeans_()
     centroides = kmeans_.kmeans_carlos()
     return jsonify({'centroides': centroides})
 
-@app.route('/api/predict_kmeans', methods=['POST'])
-def predict_kmeans():
+@app.route('/api/predict_kmeans_carlos', methods=['POST'])
+def predict_kmeans_carlos():
     # get data to be predicted
     #X = request.get_json()
-    X = {'POTENCIA BOMBA CALOR CARLOS' : 6.22666645050049, 'POTENCIA TERMICA BOMBA CALOR CARLOS': 181.58,
-        'TEMPERATURA EXTERIOR' : 33.02, 'TEMPERATURA SALIDA BOMBA CALOR CARLOS': 13.9333333969116}
+    X = {'POTENCIA BOMBA CALOR CARLOS': 6.22666645050049, 'POTENCIA TERMICA BOMBA CALOR CARLOS': 181.58,
+        'TEMPERATURA EXTERIOR': 33.02, 'TEMPERATURA SALIDA BOMBA CALOR CARLOS': 13.9333333969116}
 
     X = [[float(X['POTENCIA BOMBA CALOR CARLOS']), float(X['POTENCIA TERMICA BOMBA CALOR CARLOS']),
           float(X['TEMPERATURA EXTERIOR']), float(X['TEMPERATURA SALIDA BOMBA CALOR CARLOS'])]]
@@ -47,6 +48,25 @@ def predict_kmeans():
     prediction = kmeans_.predict_carlos(X)
     print(prediction)
     return jsonify({'cluster carlos': str(prediction[0])})
+
+@app.route('/api/train_kmeans_frio_1', methods=['POST'])
+def train_kmeans_frio_1():
+    kmeans_ = clustering.KMeans_()
+    centroides = kmeans_.kmeans_frio_1()
+    return jsonify({'centroides': centroides})
+
+@app.route('/api/predict_kmeans_frio_1', methods=['POST'])
+def predict_kmeans_frio_1():
+    # get data to be predicted
+    #X = request.get_json()
+    X = {'POTENCIA GRUPO FRÍO 1': 6.22666645050049, 'POTENCIA TERMICA GRUPO FRIO 1': 181.58,
+         'TEMPERATURA EXTERIOR': 33.02}
+    X = [[float(X['POTENCIA GRUPO FRÍO 1']), float(X['POTENCIA TERMICA GRUPO FRIO 1']),
+          float(X['TEMPERATURA EXTERIOR'])]]
+    kmeans_ = clustering.KMeans_()
+    prediction = kmeans_.predict_frio_1(X)
+    print(prediction)
+    return jsonify({'cluster frio 1 ': str(prediction[0])})
 
 
 if __name__ == '__main__':
