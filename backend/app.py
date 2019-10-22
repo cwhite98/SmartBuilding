@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 import cop_prediction as cop
 import clustering
 import pandas as pd
@@ -9,7 +10,7 @@ PORT = 8081
 
 # initialize flask application
 app = Flask(__name__)
-
+CORS(app)
 # Datos
 columns = ['POTENCIA TRAFO 2', 'POTENCIA TRAFO 3', 'POTENCIA TRAFO 4', 'POTENCIA TRAFO 5', 'POTENCIA MEDIA CONECTADA',
            'PERIODO P6', 'CONTROL FRÍO', 'CONTROL CALOR', 'CAPACIDAD BOMBA CALOR FELIPE %', 'CAPACIDAD BOMBA CALOR CARLOS %',
