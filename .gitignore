@@ -1,5 +1,4 @@
 
-*.json
 backend/.idea/*
 *.pyc
 *.pkl
