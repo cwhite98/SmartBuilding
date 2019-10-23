@@ -31,7 +31,7 @@ def train_frio_1():
 def predict_frio_1():
     cop_model = cop.COP()
     diccionario = {}
-    for i in range(1, 10):
+    for i in range(1, 12):
         df = dataFrio1.iloc[i]
         # get data to be predicted
         X = [[float(df['POTENCIA GRUPO FRÍO 1']), float(df['POTENCIA TERMICA GRUPO FRIO 1']),
@@ -53,7 +53,7 @@ def predict_frio_1():
         registro_dict = df.to_dict()
         var = 'registro_' + str(i)
         diccionario[var] = registro_dict
-    dataFrio1.drop(range(1, 10), axis=0)
+    dataFrio1.drop(range(1, 12), axis=0)
     return jsonify(diccionario)
 
 @app.route('/api/train_carlos', methods=['POST'])
