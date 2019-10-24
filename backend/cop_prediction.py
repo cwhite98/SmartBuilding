@@ -16,7 +16,6 @@ class COP:
         neigh.fit(X_train, y_train) 
         # persist model
         joblib.dump(neigh, 'neigh_frio_1.pkl')
-        print('fit neigh_frio_1')
         acc = neigh.score(X_test, y_test)
         return acc
     
@@ -55,7 +54,6 @@ class COP:
         neigh.fit(X_train, y_train)
         # persist model
         joblib.dump(neigh, 'neigh_carlos.pkl')
-        print('fit neigh_carlos')
         acc = neigh.score(X_test, y_test)
         return acc
 
@@ -63,3 +61,23 @@ class COP:
         neigh = joblib.load('neigh_carlos.pkl')
         predicts = neigh.predict(X)
         return predicts
+
+    def fit_felipe(self):
+        obj = dataset.Dataset()
+        data = obj.read_dataset_limpio()
+        X = data[['POTENCIA BOMBA CALOR FELIPE', 'POTENCIA TERMICA BOMBA CALOR FELIPE', 'TEMPERATURA EXTERIOR',
+                'TEMPERATURA SALIDA BOMBA CALOR FELIPE']]
+        y = data['C_O_P BOMBA CALOR FELIPE']
+        neigh = KNeighborsRegressor(n_neighbors=15)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+        neigh.fit(X_train, y_train)
+        # persist model
+        joblib.dump(neigh, 'neigh_felipe.pkl')
+        acc = neigh.score(X_test, y_test)
+        return acc
+
+    def predict_felipe(self, X):
+        neigh = joblib.load('neigh_felipe.pkl')
+        predicts = neigh.predict(X)
+        return predicts
+

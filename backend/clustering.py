@@ -99,3 +99,38 @@ class KMeans_:
             if not ((centroids[cluster][3] > minTempSalidaCarlos) and (centroids[cluster][3] <= maxTempSalidaCarlos)):
                 diagnostico = 'Revisar la anomalia derivado al valor de la TEMPERATURA SALIDA BOMBA CALOR CARLOS que es X'
         return diagnostico
+
+    def kmeans_felipe(self):
+        obj = dataset.Dataset()
+        data = obj.read_dataset()
+        dataFelipe = data[['POTENCIA BOMBA CALOR FELIPE', 'POTENCIA TERMICA BOMBA CALOR FELIPE', 'TEMPERATURA EXTERIOR',
+                            'TEMPERATURA SALIDA BOMBA CALOR FELIPE']]
+        kmeans = KMeans(4)
+        kmeans.fit(dataFelipe)
+        joblib.dump(kmeans, 'kmeans_felipe.pkl')
+        centroids = kmeans.cluster_centers_
+        return str(centroids)
+
+    def predict_felipe(self, X):
+        kmeans = joblib.load('kmeans_felipe.pkl')
+        clusters = kmeans.predict(X)
+        centroids = kmeans.cluster_centers_
+        diagnostico = 'COP malo, pero no sabemos la razon'
+        for cluster in clusters:
+            minPotenciaFelipe = 0.04
+            maxPotenciaFelipe = 32
+            minPotenciaTermicaFelipe = 0.25
+            maxPotenciaTermicaFelipe = 114
+            minTempExterior = 10
+            maxTempExterior = 28
+            minTempSalidaFelipe = 15
+            maxTempSalidaFelipe = 42
+            if not ((centroids[cluster][0] > minPotenciaFelipe) and (centroids[cluster][0] <= maxPotenciaFelipe)):
+                diagnostico = 'Revisar la POTENCIA BOMBA CALOR FELIPE.'
+            if not ((centroids[cluster][1] > minPotenciaTermicaFelipe) and (centroids[cluster][1] <= maxPotenciaTermicaFelipe)):
+                diagnostico = 'Revisar la POTENCIA TERMICA BOMBA CALOR FELIPE.'
+            if not ((centroids[cluster][2] > minTempExterior) and (centroids[cluster][2] <= maxTempExterior)):
+                diagnostico = 'La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.'
+            if not ((centroids[cluster][3] > minTempSalidaFelipe) and (centroids[cluster][3] <= maxTempSalidaFelipe)):
+                diagnostico = 'Revisar la anomalia derivada al valor de la TEMPERATURA SALIDA BOMBA CALOR FELIPE que es X'
+        return diagnostico
