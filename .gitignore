@@ -1,0 +1,6 @@
+
+backend/.idea/*
+*.pyc
+*.pkl
+Notebooks/.ipynb_checkpoints/*
+.vscode/*
