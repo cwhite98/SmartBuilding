@@ -19,7 +19,6 @@ obj = dataset.Dataset()
 data = obj.read_dataset_lectura()
 dataFrio1 = copy.deepcopy(data)
 dataCarlos = copy.deepcopy(data)
-print("Dataset leido")
 
 # Prediccion
 @app.route('/api/train_frio_1', methods=['POST'])
@@ -31,7 +30,7 @@ def train_frio_1():
 @app.route('/api/predict_frio_1', methods=['POST'])
 def predict_frio_1():
     cop_model = cop.COP()
-    diccionario = {}
+    diccionario = []
     for i in range(0, 10):
         df = dataFrio1.iloc[i]
         # get data to be predicted
@@ -46,17 +45,13 @@ def predict_frio_1():
                 or (valorReal <= prediction - 0.5) or (valorReal >= prediction + 0.5)):
             kmeans_ = clustering.KMeans_()
             kmeans_prediction = kmeans_.predict_frio_1(X)
-        print('Diagnostico frio 1:', kmeans_prediction)
         # Diccionario con todas las variables de un registro que se va retornar
         df.loc['Diagnostico'] = kmeans_prediction
         df.loc['C_O_P MÁQUINA GRUPO FRÍO 1 PREDICHO'] = prediction
         registro_dict = df.to_dict()
-        var = 'registro_' + str(i)
-        diccionario[var] = registro_dict
+        diccionario.append(registro_dict)
     dataFrio1.drop(range(0, 10), inplace=True)
-    length = dataFrio1.shape
-    index_ = range(0, length[0])
-    dataFrio1.index = index_
+    dataFrio1.reset_index(drop=True, inplace=True)
     return jsonify(diccionario)
 
 @app.route('/api/train_carlos', methods=['POST'])
@@ -68,7 +63,7 @@ def train_carlos():
 @app.route('/api/predict_carlos', methods=['POST'])
 def predict_carlos():
     cop_model = cop.COP()
-    diccionario = {}
+    diccionario = []
     for i in range(0, 10):
         df = dataCarlos.iloc[i]
         # get data to be predicted
@@ -83,17 +78,13 @@ def predict_carlos():
                 or (valorReal <= prediction - 0.5) or (valorReal >= prediction + 0.5)):
             kmeans_ = clustering.KMeans_()
             kmeans_prediction = kmeans_.predict_carlos(X)
-        print('Diagnostico frio 1:', kmeans_prediction)
         # Diccionario con todas las variables de un registro que se va retornar
         df.loc['Diagnostico'] = kmeans_prediction
         df.loc['C_O_P BOMBA CALOR CARLOS PREDICHO'] = prediction
         registro_dict = df.to_dict()
-        var = 'registro_' + str(i)
-        diccionario[var] = registro_dict
+        diccionario.append(registro_dict)
     dataCarlos.drop(range(0, 10), inplace=True)
-    length = dataCarlos.shape
-    index_ = range(0, length[0])
-    dataCarlos.index = index_
+    dataCarlos.reset_index(drop=True, inplace=True)
     return jsonify(diccionario)
 
 # Clustering

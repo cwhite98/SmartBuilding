@@ -22,20 +22,18 @@ export class DashboardComponent implements OnInit {
   ["ERROR 3", "Revisar potencia termica"], ["ERROR 4", "Revisar sensor temperatura externa"],
   ["ERROR 3", "Revisar potencia electrica"], ["ERROR 4", "Revisar potencia termica"],
   ["ERROR 4", "Revisar potencia termica"], ["ERROR 5", "Revisar potencia termica"]]
-  public registros = 0;
+  public registros = -1;
   constructor(private http: HttpClient) {
     Observable.interval(2000).subscribe(x => {
       this.enviarRegistros();
     });
   }
   public enviarRegistros() {
-    if (this.registros > 10 || this.registros == 0) {
+    if (this.registros == -1) {
       this.predict();
-      this.registros = 0;
-    } else if(this.registros == 0){
-      this.predict();
-      //console.log(this.predFrio1[this.registros]);
       this.registros++;
+    } else if(this.registros > 9){
+      this.registros = -1;
     } else {
       console.log(this.predFrio1[this.registros]);
       this.registros++;
