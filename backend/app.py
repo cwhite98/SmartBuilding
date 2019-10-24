@@ -104,7 +104,7 @@ def predict_carlos_cop():
         # get data to be predicted
         X = [[float(df['POTENCIA BOMBA CALOR CARLOS']), float(df['POTENCIA TERMICA BOMBA CALOR CARLOS']),
               float(df['TEMPERATURA EXTERIOR']), float(df['TEMPERATURA SALIDA BOMBA CALOR CARLOS'])]]
-        prediction_ = cop_model.predict_carlos_cop(X)
+        prediction_ = cop_model.predict_carlos(X)
         prediction = float(prediction_[0])
         valorReal = float(df['C_O_P BOMBA CALOR CARLOS'])
         # COP malo --> diagnostico (clustering)
@@ -137,7 +137,7 @@ def predict_felipe_cop():
         # get data to be predicted
         X = [[float(df['POTENCIA BOMBA CALOR FELIPE']), float(df['POTENCIA TERMICA BOMBA CALOR FELIPE']),
               float(df['TEMPERATURA EXTERIOR']), float(df['TEMPERATURA SALIDA BOMBA CALOR FELIPE'])]]
-        prediction_ = cop_model.predict_felipe_cop(X)
+        prediction_ = cop_model.predict_felipe(X)
         prediction = float(prediction_[0])
         valorReal = float(df['C_O_P BOMBA CALOR FELIPE'])
         # COP malo --> diagnostico (clustering)
@@ -184,8 +184,8 @@ def predict_carlos_potencia():
 def train_felipe_potencia():
     pass
 
-@app.route('/api/predict_felipe_cop', methods=['GET'])
-def predict_felipe_cop():
+@app.route('/api/predict_felipe_potencia', methods=['GET'])
+def predict_felipe_potencia():
     pass
 
 # Clustering COP
