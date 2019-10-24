@@ -22,15 +22,15 @@ dataFrio2 = copy.deepcopy(data)
 dataCarlos = copy.deepcopy(data)
 dataFelipe = copy.deepcopy(data)
 
-# Prediccion
-@app.route('/api/train_frio_1', methods=['GET'])
-def train_frio_1():
+# Prediccion COP
+@app.route('/api/train_frio_1_cop', methods=['GET'])
+def train_frio_1_cop():
     cop_model = cop.COP()
-    accuracy = cop_model.fit_grupo_frio_1()
-    return jsonify({'accuracy': round(accuracy * 100, 2)})
+    cop_model.fit_grupo_frio_1()
+    return jsonify('Entrenado exitosamente')
 
-@app.route('/api/predict_frio_1', methods=['GET'])
-def predict_frio_1():
+@app.route('/api/predict_frio_1_cop', methods=['GET'])
+def predict_frio_1_cop():
     cop_model = cop.COP()
     diccionario = []
     for i in range(0, 10):
@@ -46,7 +46,7 @@ def predict_frio_1():
         if (((valorReal <= 3.5) or (valorReal >= 4.5)) and ((prediction <= 3.5) or (prediction >= 4.5))
                 or (valorReal <= prediction - 0.5) or (valorReal >= prediction + 0.5)):
             kmeans_ = clustering.KMeans_()
-            kmeans_prediction = kmeans_.predict_frio_1(X)
+            kmeans_prediction = kmeans_.predict_frio_1_cop(X)
         # Diccionario con todas las variables de un registro que se va retornar
         df.loc['Diagnostico'] = kmeans_prediction
         df.loc['C_O_P MÁQUINA GRUPO FRÍO 1 PREDICHO'] = prediction
@@ -56,14 +56,14 @@ def predict_frio_1():
     dataFrio1.reset_index(drop=True, inplace=True)
     return jsonify(diccionario)
 
-@app.route('/api/train_frio_2', methods=['GET'])
-def train_frio_2():
+@app.route('/api/train_frio_2_cop', methods=['GET'])
+def train_frio_2_cop():
     cop_model = cop.COP()
-    accuracy = cop_model.fit_grupo_frio_2()
-    return jsonify({'accuracy': round(accuracy * 100, 2)})
+    cop_model.fit_grupo_frio_2()
+    return jsonify('Entrenado exitosamente')
 
-@app.route('/api/predict_frio_2', methods=['GET'])
-def predict_frio_2():
+@app.route('/api/predict_frio_2_cop', methods=['GET'])
+def predict_frio_2_cop():
     cop_model = cop.COP()
     diccionario = []
     for i in range(0, 10):
@@ -79,7 +79,7 @@ def predict_frio_2():
         if (((valorReal <= 3.5) or (valorReal >= 4.5)) and ((prediction <= 3.5) or (prediction >= 4.5))
                 or (valorReal <= prediction - 0.5) or (valorReal >= prediction + 0.5)):
             kmeans_ = clustering.KMeans_()
-            kmeans_prediction = kmeans_.predict_frio_2(X)
+            kmeans_prediction = kmeans_.predict_frio_2_cop(X)
         # Diccionario con todas las variables de un registro que se va retornar
         df.loc['Diagnostico'] = kmeans_prediction
         df.loc['C_O_P MÁQUINA GRUPO FRÍO 2 PREDICHO'] = prediction
@@ -89,14 +89,14 @@ def predict_frio_2():
     dataFrio2.reset_index(drop=True, inplace=True)
     return jsonify(diccionario)
 
-@app.route('/api/train_carlos', methods=['GET'])
-def train_carlos():
+@app.route('/api/train_carlos_cop', methods=['GET'])
+def train_carlos_cop():
     cop_model = cop.COP()
-    accuracy = cop_model.fit_carlos()
-    return jsonify({'accuracy': round(accuracy * 100, 2)})
+    cop_model.fit_carlos()
+    return jsonify('Entrenado exitosamente')
 
-@app.route('/api/predict_carlos', methods=['GET'])
-def predict_carlos():
+@app.route('/api/predict_carlos_cop', methods=['GET'])
+def predict_carlos_cop():
     cop_model = cop.COP()
     diccionario = []
     for i in range(0, 10):
@@ -104,7 +104,7 @@ def predict_carlos():
         # get data to be predicted
         X = [[float(df['POTENCIA BOMBA CALOR CARLOS']), float(df['POTENCIA TERMICA BOMBA CALOR CARLOS']),
               float(df['TEMPERATURA EXTERIOR']), float(df['TEMPERATURA SALIDA BOMBA CALOR CARLOS'])]]
-        prediction_ = cop_model.predict_carlos(X)
+        prediction_ = cop_model.predict_carlos_cop(X)
         prediction = float(prediction_[0])
         valorReal = float(df['C_O_P BOMBA CALOR CARLOS'])
         # COP malo --> diagnostico (clustering)
@@ -112,7 +112,7 @@ def predict_carlos():
         if (((valorReal <= 3.5) or (valorReal >= 4.5)) and ((prediction <= 3.5) or (prediction >= 4.5))
                 or (valorReal <= prediction - 0.5) or (valorReal >= prediction + 0.5)):
             kmeans_ = clustering.KMeans_()
-            kmeans_prediction = kmeans_.predict_carlos(X)
+            kmeans_prediction = kmeans_.predict_carlos_cop(X)
         # Diccionario con todas las variables de un registro que se va retornar
         df.loc['Diagnostico'] = kmeans_prediction
         df.loc['C_O_P BOMBA CALOR CARLOS PREDICHO'] = prediction
@@ -122,14 +122,14 @@ def predict_carlos():
     dataCarlos.reset_index(drop=True, inplace=True)
     return jsonify(diccionario)
 
-@app.route('/api/train_felipe', methods=['GET'])
-def train_felipe():
+@app.route('/api/train_felipe_cop', methods=['GET'])
+def train_felipe_cop():
     cop_model = cop.COP()
-    accuracy = cop_model.fit_felipe()
-    return jsonify({'accuracy': round(accuracy * 100, 2)})
+    cop_model.fit_felipe()
+    return jsonify('Entrenado exitosamente')
 
-@app.route('/api/predict_felipe', methods=['GET'])
-def predict_felipe():
+@app.route('/api/predict_felipe_cop', methods=['GET'])
+def predict_felipe_cop():
     cop_model = cop.COP()
     diccionario = []
     for i in range(0, 10):
@@ -137,7 +137,7 @@ def predict_felipe():
         # get data to be predicted
         X = [[float(df['POTENCIA BOMBA CALOR FELIPE']), float(df['POTENCIA TERMICA BOMBA CALOR FELIPE']),
               float(df['TEMPERATURA EXTERIOR']), float(df['TEMPERATURA SALIDA BOMBA CALOR FELIPE'])]]
-        prediction_ = cop_model.predict_felipe(X)
+        prediction_ = cop_model.predict_felipe_cop(X)
         prediction = float(prediction_[0])
         valorReal = float(df['C_O_P BOMBA CALOR FELIPE'])
         # COP malo --> diagnostico (clustering)
@@ -145,7 +145,7 @@ def predict_felipe():
         if (((valorReal <= 3.5) or (valorReal >= 4.5)) and ((prediction <= 3.5) or (prediction >= 4.5))
                 or (valorReal <= prediction - 0.5) or (valorReal >= prediction + 0.5)):
             kmeans_ = clustering.KMeans_()
-            kmeans_prediction = kmeans_.predict_felipe(X)
+            kmeans_prediction = kmeans_.predict_felipe_cop(X)
         # Diccionario con todas las variables de un registro que se va retornar
         df.loc['Diagnostico'] = kmeans_prediction
         df.loc['C_O_P BOMBA CALOR FELIPE PREDICHO'] = prediction
@@ -155,29 +155,87 @@ def predict_felipe():
     dataFelipe.reset_index(drop=True, inplace=True)
     return jsonify(diccionario)
 
-# Clustering
-@app.route('/api/train_kmeans_frio_1', methods=['GET'])
-def train_kmeans_frio_1():
+# Prediccion COP
+@app.route('/api/train_frio_1_potencia', methods=['GET'])
+def train_frio_1_potencia():
+    pass
+
+@app.route('/api/predict_frio_1_potencia', methods=['GET'])
+def predict_frio_1_potencia():
+    pass
+
+@app.route('/api/train_frio_2_potencia', methods=['GET'])
+def train_frio_2_potencia():
+    pass
+
+@app.route('/api/predict_frio_2_potencia', methods=['GET'])
+def predict_frio_2_potencia():
+    pass
+
+@app.route('/api/train_carlos_potencia', methods=['GET'])
+def train_carlos_potencia():
+    pass
+
+@app.route('/api/predict_carlos_potencia', methods=['GET'])
+def predict_carlos_potencia():
+    pass
+
+@app.route('/api/train_felipe_potencia', methods=['GET'])
+def train_felipe_potencia():
+    pass
+
+@app.route('/api/predict_felipe_cop', methods=['GET'])
+def predict_felipe_cop():
+    pass
+
+# Clustering COP
+@app.route('/api/train_kmeans_frio_1_cop', methods=['GET'])
+def train_kmeans_frio_1_cop():
     kmeans_ = clustering.KMeans_()
-    centroides = kmeans_.kmeans_frio_1()
+    centroides = kmeans_.kmeans_frio_1_cop()
     return jsonify({'centroides': centroides})
 
-@app.route('/api/train_kmeans_frio_2', methods=['GET'])
-def train_kmeans_frio_2():
+@app.route('/api/train_kmeans_frio_2_cop', methods=['GET'])
+def train_kmeans_frio_2_cop():
     kmeans_ = clustering.KMeans_()
-    centroides = kmeans_.kmeans_frio_2()
+    centroides = kmeans_.kmeans_frio_2_cop()
     return jsonify({'centroides': centroides})
 
-@app.route('/api/train_kmeans_carlos', methods=['GET'])
-def train_kmeans_carlos():
+@app.route('/api/train_kmeans_carlos_cop', methods=['GET'])
+def train_kmeans_carlos_cop():
     kmeans_ = clustering.KMeans_()
-    centroides = kmeans_.kmeans_carlos()
+    centroides = kmeans_.kmeans_carlos_cop()
     return jsonify({'centroides': centroides})
 
-@app.route('/api/train_kmeans_felipe', methods=['GET'])
-def train_kmeans_felipe():
+@app.route('/api/train_kmeans_felipe_cop', methods=['GET'])
+def train_kmeans_felipe_cop():
     kmeans_ = clustering.KMeans_()
-    centroides = kmeans_.kmeans_felipe()
+    centroides = kmeans_.kmeans_felipe_cop()
+    return jsonify({'centroides': centroides})
+
+# Clustering Potencia
+@app.route('/api/train_kmeans_frio_1_potencia', methods=['GET'])
+def train_kmeans_frio_1_potencia():
+    kmeans_ = clustering.KMeans_()
+    centroides = kmeans_.kmeans_frio_1_potencia()
+    return jsonify({'centroides': centroides})
+
+@app.route('/api/train_kmeans_frio_2_potencia', methods=['GET'])
+def train_kmeans_frio_2_potencia():
+    kmeans_ = clustering.KMeans_()
+    centroides = kmeans_.kmeans_frio_2_potencia()
+    return jsonify({'centroides': centroides})
+
+@app.route('/api/train_kmeans_carlos_potencia', methods=['GET'])
+def train_kmeans_carlos_potencia():
+    kmeans_ = clustering.KMeans_()
+    centroides = kmeans_.kmeans_carlos_potencia()
+    return jsonify({'centroides': centroides})
+
+@app.route('/api/train_kmeans_felipe_potencia', methods=['GET'])
+def train_kmeans_felipe_potencia():
+    kmeans_ = clustering.KMeans_()
+    centroides = kmeans_.kmeans_felipe_potencia()
     return jsonify({'centroides': centroides})
 
 if __name__ == '__main__':

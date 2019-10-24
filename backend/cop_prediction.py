@@ -16,8 +16,6 @@ class COP:
         neigh.fit(X_train, y_train) 
         # persist model
         joblib.dump(neigh, 'neigh_frio_1.pkl')
-        acc = neigh.score(X_test, y_test)
-        return acc
     
     def predict_grupo_frio_1(self, X):
         neigh = joblib.load('neigh_frio_1.pkl')
@@ -34,9 +32,6 @@ class COP:
         neigh.fit(X_train, y_train) 
         # persist model
         joblib.dump(neigh, 'neigh_frio_2.pkl')
-        print('fit neigh_frio_2')
-        acc = neigh.score(X_test, y_test)
-        return acc
     
     def predict_grupo_frio_2(self, X):
         neigh = joblib.load('neigh_frio_2.pkl')
@@ -54,8 +49,6 @@ class COP:
         neigh.fit(X_train, y_train)
         # persist model
         joblib.dump(neigh, 'neigh_carlos.pkl')
-        acc = neigh.score(X_test, y_test)
-        return acc
 
     def predict_carlos(self, X):
         neigh = joblib.load('neigh_carlos.pkl')
@@ -73,11 +66,8 @@ class COP:
         neigh.fit(X_train, y_train)
         # persist model
         joblib.dump(neigh, 'neigh_felipe.pkl')
-        acc = neigh.score(X_test, y_test)
-        return acc
 
     def predict_felipe(self, X):
         neigh = joblib.load('neigh_felipe.pkl')
         predicts = neigh.predict(X)
         return predicts
-
