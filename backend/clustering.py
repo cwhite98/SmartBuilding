@@ -12,7 +12,6 @@ class KMeans_:
         kmeans = KMeans(4)
         kmeans.fit(dataFrio1)
         joblib.dump(kmeans, 'kmeans_frio_1.pkl')
-        print('fit kmeans_frio_1')
         centroids = kmeans.cluster_centers_
         return str(centroids)
 
@@ -44,7 +43,6 @@ class KMeans_:
         kmeans = KMeans(4)
         kmeans.fit(dataCarlos)
         joblib.dump(kmeans, 'kmeans_carlos.pkl')
-        print('fit kmeans_carlos')
         centroids = kmeans.cluster_centers_
         return str(centroids)
 
