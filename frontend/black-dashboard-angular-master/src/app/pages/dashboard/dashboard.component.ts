@@ -11,7 +11,9 @@ export class DashboardComponent implements OnInit {
   public canvas: any;
   public ctx;
   public predFrio1;
+  public predFrio2;
   public predCarlos;
+  public predFelipe;
   public datasets: any;
   public data: any;
   public myChartData;
@@ -32,13 +34,17 @@ export class DashboardComponent implements OnInit {
   public enviarRegistros() {
     if (this.registros == -1) {
       this.predict_frio_1();
+      this.predict_frio_2();
       this.predict_carlos();
+      this.predict_felipe();
       this.registros++;
     } else if(this.registros > 9){
       this.registros = -1;
     } else {
       console.log(this.predFrio1[this.registros]);
+      console.log(this.predFrio2[this.registros]);
       console.log(this.predCarlos[this.registros]);
+      console.log(this.predFelipe[this.registros]);
       this.registros++;
     }
   }
@@ -53,10 +59,32 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  public predict_frio_2() {
+    this.http.get('http://127.0.0.1:8081/api/predict_frio_2').subscribe(
+      res => {
+        this.predFrio2 = this.json2array(res)
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+  
   public predict_carlos() {
     this.http.get('http://127.0.0.1:8081/api/predict_carlos').subscribe(
       res => {
         this.predCarlos = this.json2array(res)
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  public predict_felipe() {
+    this.http.get('http://127.0.0.1:8081/api/predict_felipe').subscribe(
+      res => {
+        this.predFelipe = this.json2array(res)
       },
       err => {
         console.log(err);

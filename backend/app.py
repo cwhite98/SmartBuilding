@@ -134,6 +134,12 @@ def train_kmeans_carlos():
     centroides = kmeans_.kmeans_carlos()
     return jsonify({'centroides': centroides})
 
+@app.route('/api/train_kmeans_felipe', methods=['GET'])
+def train_kmeans_felipe():
+    kmeans_ = clustering.KMeans_()
+    centroides = kmeans_.kmeans_felipe()
+    return jsonify({'centroides': centroides})
+
 if __name__ == '__main__':
     # run web server
     app.run(host=HOST,
