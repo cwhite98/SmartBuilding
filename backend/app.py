@@ -21,13 +21,13 @@ dataFrio1 = copy.deepcopy(data)
 dataCarlos = copy.deepcopy(data)
 
 # Prediccion
-@app.route('/api/train_frio_1', methods=['POST'])
+@app.route('/api/train_frio_1', methods=['GET'])
 def train_frio_1():
     cop_model = cop.COP()
     accuracy = cop_model.fit_grupo_frio_1()
     return jsonify({'accuracy': round(accuracy * 100, 2)})
 
-@app.route('/api/predict_frio_1', methods=['POST'])
+@app.route('/api/predict_frio_1', methods=['GET'])
 def predict_frio_1():
     cop_model = cop.COP()
     diccionario = []
@@ -54,13 +54,13 @@ def predict_frio_1():
     dataFrio1.reset_index(drop=True, inplace=True)
     return jsonify(diccionario)
 
-@app.route('/api/train_carlos', methods=['POST'])
+@app.route('/api/train_carlos', methods=['GET'])
 def train_carlos():
     cop_model = cop.COP()
     accuracy = cop_model.fit_carlos()
     return jsonify({'accuracy': round(accuracy * 100, 2)})
 
-@app.route('/api/predict_carlos', methods=['POST'])
+@app.route('/api/predict_carlos', methods=['GET'])
 def predict_carlos():
     cop_model = cop.COP()
     diccionario = []
@@ -88,13 +88,13 @@ def predict_carlos():
     return jsonify(diccionario)
 
 # Clustering
-@app.route('/api/train_kmeans_frio_1', methods=['POST'])
+@app.route('/api/train_kmeans_frio_1', methods=['GET'])
 def train_kmeans_frio_1():
     kmeans_ = clustering.KMeans_()
     centroides = kmeans_.kmeans_frio_1()
     return jsonify({'centroides': centroides})
 
-@app.route('/api/train_kmeans_carlos', methods=['POST'])
+@app.route('/api/train_kmeans_carlos', methods=['GET'])
 def train_kmeans_carlos():
     kmeans_ = clustering.KMeans_()
     centroides = kmeans_.kmeans_carlos()

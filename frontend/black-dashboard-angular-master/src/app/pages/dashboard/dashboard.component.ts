@@ -11,6 +11,7 @@ export class DashboardComponent implements OnInit {
   public canvas: any;
   public ctx;
   public predFrio1;
+  public predCarlos;
   public datasets: any;
   public data: any;
   public myChartData;
@@ -30,20 +31,32 @@ export class DashboardComponent implements OnInit {
   }
   public enviarRegistros() {
     if (this.registros == -1) {
-      this.predict();
+      this.predict_frio_1();
+      this.predict_carlos();
       this.registros++;
     } else if(this.registros > 9){
       this.registros = -1;
     } else {
       console.log(this.predFrio1[this.registros]);
+      console.log(this.predCarlos[this.registros]);
       this.registros++;
     }
   }
-  public predict() {
-    this.http.post('http://127.0.0.1:8081/api/predict_frio_1', { "POTENCIA GRUPO FRÍO 1": 4, "POTENCIA TERMICA GRUPO FRIO 1": 4, "TEMPERATURA EXTERIOR": 4 }).subscribe(
+  public predict_frio_1() {
+    this.http.get('http://127.0.0.1:8081/api/predict_frio_1').subscribe(
       res => {
         this.predFrio1 = this.json2array(res)
-        console.log("Otros registros");
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  public predict_carlos() {
+    this.http.get('http://127.0.0.1:8081/api/predict_carlos').subscribe(
+      res => {
+        this.predCarlos = this.json2array(res)
       },
       err => {
         console.log(err);
