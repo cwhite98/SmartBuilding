@@ -1,4 +1,3 @@
-import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.externals import joblib
 import dataset
@@ -21,8 +20,6 @@ class KMeans_:
         kmeans = joblib.load('kmeans_frio_1.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
-        print('Centroides\n', centroids)
-        print('cluster:', clusters)
         diagnostico = 'COP malo, pero no sabemos la razon'
         for cluster in clusters:
             minPotenciaFrio1 = 0
@@ -36,7 +33,7 @@ class KMeans_:
             if ((centroids[cluster][1] < minPotenciaTermicaFrio1) and (centroids[cluster][1] >= maxPotenciaTermicaFrio1)):
                 diagnostico = 'Revisar la POTENCIA TERMICA GRUPO FRIO 1.'
             if ((centroids[cluster][2] < minTempExterior) and (centroids[cluster][2] >= maxTempExterior)):
-                diagnostico = 'Revisar la TEMPERATURA EXTERIOR.'
+                diagnostico = 'La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.'
         return diagnostico
 
     def kmeans_carlos(self):
@@ -55,8 +52,6 @@ class KMeans_:
         kmeans = joblib.load('kmeans_carlos.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
-        print('Centroides\n', centroids)
-        print('cluster:', clusters)
         diagnostico = 'COP malo, pero no sabemos la razon'
         for cluster in clusters:
             minPotenciaCarlos = 0.02
@@ -72,7 +67,7 @@ class KMeans_:
             if not ((centroids[cluster][1] > minPotenciaTermicaCarlos) and (centroids[cluster][1] <= maxPotenciaTermicaCarlos)):
                 diagnostico = 'Revisar la POTENCIA TERMICA BOMBA CALOR CARLOS.'
             if not ((centroids[cluster][2] > minTempExterior) and (centroids[cluster][2] <= maxTempExterior)):
-                diagnostico = 'la TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.'
+                diagnostico = 'La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.'
             if not ((centroids[cluster][3] > minTempSalidaCarlos) and (centroids[cluster][3] <= maxTempSalidaCarlos)):
                 diagnostico = 'Revisar la anomalia derivado al valor de la TEMPERATURA SALIDA BOMBA CALOR CARLOS que es X'
         return diagnostico
