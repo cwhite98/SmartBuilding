@@ -29,19 +29,23 @@ export class DashboardComponent implements OnInit {
     });
   }
   public enviarRegistros() {
-    if (this.registros > 9) {
-        this.predict();
-        this.registros = 0;
+    if (this.registros > 10 || this.registros == 0) {
+      this.predict();
+      this.registros = 0;
+    } else if(this.registros == 0){
+      this.predict();
+      //console.log(this.predFrio1[this.registros]);
+      this.registros++;
     } else {
-      console.log(this.registros);
+      console.log(this.predFrio1[this.registros]);
       this.registros++;
     }
   }
   public predict() {
-    this.http.post('http://127.0.0.1:8081/api/predict', { "POTENCIA GRUPO FRÍO 1": 4, "POTENCIA TERMICA GRUPO FRIO 1": 4, "TEMPERATURA EXTERIOR": 4 }).subscribe(
+    this.http.post('http://127.0.0.1:8081/api/predict_frio_1', { "POTENCIA GRUPO FRÍO 1": 4, "POTENCIA TERMICA GRUPO FRIO 1": 4, "TEMPERATURA EXTERIOR": 4 }).subscribe(
       res => {
         this.predFrio1 = this.json2array(res)
-        console.log(this.json2array(res));
+        console.log("Otros registros");
       },
       err => {
         console.log(err);

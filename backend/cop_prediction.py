@@ -1,5 +1,4 @@
-import pandas as pd
-import numpy as np
+import dataset
 from sklearn.externals import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsRegressor
@@ -7,14 +6,9 @@ from sklearn.neighbors import KNeighborsRegressor
 
 class COP:
 
-    def read_dataset(self):
-        data = pd.read_excel("../Datasets/HVAC_limpio.xlsx", "HVAC_limpio", index_col=0)
-        data['Fecha- hora de lectura'] = (data['Fecha- hora de lectura'] - data['Fecha- hora de lectura'].min()) / np.timedelta64(1, 'D')
-        return data
-
     def fit_grupo_frio_1(self):
-        obj = COP()
-        data = obj.read_dataset()
+        obj = dataset.Dataset()
+        data = obj.read_dataset_limpio()
         X = data[['POTENCIA GRUPO FRÍO 1', 'POTENCIA TERMICA GRUPO FRIO 1', 'TEMPERATURA EXTERIOR']]
         y = data['C_O_P MÁQUINA GRUPO FRÍO 1']
         neigh = KNeighborsRegressor(n_neighbors=15)
@@ -32,8 +26,8 @@ class COP:
         return predicts
 
     def fit_carlos(self):
-        obj = COP()
-        data = obj.read_dataset()
+        obj = dataset.Dataset()
+        data = obj.read_dataset_limpio()
         X = data[['POTENCIA BOMBA CALOR CARLOS', 'POTENCIA TERMICA BOMBA CALOR CARLOS',
                   'TEMPERATURA EXTERIOR', 'TEMPERATURA SALIDA BOMBA CALOR CARLOS']]
         y = data['C_O_P BOMBA CALOR CARLOS']
