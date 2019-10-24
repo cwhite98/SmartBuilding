@@ -28,10 +28,10 @@ export class DashboardComponent implements OnInit {
   public registros = -1;
   constructor(private http: HttpClient) {
     Observable.interval(2000).subscribe(x => {
-      this.enviarRegistros();
+      this.recibirRegistros();
     });
   }
-  public enviarRegistros() {
+  public recibirRegistros() {
     if (this.registros == -1) {
       this.predict_frio_1();
       this.predict_frio_2();
@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit {
     }
   }
   public predict_frio_1() {
-    this.http.get('http://127.0.0.1:8081/api/predict_frio_1').subscribe(
+    this.http.get('http://127.0.0.1:8081/api/predict_frio_1_cop').subscribe(
       res => {
         this.predFrio1 = this.json2array(res)
       },
@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public predict_frio_2() {
-    this.http.get('http://127.0.0.1:8081/api/predict_frio_2').subscribe(
+    this.http.get('http://127.0.0.1:8081/api/predict_frio_2_cop').subscribe(
       res => {
         this.predFrio2 = this.json2array(res)
       },
@@ -69,9 +69,9 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
-  
+
   public predict_carlos() {
-    this.http.get('http://127.0.0.1:8081/api/predict_carlos').subscribe(
+    this.http.get('http://127.0.0.1:8081/api/predict_carlos_cop').subscribe(
       res => {
         this.predCarlos = this.json2array(res)
       },
@@ -82,7 +82,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public predict_felipe() {
-    this.http.get('http://127.0.0.1:8081/api/predict_felipe').subscribe(
+    this.http.get('http://127.0.0.1:8081/api/predict_felipe_cop').subscribe(
       res => {
         this.predFelipe = this.json2array(res)
       },

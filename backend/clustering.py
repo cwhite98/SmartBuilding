@@ -5,7 +5,7 @@ import dataset
 
 class KMeans_:
 
-    def kmeans_frio_1(self):
+    def kmeans_frio_1_cop(self):
         obj = dataset.Dataset()
         data = obj.read_dataset()
         dataFrio1 = data[['POTENCIA GRUPO FRÍO 1', 'POTENCIA TERMICA GRUPO FRIO 1', 'TEMPERATURA EXTERIOR']]
@@ -15,7 +15,7 @@ class KMeans_:
         centroids = kmeans.cluster_centers_
         return str(centroids)
 
-    def predict_frio_1(self, X):
+    def predict_frio_1_cop(self, X):
         kmeans = joblib.load('kmeans_frio_1.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
@@ -35,7 +35,7 @@ class KMeans_:
                 diagnostico = 'La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.'
         return diagnostico
 
-    def kmeans_frio_2(self):
+    def kmeans_frio_2_cop(self):
         obj = dataset.Dataset()
         data = obj.read_dataset()
         dataFrio2 = data[['POTENCIA GRUPO FRÍO 2', 'POTENCIA TERMICA GRUPO FRIO 2', 'TEMPERATURA EXTERIOR']]
@@ -45,7 +45,7 @@ class KMeans_:
         centroids = kmeans.cluster_centers_
         return str(centroids)
 
-    def predict_frio_2(self, X):
+    def predict_frio_2_cop(self, X):
         kmeans = joblib.load('kmeans_frio_2.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
@@ -65,7 +65,7 @@ class KMeans_:
                 diagnostico = 'La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.'
         return diagnostico
 
-    def kmeans_carlos(self):
+    def kmeans_carlos_cop(self):
         obj = dataset.Dataset()
         data = obj.read_dataset()
         dataCarlos = data[['POTENCIA BOMBA CALOR CARLOS', 'POTENCIA TERMICA BOMBA CALOR CARLOS',
@@ -76,7 +76,7 @@ class KMeans_:
         centroids = kmeans.cluster_centers_
         return str(centroids)
 
-    def predict_carlos(self, X):
+    def predict_carlos_cop(self, X):
         kmeans = joblib.load('kmeans_carlos.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
@@ -100,7 +100,7 @@ class KMeans_:
                 diagnostico = 'Revisar la anomalia derivado al valor de la TEMPERATURA SALIDA BOMBA CALOR CARLOS que es X'
         return diagnostico
 
-    def kmeans_felipe(self):
+    def kmeans_felipe_cop(self):
         obj = dataset.Dataset()
         data = obj.read_dataset()
         dataFelipe = data[['POTENCIA BOMBA CALOR FELIPE', 'POTENCIA TERMICA BOMBA CALOR FELIPE', 'TEMPERATURA EXTERIOR',
@@ -111,7 +111,7 @@ class KMeans_:
         centroids = kmeans.cluster_centers_
         return str(centroids)
 
-    def predict_felipe(self, X):
+    def predict_felipe_cop(self, X):
         kmeans = joblib.load('kmeans_felipe.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
