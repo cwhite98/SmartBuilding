@@ -24,6 +24,25 @@ class COP:
         predicts = neigh.predict(X)
         return predicts
 
+    def fit_grupo_frio_2(self):
+        obj = dataset.Dataset()
+        data = obj.read_dataset_limpio()
+        X = data[['POTENCIA GRUPO FRÍO 2', 'POTENCIA TERMICA GRUPO FRIO 2', 'TEMPERATURA EXTERIOR']]
+        y = data['C_O_P MÁQUINA GRUPO FRÍO 2']
+        neigh = KNeighborsRegressor(n_neighbors=15)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+        neigh.fit(X_train, y_train) 
+        # persist model
+        joblib.dump(neigh, 'neigh_frio_2.pkl')
+        print('fit neigh_frio_2')
+        acc = neigh.score(X_test, y_test)
+        return acc
+    
+    def predict_grupo_frio_2(self, X):
+        neigh = joblib.load('neigh_frio_2.pkl')
+        predicts = neigh.predict(X)
+        return predicts
+
     def fit_carlos(self):
         obj = dataset.Dataset()
         data = obj.read_dataset_limpio()

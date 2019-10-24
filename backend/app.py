@@ -18,6 +18,7 @@ CORS(app)
 obj = dataset.Dataset()
 data = obj.read_dataset_lectura()
 dataFrio1 = copy.deepcopy(data)
+dataFrio2 = copy.deepcopy(data)
 dataCarlos = copy.deepcopy(data)
 dataFelipe = copy.deepcopy(data)
 
@@ -53,6 +54,39 @@ def predict_frio_1():
         diccionario.append(registro_dict)
     dataFrio1.drop(range(0, 10), inplace=True)
     dataFrio1.reset_index(drop=True, inplace=True)
+    return jsonify(diccionario)
+
+@app.route('/api/train_frio_2', methods=['GET'])
+def train_frio_2():
+    cop_model = cop.COP()
+    accuracy = cop_model.fit_grupo_frio_2()
+    return jsonify({'accuracy': round(accuracy * 100, 2)})
+
+@app.route('/api/predict_frio_2', methods=['GET'])
+def predict_frio_2():
+    cop_model = cop.COP()
+    diccionario = []
+    for i in range(0, 10):
+        df = dataFrio2.iloc[i]
+        # get data to be predicted
+        X = [[float(df['POTENCIA GRUPO FRÍO 2']), float(df['POTENCIA TERMICA GRUPO FRIO 2']),
+              float(df['TEMPERATURA EXTERIOR'])]]
+        prediction_ = cop_model.predict_grupo_frio_2(X)
+        prediction = float(prediction_[0])
+        valorReal = float(df['C_O_P MÁQUINA GRUPO FRÍO 2'])
+        # COP malo --> diagnostico (clustering)
+        kmeans_prediction = ' '
+        if (((valorReal <= 3.5) or (valorReal >= 4.5)) and ((prediction <= 3.5) or (prediction >= 4.5))
+                or (valorReal <= prediction - 0.5) or (valorReal >= prediction + 0.5)):
+            kmeans_ = clustering.KMeans_()
+            kmeans_prediction = kmeans_.predict_frio_2(X)
+        # Diccionario con todas las variables de un registro que se va retornar
+        df.loc['Diagnostico'] = kmeans_prediction
+        df.loc['C_O_P MÁQUINA GRUPO FRÍO 2 PREDICHO'] = prediction
+        registro_dict = df.to_dict()
+        diccionario.append(registro_dict)
+    dataFrio2.drop(range(0, 10), inplace=True)
+    dataFrio2.reset_index(drop=True, inplace=True)
     return jsonify(diccionario)
 
 @app.route('/api/train_carlos', methods=['GET'])
@@ -126,6 +160,12 @@ def predict_felipe():
 def train_kmeans_frio_1():
     kmeans_ = clustering.KMeans_()
     centroides = kmeans_.kmeans_frio_1()
+    return jsonify({'centroides': centroides})
+
+@app.route('/api/train_kmeans_frio_2', methods=['GET'])
+def train_kmeans_frio_2():
+    kmeans_ = clustering.KMeans_()
+    centroides = kmeans_.kmeans_frio_2()
     return jsonify({'centroides': centroides})
 
 @app.route('/api/train_kmeans_carlos', methods=['GET'])
