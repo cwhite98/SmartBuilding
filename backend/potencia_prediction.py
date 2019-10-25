@@ -6,16 +6,40 @@ from sklearn.ensemble import RandomForestRegressor
 class Potencia:
 
     def fit_grupo_frio_1(self):
-        pass
+        obj = dataset.Dataset()
+        data = obj.read_dataset_limpio()
+        X = data[['POTENCIA TERMICA GRUPO FRIO 1', 'ENTRADA AGUA A TORRE 1', 'SALIDA AGUA TORRE 1',
+                'POTENCIA TRAFO 4', 'POTENCIA TRAFO 5', 'POTENCIA MEDIA CONECTADA', 'CONTROL FRÍO',
+                'KIGO FRIGORÍAS GENERADAS GRUPO DE FRÍO 1', 'TEMPERATURA EXTERIOR']]
+        y = data['POTENCIA GRUPO FRÍO 1']
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+        regr = RandomForestRegressor(n_estimators=10)
+        regr.fit(X_train, y_train)
+        # persist model
+        joblib.dump(regr, 'rf_frio_1.pkl')
 
     def predict_grupo_frio_1(self, X):
-        pass
+        regr = joblib.load('rf_frio_1.pkl')
+        predicts = regr.predict(X)
+        return predicts
 
     def fit_grupo_frio_2(self):
-        pass
+        obj = dataset.Dataset()
+        data = obj.read_dataset_limpio()
+        X = data[['POTENCIA TERMICA GRUPO FRIO 2', 'ENTRADA AGUA A TORRE 2', 'SALIDA AGUA TORRE 2',
+          'POTENCIA TRAFO 4', 'POTENCIA TRAFO 5', 'POTENCIA MEDIA CONECTADA', 'CONTROL FRÍO',
+          'KIGO FRIGORÍAS GENERADAS GRUPO DE FRÍO 2', 'TEMPERATURA EXTERIOR']]
+        y = data['POTENCIA GRUPO FRÍO 2']
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+        regr = RandomForestRegressor(n_estimators=10)
+        regr.fit(X_train, y_train)
+        # persist model
+        joblib.dump(regr, 'rf_frio_2.pkl')
 
     def predict_grupo_frio_2(self, X):
-        pass
+        regr = joblib.load('rf_frio_2.pkl')
+        predicts = regr.predict(X)
+        return predicts
 
     def fit_carlos(self):
         obj = dataset.Dataset()

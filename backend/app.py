@@ -156,7 +156,7 @@ def predict_felipe_cop():
     dataFelipe.reset_index(drop=True, inplace=True)
     return jsonify(diccionario)
 
-# Prediccion COP
+# Prediccion Potencia
 @app.route('/api/train_frio_1_potencia', methods=['GET'])
 def train_frio_1_potencia():
     potencia_model = potencia.Potencia()
