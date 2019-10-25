@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 import copy
 import cop_prediction as cop
+import potencia_prediction as potencia
 import clustering
 import dataset
 
@@ -158,7 +159,9 @@ def predict_felipe_cop():
 # Prediccion COP
 @app.route('/api/train_frio_1_potencia', methods=['GET'])
 def train_frio_1_potencia():
-    pass
+    potencia_model = potencia.Potencia()
+    potencia_model.fit_grupo_frio_1()
+    return jsonify('Entrenado exitosamente')
 
 @app.route('/api/predict_frio_1_potencia', methods=['GET'])
 def predict_frio_1_potencia():
@@ -166,7 +169,9 @@ def predict_frio_1_potencia():
 
 @app.route('/api/train_frio_2_potencia', methods=['GET'])
 def train_frio_2_potencia():
-    pass
+    potencia_model = potencia.Potencia()
+    potencia_model.fit_grupo_frio_2()
+    return jsonify('Entrenado exitosamente')
 
 @app.route('/api/predict_frio_2_potencia', methods=['GET'])
 def predict_frio_2_potencia():
@@ -174,7 +179,9 @@ def predict_frio_2_potencia():
 
 @app.route('/api/train_carlos_potencia', methods=['GET'])
 def train_carlos_potencia():
-    pass
+    potencia_model = potencia.Potencia()
+    potencia_model.fit_carlos()
+    return jsonify('Entrenado exitosamente')
 
 @app.route('/api/predict_carlos_potencia', methods=['GET'])
 def predict_carlos_potencia():
@@ -182,7 +189,9 @@ def predict_carlos_potencia():
 
 @app.route('/api/train_felipe_potencia', methods=['GET'])
 def train_felipe_potencia():
-    pass
+    potencia_model = potencia.Potencia()
+    potencia_model.fit_felipe()
+    return jsonify('Entrenado exitosamente')
 
 @app.route('/api/predict_felipe_potencia', methods=['GET'])
 def predict_felipe_potencia():

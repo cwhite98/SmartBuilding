@@ -34,3 +34,21 @@ class Potencia:
         regr = joblib.load('rf_carlos.pkl')
         predicts = regr.predict(X)
         return predicts
+
+    def fit_felipe(self):
+        obj = dataset.Dataset()
+        data = obj.read_dataset_limpio()
+        X = data[['TEMPERATURA SALIDA BOMBA CALOR FELIPE','POTENCIA TERMICA BOMBA CALOR FELIPE', 
+          'C_O_P BOMBA CALOR FELIPE', 'POTENCIA TRAFO 4','POTENCIA TRAFO 5',
+          'TEMPERATURA EXTERIOR', 'TEMPERATURA AMBIENTE BOMBA CALOR FELIPE' ]]
+        y = data['POTENCIA BOMBA CALOR FELIPE']
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+        regr = RandomForestRegressor(n_estimators=10)
+        regr.fit(X_train, y_train)
+        # persist model
+        joblib.dump(regr, 'rf_felipe.pkl')
+
+    def predict_felipe(self, X):
+        regr = joblib.load('rf_felipe.pkl')
+        predicts = regr.predict(X)
+        return predicts
