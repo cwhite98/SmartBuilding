@@ -5,6 +5,7 @@ import dataset
 
 class KMeans_:
 
+    # Clustering COP
     def kmeans_frio_1_cop(self):
         obj = dataset.Dataset()
         data = obj.read_dataset()
@@ -134,3 +135,44 @@ class KMeans_:
             if not ((centroids[cluster][3] > minTempSalidaFelipe) and (centroids[cluster][3] <= maxTempSalidaFelipe)):
                 diagnostico = 'Revisar la anomalia derivada al valor de la TEMPERATURA SALIDA BOMBA CALOR FELIPE que es X'
         return diagnostico
+
+    # Clustering Potencia
+    def kmeans_frio_1_potencia(self):
+        pass
+
+    def predict_frio_1_potencia(self, X):
+        pass
+
+    def kmeans_frio_2_potencia(self):
+        pass
+
+    def predict_frio_2_potencia(self, X):
+        pass
+
+    def kmeans_carlos_potencia(self):
+        obj = dataset.Dataset()
+        data = obj.read_dataset()
+        dataCarlos = data[['TEMPERATURA SALIDA BOMBA CALOR CARLOS','POTENCIA TERMICA BOMBA CALOR CARLOS', 
+                    'C_O_P BOMBA CALOR CARLOS', 'POTENCIA TRAFO 4','POTENCIA TRAFO 5',
+                    'TEMPERATURA EXTERIOR', 'TEMPERATURA AMBIENTE BOMBA CALOR CARLOS']]
+        kmeans = KMeans(3)
+        kmeans.fit(dataCarlos)
+        centroids = kmeans.cluster_centers_
+        return str(centroids)
+
+    def predict_carlos_potencia(self, X):
+        pass
+
+    def kmeans_felipe_potencia(self):
+        obj = dataset.Dataset()
+        data = obj.read_dataset()
+        dataFelipe = data[['TEMPERATURA SALIDA BOMBA CALOR FELIPE','POTENCIA TERMICA BOMBA CALOR FELIPE', 
+                    'C_O_P BOMBA CALOR FELIPE', 'POTENCIA TRAFO 4','POTENCIA TRAFO 5',
+                    'TEMPERATURA EXTERIOR', 'TEMPERATURA AMBIENTE BOMBA CALOR FELIPE']]
+        kmeans = KMeans(3)
+        kmeans.fit(dataFelipe)
+        centroids = kmeans.cluster_centers_
+        return str(centroids)
+
+    def predict_felipe_potencia(self, X):
+        pass
