@@ -10,10 +10,14 @@ import Chart from 'chart.js';
 export class DashboardComponent implements OnInit {
   public canvas: any;
   public ctx;
-  public predFrio1;
-  public predFrio2;
-  public predCarlos;
-  public predFelipe;
+  public predFrio1_cop;
+  public predFrio1_potencia;
+  public predFrio2_cop;
+  public predFrio2_potencia;
+  public predCarlos_cop;
+  public predCarlos_potencia;
+  public predFelipe_cop;
+  public predFelipe_potencia;
   public datasets: any;
   public data: any;
   public myChartData;
@@ -41,17 +45,30 @@ export class DashboardComponent implements OnInit {
     } else if(this.registros > 9){
       this.registros = -1;
     } else {
-      console.log(this.predFrio1[this.registros]);
-      console.log(this.predFrio2[this.registros]);
-      console.log(this.predCarlos[this.registros]);
-      console.log(this.predFelipe[this.registros]);
+      console.log(this.predFrio1_cop[this.registros]);
+      console.log(this.predFrio2_cop[this.registros]);
+      console.log(this.predCarlos_cop[this.registros]);
+      console.log(this.predFelipe_cop[this.registros]);
+      console.log(this.predFrio1_potencia[this.registros]);
+      console.log(this.predFrio2_potencia[this.registros]);
+      console.log(this.predCarlos_potencia[this.registros]);
+      console.log(this.predFelipe_potencia[this.registros]);
       this.registros++;
     }
   }
   public predict_frio_1() {
     this.http.get('http://127.0.0.1:8081/api/predict_frio_1_cop').subscribe(
       res => {
-        this.predFrio1 = this.json2array(res)
+        this.predFrio1_cop = this.json2array(res)
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
+    this.http.get('http://127.0.0.1:8081/api/predict_frio_1_potencia').subscribe(
+      res => {
+        this.predFrio1_potencia= this.json2array(res)
       },
       err => {
         console.log(err);
@@ -62,7 +79,16 @@ export class DashboardComponent implements OnInit {
   public predict_frio_2() {
     this.http.get('http://127.0.0.1:8081/api/predict_frio_2_cop').subscribe(
       res => {
-        this.predFrio2 = this.json2array(res)
+        this.predFrio2_cop = this.json2array(res)
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
+    this.http.get('http://127.0.0.1:8081/api/predict_frio_2_potencia').subscribe(
+      res => {
+        this.predFrio2_potencia = this.json2array(res)
       },
       err => {
         console.log(err);
@@ -73,7 +99,16 @@ export class DashboardComponent implements OnInit {
   public predict_carlos() {
     this.http.get('http://127.0.0.1:8081/api/predict_carlos_cop').subscribe(
       res => {
-        this.predCarlos = this.json2array(res)
+        this.predCarlos_cop = this.json2array(res)
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
+    this.http.get('http://127.0.0.1:8081/api/predict_carlos_potencia').subscribe(
+      res => {
+        this.predCarlos_potencia = this.json2array(res)
       },
       err => {
         console.log(err);
@@ -84,7 +119,16 @@ export class DashboardComponent implements OnInit {
   public predict_felipe() {
     this.http.get('http://127.0.0.1:8081/api/predict_felipe_cop').subscribe(
       res => {
-        this.predFelipe = this.json2array(res)
+        this.predFelipe_cop = this.json2array(res)
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
+    this.http.get('http://127.0.0.1:8081/api/predict_felipe_potencia').subscribe(
+      res => {
+        this.predFelipe_potencia = this.json2array(res)
       },
       err => {
         console.log(err);

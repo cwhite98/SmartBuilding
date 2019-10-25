@@ -28,11 +28,11 @@ class KMeans_:
         minTempExterior = 10
         maxTempExterior = 27
         for cluster in clusters:
-            if ((centroids[cluster][0] < minPotenciaFrio1) and (centroids[cluster][0] >= maxPotenciaFrio1)):
+            if not ((centroids[cluster][0] > minPotenciaFrio1) and (centroids[cluster][0] <= maxPotenciaFrio1)):
                 diagnostico = 'Revisar la POTENCIA GRUPO FRÍO 1.'
-            if ((centroids[cluster][1] < minPotenciaTermicaFrio1) and (centroids[cluster][1] >= maxPotenciaTermicaFrio1)):
+            if not ((centroids[cluster][1] > minPotenciaTermicaFrio1) and (centroids[cluster][1] <= maxPotenciaTermicaFrio1)):
                 diagnostico = 'Revisar la POTENCIA TERMICA GRUPO FRIO 1.'
-            if ((centroids[cluster][2] < minTempExterior) and (centroids[cluster][2] >= maxTempExterior)):
+            if not ((centroids[cluster][2] > minTempExterior) and (centroids[cluster][2] <= maxTempExterior)):
                 diagnostico = 'La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.'
         return diagnostico
 
@@ -58,11 +58,11 @@ class KMeans_:
         minTempExterior = 10.102595
         maxTempExterior = 27.313549000000002
         for cluster in clusters:
-            if ((centroids[cluster][0] < minPotenciaFrio2) and (centroids[cluster][0] >= maxPotenciaFrio2)):
+            if not ((centroids[cluster][0] > minPotenciaFrio2) and (centroids[cluster][0] <= maxPotenciaFrio2)):
                 diagnostico = 'Revisar la POTENCIA GRUPO FRÍO 2.'
-            if ((centroids[cluster][1] < minPotenciaTermicaFrio2) and (centroids[cluster][1] >= maxPotenciaTermicaFrio2)):
+            if not ((centroids[cluster][1] > minPotenciaTermicaFrio2) and (centroids[cluster][1] <= maxPotenciaTermicaFrio2)):
                 diagnostico = 'Revisar la POTENCIA TERMICA GRUPO FRIO 2.'
-            if ((centroids[cluster][2] < minTempExterior) and (centroids[cluster][2] >= maxTempExterior)):
+            if not ((centroids[cluster][2] > minTempExterior) and (centroids[cluster][2] <= maxTempExterior)):
                 diagnostico = 'La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.'
         return diagnostico
 
@@ -150,10 +150,10 @@ class KMeans_:
         return str(centroids)
 
     def predict_frio_1_potencia(self, X):
-        kmeans = joblib.load('kmeans_felipe_cop.pkl')
+        kmeans = joblib.load('kmeans_frio_1_potencia.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
-        diagnostico = 'COP malo, pero no sabemos la razon'
+        diagnostico = 'Potencia mala, pero no sabemos la razon'
         minPotenciaTermicaFrio1 = 0
         maxPotenciaTermicaFrio1 = 96
         minEntradaAgua1 = 5 #mean - std
@@ -206,10 +206,10 @@ class KMeans_:
         return str(centroids)
 
     def predict_frio_2_potencia(self, X):
-        kmeans = joblib.load('predict_frio_2_potencia.pkl')
+        kmeans = joblib.load('kmeans_frio_2_potencia.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
-        diagnostico = 'COP malo, pero no sabemos la razon'
+        diagnostico = 'Potencia mala, pero no sabemos la razon'
         minPotenciaTermicaFrio2 = 0
         maxPotenciaTermicaFrio2 = 98
         minEntradaAgua2 = 5 #mean - std
