@@ -48,6 +48,7 @@ export class DashboardComponent implements OnInit {
   public myChartCOPCalorFelipe;
   public myChartPotenciaCalorFelipe;
   public registros = -1;
+  public contador = 0;
 
 
   constructor(private http: HttpClient) {
@@ -59,20 +60,6 @@ export class DashboardComponent implements OnInit {
   public recibirRegistros() {
     if (this.registros == -1) {
       this.errores=[];
-      this.tempExt=[];
-      this.time=[];
-      this.COPFrio1=[];
-      this.COPFrio1Pre=[];
-      this.COPFrio2=[];
-      this.COPFrio2Pre=[];
-      this.COPCalorCarlos=[];
-      this.COPCalorCarlosPre=[];
-      this.COPCalorFelipe=[];
-      this.COPCalorFelipePre=[];
-      this.potenciaFrio1=[];
-      this.potenciaFrio2=[];
-      this.potenciaCalorCarlos=[];
-      this.potenciaCalorFelipe=[];
       this.predict_frio_1();
       this.predict_frio_2();
       this.predict_carlos();
@@ -81,8 +68,73 @@ export class DashboardComponent implements OnInit {
     } else if(this.registros > 9){
       this.registros = -1;
     } else {
+      if(this.contador<10){
+        this.actualizar()
+      }
+      else{
+        console.log(this.predFrio1_cop[this.registros]);
+        this.tempExt.shift()
+        this.COPFrio1.shift()
+        this.COPFrio1Pre.shift()
+        this.time.shift()
+        this.COPFrio2.shift()
+        this.COPFrio2Pre.shift()
+        this.COPCalorCarlos.shift()
+        this.COPCalorCarlosPre.shift()
+        this.COPCalorFelipe.shift()
+        this.COPCalorFelipePre.shift()
+        this.potenciaFrio1.shift()
+        this.potenciaFrio2.shift()
+        this.potenciaCalorCarlos.shift()
+        this.potenciaCalorFelipe.shift()
+        this.actualizar()
+      }
       this.registros++;
+      this.contador++;
     }
+  }
+  public actualizar(){
+    console.log(this.predFrio1_cop[this.registros]);
+        this.tempExt.push(this.predFrio1_cop[this.registros]["TEMPERATURA EXTERIOR"]) 
+        this.COPFrio1.push(this.predFrio1_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 1"])
+        this.COPFrio1Pre.push(this.predFrio1_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 1 PREDICHO"])
+        this.time.push(this.predFrio1_cop[this.registros]["Fecha- hora de lectura"])
+        this.myChartCOPFrio1.data.datasets[0].data=this.COPFrio1;
+        this.myChartCOPFrio1.data.datasets[1].data=this.COPFrio1Pre;
+        this.myChartCOPFrio1.update()
+        console.log(this.predFrio2_cop[this.registros]);
+        this.COPFrio2.push(this.predFrio2_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 2"])
+        this.COPFrio2Pre.push(this.predFrio2_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 2 PREDICHO"])
+        this.myChartCOPFrio2.data.datasets[0].data=this.COPFrio2;
+        this.myChartCOPFrio2.data.datasets[1].data=this.COPFrio2Pre;
+        this.myChartCOPFrio2.update()
+        console.log(this.predCarlos_cop[this.registros]);
+        this.COPCalorCarlos.push(this.predCarlos_cop[this.registros]["C_O_P BOMBA CALOR CARLOS"])
+        this.COPCalorCarlosPre.push(this.predCarlos_cop[this.registros]["C_O_P BOMBA CALOR CARLOS PREDICHO"])
+        this.myChartCOPCalorCarlos.update()
+        console.log(this.predFelipe_cop[this.registros]);
+        this.COPCalorFelipe.push(this.predFelipe_cop[this.registros]["C_O_P BOMBA CALOR FELIPE"])
+        this.COPCalorFelipePre.push(this.predFelipe_cop[this.registros]["C_O_P BOMBA CALOR FELIPE PREDICHO"])
+        this.myChartCOPCalorFelipe.update()
+        console.log(this.predFrio1_potencia[this.registros]);
+        this.potenciaFrio1.push(this.predFrio1_potencia[this.registros]["POTENCIA GRUPO FRÍO 1 PREDICHA"])
+        this.myChartPotenciaFrio1.data.datasets[0].data=this.potenciaFrio1
+        this.myChartPotenciaFrio1.update();
+        console.log(this.predFrio2_potencia[this.registros]);
+        this.potenciaFrio2.push(this.predFrio2_potencia[this.registros]["POTENCIA GRUPO FRÍO 2 PREDICHA"])
+        this.myChartPotenciaFrio2.data.datasets[0].data=this.potenciaFrio2
+        this.myChartPotenciaFrio2.update();
+        console.log(this.predCarlos_potencia[this.registros]);
+        this.potenciaCalorCarlos.push(this.predCarlos_potencia[this.registros]["POTENCIA BOMBA CALOR CARLOS PREDICHA"])
+        this.myChartPotenciaCalorCarlos.data.datasets[0].data=this.potenciaCalorCarlos
+        this.myChartPotenciaCalorCarlos.update();
+        console.log(this.predFelipe_potencia[this.registros]);
+        this.potenciaCalorFelipe.push(this.predFelipe_potencia[this.registros]["POTENCIA BOMBA CALOR FELIPE PREDICHA"])
+        this.myChartPotenciaCalorFelipe.data.datasets[0].data=this.potenciaCalorFelipe
+        this.myChartPotenciaCalorFelipe.update();
+        //Temperatura externa
+        this.myChartData.data.datasets[0].data = this.tempExt;
+        this.myChartData.update();
   }
   //------------------------------------------------------------------------------------------------------
   //------------------------------------------------------------------------------------------------------
@@ -104,12 +156,7 @@ export class DashboardComponent implements OnInit {
           else{
             this.errores.push(this.predFrio1_cop[i]["Diagnostico"])
           }
-          this.tempExt.push(this.predFrio1_cop[i]["TEMPERATURA EXTERIOR"])
-          this.time.push(this.predFrio1_cop[i]["Fecha- hora de lectura"])
-          this.COPFrio1.push(this.predFrio1_cop[i]["C_O_P MÁQUINA GRUPO FRÍO 1"])
-          this.COPFrio1Pre.push(this.predFrio1_cop[i]["C_O_P MÁQUINA GRUPO FRÍO 1 PREDICHO"])
         }
-        this.updateOptions()
       },
       err => {
         console.log(err);
@@ -126,9 +173,7 @@ export class DashboardComponent implements OnInit {
           else{
             this.errores.push(this.predFrio1_potencia[i]["Diagnostico"])
           }         
-          this.potenciaFrio1.push(this.predFrio1_potencia[i]["POTENCIA GRUPO FRÍO 1 PREDICHA"])
         }
-        this.updateOptions()
       },
       err => {
         console.log(err);
@@ -146,9 +191,7 @@ export class DashboardComponent implements OnInit {
           }
           else{
             this.errores.push(this.predFrio2_cop[i]["Diagnostico"])
-          }
-          this.COPFrio2.push(this.predFrio2_cop[i]["C_O_P MÁQUINA GRUPO FRÍO 2"])
-          this.COPFrio2Pre.push(this.predFrio2_cop[i]["C_O_P MÁQUINA GRUPO FRÍO 2 PREDICHO"])    
+          }    
         }
       },
       err => {
@@ -166,9 +209,7 @@ export class DashboardComponent implements OnInit {
           else{
             this.errores.push(this.predFrio2_potencia[i]["Diagnostico"])
           }
-          this.potenciaFrio2.push(this.predFrio2_potencia[i]["POTENCIA GRUPO FRÍO 2 PREDICHA"])
         }
-        this.updateOptions()
       },
       err => {
         console.log(err);
@@ -187,10 +228,7 @@ export class DashboardComponent implements OnInit {
           else{
             this.errores.push(this.predCarlos_cop[i]["Diagnostico"])
           }
-          this.COPCalorCarlos.push(this.predCarlos_cop[i]["C_O_P BOMBA CALOR CARLOS"])
-          this.COPCalorCarlosPre.push(this.predCarlos_cop[i]["C_O_P BOMBA CALOR CARLOS PREDICHO"])
         }
-        this.updateOptions()
       },
       err => {
         console.log(err);
@@ -207,9 +245,7 @@ export class DashboardComponent implements OnInit {
           else{
             this.errores.push(this.predCarlos_potencia[i]["Diagnostico"])
           }
-          this.potenciaCalorCarlos.push(this.predCarlos_potencia[i]["POTENCIA BOMBA CALOR CARLOS PREDICHA"])
         }
-        this.updateOptions()
       },
       err => {
         console.log(err);
@@ -228,10 +264,7 @@ export class DashboardComponent implements OnInit {
           else{
             this.errores.push(this.predFelipe_cop[i]["Diagnostico"])
           }
-          this.COPCalorFelipe.push(this.predFelipe_cop[i]["C_O_P BOMBA CALOR FELIPE"])
-          this.COPCalorFelipePre.push(this.predFelipe_cop[i]["C_O_P BOMBA CALOR FELIPE PREDICHO"])
         }
-        this.updateOptions()
       },
       err => {
         console.log(err);
@@ -248,7 +281,6 @@ export class DashboardComponent implements OnInit {
           else{
             this.errores.push(this.predFelipe_potencia[i]["Diagnostico"])
           }
-          this.potenciaCalorFelipe.push(this.predFelipe_potencia[i]["POTENCIA BOMBA CALOR FELIPE PREDICHA"])
         }
       },
       err => {
@@ -838,27 +870,6 @@ export class DashboardComponent implements OnInit {
 
   }
   public updateOptions() {
-    this.myChartData.data.datasets[0].data = this.tempExt;
-    this.myChartData.update();
-    this.myChartPotenciaFrio1.data.datasets[0].data=this.potenciaFrio1
-    this.myChartPotenciaFrio1.update();
-    this.myChartCOPFrio1.data.datasets[0].data=this.COPFrio1;
-    this.myChartCOPFrio1.data.datasets[1].data=this.COPFrio1Pre;
-    this.myChartCOPFrio1.update();
-    this.myChartCOPFrio2.data.datasets[0].data=this.COPFrio2;
-    this.myChartCOPFrio2.data.datasets[1].data=this.COPFrio2Pre;
-    this.myChartCOPFrio2.update();
-    this.myChartPotenciaFrio2.data.datasets[0].data=this.potenciaFrio2
-    this.myChartPotenciaFrio2.update();
-    this.myChartCOPCalorCarlos.data.datasets[0].data=this.COPCalorCarlos;
-    this.myChartCOPCalorCarlos.data.datasets[1].data=this.COPCalorCarlosPre;
-    this.myChartCOPCalorCarlos.update();
-    this.myChartPotenciaCalorCarlos.data.datasets[0].data=this.potenciaCalorCarlos
-    this.myChartPotenciaCalorCarlos.update();
-    this.myChartCOPCalorFelipe.data.datasets[0].data=this.COPCalorFelipe;
-    this.myChartCOPCalorFelipe.data.datasets[1].data=this.COPCalorFelipePre;
-    this.myChartCOPCalorFelipe.update();
-    this.myChartPotenciaCalorFelipe.data.datasets[0].data=this.potenciaCalorFelipe
-    this.myChartPotenciaCalorFelipe.update();
+
   }
 }
