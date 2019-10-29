@@ -8,8 +8,25 @@ import Chart from 'chart.js';
   templateUrl: "dashboard.component.html"
 })
 export class DashboardComponent implements OnInit {
+  //arreglos para mostrar datos
+  public errores=[];
+  public tempExt=[];
+  public time=[];
+  public COPFrio1=[];
+  public COPFrio1Pre=[];
+  public COPFrio2=[];
+  public COPFrio2Pre=[];
+  public COPCalorCarlos=[];
+  public COPCalorCarlosPre=[];
+  public COPCalorFelipe=[];
+  public COPCalorFelipePre=[];
+  public potenciaFrio1=[];
+  public potenciaFrio2=[];
+  public potenciaCalorCarlos=[];
+  public potenciaCalorFelipe=[];
   public canvas: any;
   public ctx;
+  //donde se guardan los datos traidos del http
   public predFrio1_cop;
   public predFrio1_potencia;
   public predFrio2_cop;
@@ -20,23 +37,42 @@ export class DashboardComponent implements OnInit {
   public predFelipe_potencia;
   public datasets: any;
   public data: any;
+  //graficas
   public myChartData;
-  public clicked: boolean = true;
-  public clicked1: boolean = false;
-  public clicked2: boolean = false;
-  public tests = [["ERROR 1", "Revisar potencia termica"], ["ERROR 2", "Revisar potencia termica"],
-  ["ERROR 1", "Revisar potencia electrica"], ["ERROR 2", "Revisar potencia termica"],
-  ["ERROR 3", "Revisar potencia termica"], ["ERROR 4", "Revisar sensor temperatura externa"],
-  ["ERROR 3", "Revisar potencia electrica"], ["ERROR 4", "Revisar potencia termica"],
-  ["ERROR 4", "Revisar potencia termica"], ["ERROR 5", "Revisar potencia termica"]]
+  public myChartCOPFrio1;
+  public myChartPotenciaFrio1;
+  public myChartCOPFrio2
+  public myChartPotenciaFrio2;
+  public myChartCOPCalorCarlos;
+  public myChartPotenciaCalorCarlos;
+  public myChartCOPCalorFelipe;
+  public myChartPotenciaCalorFelipe;
   public registros = -1;
+
+
   constructor(private http: HttpClient) {
-    Observable.interval(2000).subscribe(x => {
+    this.recibirRegistros();
+    Observable.interval(4000).subscribe(x => {
       this.recibirRegistros();
     });
   }
   public recibirRegistros() {
     if (this.registros == -1) {
+      this.errores=[];
+      this.tempExt=[];
+      this.time=[];
+      this.COPFrio1=[];
+      this.COPFrio1Pre=[];
+      this.COPFrio2=[];
+      this.COPFrio2Pre=[];
+      this.COPCalorCarlos=[];
+      this.COPCalorCarlosPre=[];
+      this.COPCalorFelipe=[];
+      this.COPCalorFelipePre=[];
+      this.potenciaFrio1=[];
+      this.potenciaFrio2=[];
+      this.potenciaCalorCarlos=[];
+      this.potenciaCalorFelipe=[];
       this.predict_frio_1();
       this.predict_frio_2();
       this.predict_carlos();
@@ -45,21 +81,35 @@ export class DashboardComponent implements OnInit {
     } else if(this.registros > 9){
       this.registros = -1;
     } else {
-      console.log(this.predFrio1_cop[this.registros]);
-      console.log(this.predFrio2_cop[this.registros]);
-      console.log(this.predCarlos_cop[this.registros]);
-      console.log(this.predFelipe_cop[this.registros]);
-      console.log(this.predFrio1_potencia[this.registros]);
-      console.log(this.predFrio2_potencia[this.registros]);
-      console.log(this.predCarlos_potencia[this.registros]);
-      console.log(this.predFelipe_potencia[this.registros]);
       this.registros++;
     }
   }
+  //------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------
+  //Peticiones http
   public predict_frio_1() {
     this.http.get('http://127.0.0.1:8081/api/predict_frio_1_cop').subscribe(
       res => {
         this.predFrio1_cop = this.json2array(res)
+        for(var i=0;i<10;i++){
+          if(this.errores.includes(this.predFrio1_cop[i]["Diagnostico"])||(this.predFrio1_cop[i]["Diagnostico"]==" ")){
+            //console.log("ya estaba")
+          }
+          else{
+            this.errores.push(this.predFrio1_cop[i]["Diagnostico"])
+          }
+          this.tempExt.push(this.predFrio1_cop[i]["TEMPERATURA EXTERIOR"])
+          this.time.push(this.predFrio1_cop[i]["Fecha- hora de lectura"])
+          this.COPFrio1.push(this.predFrio1_cop[i]["C_O_P MÁQUINA GRUPO FRÍO 1"])
+          this.COPFrio1Pre.push(this.predFrio1_cop[i]["C_O_P MÁQUINA GRUPO FRÍO 1 PREDICHO"])
+        }
+        this.updateOptions()
       },
       err => {
         console.log(err);
@@ -69,6 +119,16 @@ export class DashboardComponent implements OnInit {
     this.http.get('http://127.0.0.1:8081/api/predict_frio_1_potencia').subscribe(
       res => {
         this.predFrio1_potencia= this.json2array(res)
+        for(var i=0;i<10;i++){
+          if(this.errores.includes(this.predFrio1_potencia[i]["Diagnostico"])||(this.predFrio1_potencia[i]["Diagnostico"]==" ")){
+            //console.log("ya estaba")
+          }
+          else{
+            this.errores.push(this.predFrio1_potencia[i]["Diagnostico"])
+          }         
+          this.potenciaFrio1.push(this.predFrio1_potencia[i]["POTENCIA GRUPO FRÍO 1 PREDICHA"])
+        }
+        this.updateOptions()
       },
       err => {
         console.log(err);
@@ -80,6 +140,16 @@ export class DashboardComponent implements OnInit {
     this.http.get('http://127.0.0.1:8081/api/predict_frio_2_cop').subscribe(
       res => {
         this.predFrio2_cop = this.json2array(res)
+        for(var i=0;i<10;i++){
+          if(this.errores.includes(this.predFrio2_cop[i]["Diagnostico"])||(this.predFrio2_cop[i]["Diagnostico"]==" ")){
+            //console.log("ya estaba")
+          }
+          else{
+            this.errores.push(this.predFrio2_cop[i]["Diagnostico"])
+          }
+          this.COPFrio2.push(this.predFrio2_cop[i]["C_O_P MÁQUINA GRUPO FRÍO 2"])
+          this.COPFrio2Pre.push(this.predFrio2_cop[i]["C_O_P MÁQUINA GRUPO FRÍO 2 PREDICHO"])    
+        }
       },
       err => {
         console.log(err);
@@ -89,6 +159,16 @@ export class DashboardComponent implements OnInit {
     this.http.get('http://127.0.0.1:8081/api/predict_frio_2_potencia').subscribe(
       res => {
         this.predFrio2_potencia = this.json2array(res)
+        for(var i=0;i<10;i++){
+          if(this.errores.includes(this.predFrio2_potencia[i]["Diagnostico"])||(this.predFrio2_potencia[i]["Diagnostico"]==" ")){
+            //console.log("ya estaba")
+          }
+          else{
+            this.errores.push(this.predFrio2_potencia[i]["Diagnostico"])
+          }
+          this.potenciaFrio2.push(this.predFrio2_potencia[i]["POTENCIA GRUPO FRÍO 2 PREDICHA"])
+        }
+        this.updateOptions()
       },
       err => {
         console.log(err);
@@ -100,6 +180,17 @@ export class DashboardComponent implements OnInit {
     this.http.get('http://127.0.0.1:8081/api/predict_carlos_cop').subscribe(
       res => {
         this.predCarlos_cop = this.json2array(res)
+        for(var i=0;i<10;i++){
+          if(this.errores.includes(this.predCarlos_cop[i]["Diagnostico"])||(this.predCarlos_cop[i]["Diagnostico"]==" ")){
+            //console.log("ya estaba")
+          }
+          else{
+            this.errores.push(this.predCarlos_cop[i]["Diagnostico"])
+          }
+          this.COPCalorCarlos.push(this.predCarlos_cop[i]["C_O_P BOMBA CALOR CARLOS"])
+          this.COPCalorCarlosPre.push(this.predCarlos_cop[i]["C_O_P BOMBA CALOR CARLOS PREDICHO"])
+        }
+        this.updateOptions()
       },
       err => {
         console.log(err);
@@ -109,6 +200,16 @@ export class DashboardComponent implements OnInit {
     this.http.get('http://127.0.0.1:8081/api/predict_carlos_potencia').subscribe(
       res => {
         this.predCarlos_potencia = this.json2array(res)
+        for(var i=0;i<10;i++){
+          if(this.errores.includes(this.predCarlos_potencia[i]["Diagnostico"])||(this.predCarlos_potencia[i]["Diagnostico"]==" ")){
+            //console.log("ya estaba")
+          }
+          else{
+            this.errores.push(this.predCarlos_potencia[i]["Diagnostico"])
+          }
+          this.potenciaCalorCarlos.push(this.predCarlos_potencia[i]["POTENCIA BOMBA CALOR CARLOS PREDICHA"])
+        }
+        this.updateOptions()
       },
       err => {
         console.log(err);
@@ -120,6 +221,17 @@ export class DashboardComponent implements OnInit {
     this.http.get('http://127.0.0.1:8081/api/predict_felipe_cop').subscribe(
       res => {
         this.predFelipe_cop = this.json2array(res)
+        for(var i=0;i<10;i++){
+          if(this.errores.includes(this.predFelipe_cop[i]["Diagnostico"])||(this.predFelipe_cop[i]["Diagnostico"]==" ")){
+            //console.log("ya estaba")
+          }
+          else{
+            this.errores.push(this.predFelipe_cop[i]["Diagnostico"])
+          }
+          this.COPCalorFelipe.push(this.predFelipe_cop[i]["C_O_P BOMBA CALOR FELIPE"])
+          this.COPCalorFelipePre.push(this.predFelipe_cop[i]["C_O_P BOMBA CALOR FELIPE PREDICHO"])
+        }
+        this.updateOptions()
       },
       err => {
         console.log(err);
@@ -129,13 +241,22 @@ export class DashboardComponent implements OnInit {
     this.http.get('http://127.0.0.1:8081/api/predict_felipe_potencia').subscribe(
       res => {
         this.predFelipe_potencia = this.json2array(res)
+        for(var i=0;i<10;i++){
+          if(this.errores.includes(this.predFelipe_potencia[i]["Diagnostico"])||(this.predFelipe_potencia[i]["Diagnostico"]==" ")){
+            //console.log("ya estaba")
+          }
+          else{
+            this.errores.push(this.predFelipe_potencia[i]["Diagnostico"])
+          }
+          this.potenciaCalorFelipe.push(this.predFelipe_potencia[i]["POTENCIA BOMBA CALOR FELIPE PREDICHA"])
+        }
       },
       err => {
         console.log(err);
       }
     );
   }
-
+  //metodo que pasa de json a array
   public json2array(json) {
     var result = [];
     var keys = Object.keys(json);
@@ -145,102 +266,6 @@ export class DashboardComponent implements OnInit {
     return result;
   }
   ngOnInit() {
-
-    var gradientChartOptionsConfigurationWithTooltipBlue: any = {
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-
-      tooltips: {
-        backgroundColor: '#f5f5f5',
-        titleFontColor: '#333',
-        bodyFontColor: '#666',
-        bodySpacing: 4,
-        xPadding: 12,
-        mode: "nearest",
-        intersect: 0,
-        position: "nearest"
-      },
-      responsive: true,
-      scales: {
-        yAxes: [{
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(29,140,248,0.0)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            suggestedMin: 60,
-            suggestedMax: 125,
-            padding: 20,
-            fontColor: "#2380f7"
-          }
-        }],
-
-        xAxes: [{
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(29,140,248,0.1)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            padding: 20,
-            fontColor: "#2380f7"
-          }
-        }]
-      }
-    };
-
-    var gradientChartOptionsConfigurationWithTooltipPurple: any = {
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-
-      tooltips: {
-        backgroundColor: '#f5f5f5',
-        titleFontColor: '#333',
-        bodyFontColor: '#666',
-        bodySpacing: 4,
-        xPadding: 12,
-        mode: "nearest",
-        intersect: 0,
-        position: "nearest"
-      },
-      responsive: true,
-      scales: {
-        yAxes: [{
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(29,140,248,0.0)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            suggestedMin: 60,
-            suggestedMax: 125,
-            padding: 20,
-            fontColor: "#9a9a9a"
-          }
-        }],
-
-        xAxes: [{
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(225,78,202,0.1)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            padding: 20,
-            fontColor: "#9a9a9a"
-          }
-        }]
-      }
-    };
 
     var gradientChartOptionsConfigurationWithTooltipRed: any = {
       maintainAspectRatio: false,
@@ -285,54 +310,6 @@ export class DashboardComponent implements OnInit {
           ticks: {
             padding: 20,
             fontColor: "#9a9a9a"
-          }
-        }]
-      }
-    };
-
-    var gradientChartOptionsConfigurationWithTooltipOrange: any = {
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-
-      tooltips: {
-        backgroundColor: '#f5f5f5',
-        titleFontColor: '#333',
-        bodyFontColor: '#666',
-        bodySpacing: 4,
-        xPadding: 12,
-        mode: "nearest",
-        intersect: 0,
-        position: "nearest"
-      },
-      responsive: true,
-      scales: {
-        yAxes: [{
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(29,140,248,0.0)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            suggestedMin: 50,
-            suggestedMax: 110,
-            padding: 20,
-            fontColor: "#ff8a76"
-          }
-        }],
-
-        xAxes: [{
-          barPercentage: 1.6,
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(220,53,69,0.1)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            padding: 20,
-            fontColor: "#ff8a76"
           }
         }]
       }
@@ -386,159 +363,18 @@ export class DashboardComponent implements OnInit {
       }
     };
 
-
-    var gradientBarChartConfiguration: any = {
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-
-      tooltips: {
-        backgroundColor: '#f5f5f5',
-        titleFontColor: '#333',
-        bodyFontColor: '#666',
-        bodySpacing: 4,
-        xPadding: 12,
-        mode: "nearest",
-        intersect: 0,
-        position: "nearest"
-      },
-      responsive: true,
-      scales: {
-        yAxes: [{
-
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(29,140,248,0.1)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            suggestedMin: 60,
-            suggestedMax: 120,
-            padding: 20,
-            fontColor: "#9e9e9e"
-          }
-        }],
-
-        xAxes: [{
-
-          gridLines: {
-            drawBorder: false,
-            color: 'rgba(29,140,248,0.1)',
-            zeroLineColor: "transparent",
-          },
-          ticks: {
-            padding: 20,
-            fontColor: "#9e9e9e"
-          }
-        }]
-      }
-    };
-
-    this.canvas = document.getElementById("chartLineRed");
-    this.ctx = this.canvas.getContext("2d");
-
-    var gradientStroke = this.ctx.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke.addColorStop(1, 'rgba(233,32,16,0.2)');
-    gradientStroke.addColorStop(0.4, 'rgba(233,32,16,0.0)');
-    gradientStroke.addColorStop(0, 'rgba(233,32,16,0)'); //red colors
-
-    var data = {
-      labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-      datasets: [{
-        label: "Data",
-        fill: true,
-        backgroundColor: gradientStroke,
-        borderColor: '#ec250d',
-        borderWidth: 2,
-        borderDash: [],
-        borderDashOffset: 0.0,
-        pointBackgroundColor: '#ec250d',
-        pointBorderColor: 'rgba(255,255,255,0)',
-        pointHoverBackgroundColor: '#ec250d',
-        pointBorderWidth: 20,
-        pointHoverRadius: 4,
-        pointHoverBorderWidth: 15,
-        pointRadius: 4,
-        data: [80, 100, 70, 80, 120, 80],
-      }, {
-        label: "Data",
-        fill: true,
-        backgroundColor: gradientStroke,
-        borderColor: '#6aec0d',
-        borderWidth: 2,
-        borderDash: [],
-        borderDashOffset: 0.0,
-        pointBackgroundColor: '#6aec0d',
-        pointBorderColor: 'rgba(255,255,255,0)',
-        pointHoverBackgroundColor: '#ec250d',
-        pointBorderWidth: 20,
-        pointHoverRadius: 4,
-        pointHoverBorderWidth: 15,
-        pointRadius: 4,
-        data: [50, 100, 50, 90, 70, 80],
-      }]
-    };
-
-    var myChart = new Chart(this.ctx, {
-      type: 'line',
-      data: data,
-      options: gradientChartOptionsConfigurationWithTooltipRed
-    });
+    //------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------
 
 
-    this.canvas = document.getElementById("chartLineGreen");
-    this.ctx = this.canvas.getContext("2d");
-
-
-    var gradientStroke = this.ctx.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke.addColorStop(1, 'rgba(66,134,121,0.15)');
-    gradientStroke.addColorStop(0.4, 'rgba(66,134,121,0.0)'); //green colors
-    gradientStroke.addColorStop(0, 'rgba(66,134,121,0)'); //green colors
-
-    var data = {
-      labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV'],
-      datasets: [{
-        label: "My First dataset",
-        fill: true,
-        backgroundColor: gradientStroke,
-        borderColor: '#00d6b4',
-        borderWidth: 2,
-        borderDash: [],
-        borderDashOffset: 0.0,
-        pointBackgroundColor: '#00d6b4',
-        pointBorderColor: 'rgba(255,255,255,0)',
-        pointHoverBackgroundColor: '#00d6b4',
-        pointBorderWidth: 20,
-        pointHoverRadius: 4,
-        pointHoverBorderWidth: 15,
-        pointRadius: 4,
-        data: [90, 27, 60, 12, 80],
-      }]
-    };
-
-    var myChart = new Chart(this.ctx, {
-      type: 'line',
-      data: data,
-      options: gradientChartOptionsConfigurationWithTooltipGreen
-
-    });
-
-
-
-    var chart_labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-    this.datasets = [
-      [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100],
-      [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120],
-      [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130]
-    ];
-    this.data = this.datasets[0];
-
-
-
-    this.canvas = document.getElementById("chartBig1");
+    //Grafica Temperatura Exterior
+    this.canvas = document.getElementById("chartTempExt");
     this.ctx = this.canvas.getContext("2d");
 
     var gradientStroke = this.ctx.createLinearGradient(0, 230, 0, 50);
@@ -550,7 +386,7 @@ export class DashboardComponent implements OnInit {
     var config = {
       type: 'line',
       data: {
-        labels: chart_labels,
+        labels: this.time,
         datasets: [{
           label: "My First dataset",
           fill: true,
@@ -566,15 +402,87 @@ export class DashboardComponent implements OnInit {
           pointHoverRadius: 4,
           pointHoverBorderWidth: 15,
           pointRadius: 4,
-          data: this.data,
+          data: this.tempExt,
         }]
       },
-      options: gradientChartOptionsConfigurationWithTooltipRed
+      options: {gradientChartOptionsConfigurationWithTooltipRed,
+        maintainAspectRatio: false,
+        scales:{yAxes:[{ticks:{suggestedMin:0,suggestedMan:20}}],xAxes: [{
+          ticks: {
+              display: false //this will remove only the label
+          }
+      }]},
+        legend:{display:false},
+      }
     };
     this.myChartData = new Chart(this.ctx, config);
 
 
-    this.canvas = document.getElementById("CountryChart");
+
+    //Grafica COP frio1
+
+    this.canvas = document.getElementById("chartCOPFrio1");
+    this.ctx = this.canvas.getContext("2d");
+
+    var gradientStroke = this.ctx.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke.addColorStop(1, 'rgba(233,32,16,0.2)');
+    gradientStroke.addColorStop(0.4, 'rgba(233,32,16,0.0)');
+    gradientStroke.addColorStop(0, 'rgba(233,32,16,0)'); //red colors
+
+    var dataCOPFrio1 = {
+      labels: this.time,
+      datasets: [{
+        label: "Dato leído",
+        fill: true,
+        backgroundColor: gradientStroke,
+        borderColor: '#ec250d',
+        borderWidth: 2,
+        borderDash: [],
+        borderDashOffset: 0.0,
+        pointBackgroundColor: '#ec250d',
+        pointBorderColor: 'rgba(255,255,255,0)',
+        pointHoverBackgroundColor: '#ec250d',
+        pointBorderWidth: 20,
+        pointHoverRadius: 4,
+        pointHoverBorderWidth: 15,
+        pointRadius: 4,
+        data: this.COPFrio1,
+      }, {
+        label: "Dato predicho",
+        fill: true,
+        backgroundColor: gradientStroke,
+        borderColor: '#6aec0d',
+        borderWidth: 2,
+        borderDash: [],
+        borderDashOffset: 0.0,
+        pointBackgroundColor: '#6aec0d',
+        pointBorderColor: 'rgba(255,255,255,0)',
+        pointHoverBackgroundColor: '#ec250d',
+        pointBorderWidth: 20,
+        pointHoverRadius: 4,
+        pointHoverBorderWidth: 15,
+        pointRadius: 4,
+        data: this.COPFrio1Pre,
+      }]
+    };
+
+    this.myChartCOPFrio1 = new Chart(this.ctx, {
+      type: 'line',
+      data: dataCOPFrio1,
+      options: {gradientChartOptionsConfigurationWithTooltipRed,
+        maintainAspectRatio: false,
+        scales:{yAxes:[{ticks:{max:10,min:0}}],xAxes: [{
+          ticks: {
+              display: false //this will remove only the label
+          }
+      }]},
+        legend:{display:false},
+      }
+    });
+
+    //grafica Potencia Frio 1
+    this.canvas = document.getElementById("chartPotenciaFrio1");
     this.ctx = this.canvas.getContext("2d");
     var gradientStroke = this.ctx.createLinearGradient(0, 230, 0, 50);
 
@@ -583,16 +491,16 @@ export class DashboardComponent implements OnInit {
     gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
 
 
-    var myChart = new Chart(this.ctx, {
-      type: 'bar',
+    this.myChartPotenciaFrio1 = new Chart(this.ctx, {
+      type: 'line',
       responsive: true,
       legend: {
         display: false
       },
       data: {
-        labels: ['USA', 'GER', 'AUS', 'UK', 'RO', 'BR'],
+        labels: this.time,
         datasets: [{
-          label: "Countries",
+          label: "Potencia",
           fill: true,
           backgroundColor: gradientStroke,
           hoverBackgroundColor: gradientStroke,
@@ -600,15 +508,357 @@ export class DashboardComponent implements OnInit {
           borderWidth: 2,
           borderDash: [],
           borderDashOffset: 0.0,
-          data: [53, 20, 10, 80, 100, 45],
+          data: this.potenciaFrio1,
         }]
       },
-      options: gradientBarChartConfiguration
+      options: {gradientChartOptionsConfigurationWithTooltipRed,
+        maintainAspectRatio: false,
+        scales:{yAxes:[{ticks:{suggestedMin:0,suggestedMax:20}}],xAxes: [{
+          ticks: {
+              display: false //this will remove only the label
+          }
+      }]},
+        legend:{display:false},
+      }
+    });
+
+
+
+
+    //Grafica COP frio 2
+    this.canvas = document.getElementById("chartCOPFrio2");
+    this.ctx = this.canvas.getContext("2d");
+
+
+    var gradientStroke = this.ctx.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke.addColorStop(1, 'rgba(66,134,121,0.15)');
+    gradientStroke.addColorStop(0.4, 'rgba(66,134,121,0.0)'); //green colors
+    gradientStroke.addColorStop(0, 'rgba(66,134,121,0)'); //green colors
+
+    var dataCOPFrio2 = {
+      labels: this.time,
+      datasets: [{
+        label: "Dato Leído",
+        fill: true,
+        backgroundColor: gradientStroke,
+        borderColor: '#d600c4',
+        borderWidth: 2,
+        borderDash: [],
+        borderDashOffset: 0.0,
+        pointBackgroundColor: '#d600c4',
+        pointBorderColor: 'rgba(255,255,255,0)',
+        pointHoverBackgroundColor: '#d600c4',
+        pointBorderWidth: 20,
+        pointHoverRadius: 4,
+        pointHoverBorderWidth: 15,
+        pointRadius: 4,
+        data: this.COPFrio2,
+      },{
+        label: "Dato predicho",
+        fill: true,
+        backgroundColor: gradientStroke,
+        borderColor: '#00d6b4',
+        borderWidth: 2,
+        borderDash: [],
+        borderDashOffset: 0.0,
+        pointBackgroundColor: '#00d6b4',
+        pointBorderColor: 'rgba(255,255,255,0)',
+        pointHoverBackgroundColor: '#00d6b4',
+        pointBorderWidth: 20,
+        pointHoverRadius: 4,
+        pointHoverBorderWidth: 15,
+        pointRadius: 4,
+        data: this.COPFrio2Pre,
+      }]
+    };
+
+    this.myChartCOPFrio2 = new Chart(this.ctx, {
+      type: 'line',
+      data: dataCOPFrio2,
+      options: {gradientChartOptionsConfigurationWithTooltipGreen,
+        maintainAspectRatio: false,
+        scales:{yAxes:[{ticks:{max:20,min:0}}],xAxes: [{
+          ticks: {
+              display: false //this will remove only the label
+          }
+      }]},
+        legend:{display:false},
+      }
+
+    });
+    //grafica Potencia Frio 2
+    this.canvas = document.getElementById("chartPotenciaFrio2");
+    this.ctx = this.canvas.getContext("2d");
+    var gradientStroke = this.ctx.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
+    gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
+    gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
+
+
+    this.myChartPotenciaFrio2 = new Chart(this.ctx, {
+      type: 'line',
+      responsive: true,
+      legend: {
+        display: false
+      },
+      data: {
+        labels: this.time,
+        datasets: [{
+          label: "Potencia",
+          fill: true,
+          backgroundColor: gradientStroke,
+          hoverBackgroundColor: gradientStroke,
+          borderColor: '#1f8ef1',
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
+          data: this.potenciaFrio2,
+        }]
+      },
+      options: {gradientChartOptionsConfigurationWithTooltipRed,
+        maintainAspectRatio: false,
+        scales:{yAxes:[{ticks:{suggestedMin:0,suggestedMax:20}}],xAxes: [{
+          ticks: {
+              display: false //this will remove only the label
+          }
+      }]},
+        legend:{display:false},
+      }
+    });
+
+    //Grafica COP Calor Carlos
+    this.canvas = document.getElementById("chartCOPCalorCarlos");
+    this.ctx = this.canvas.getContext("2d");
+
+
+    var gradientStroke = this.ctx.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke.addColorStop(1, 'rgba(66,134,121,0.15)');
+    gradientStroke.addColorStop(0.4, 'rgba(66,134,121,0.0)'); //green colors
+    gradientStroke.addColorStop(0, 'rgba(66,134,121,0)'); //green colors
+
+    var dataCOPCarlorCarlos = {
+      labels: this.time,
+      datasets: [{
+        label: "Dato Leído",
+        fill: true,
+        backgroundColor: gradientStroke,
+        borderColor: '#d600c4',
+        borderWidth: 2,
+        borderDash: [],
+        borderDashOffset: 0.0,
+        pointBackgroundColor: '#d600c4',
+        pointBorderColor: 'rgba(255,255,255,0)',
+        pointHoverBackgroundColor: '#d600c4',
+        pointBorderWidth: 20,
+        pointHoverRadius: 4,
+        pointHoverBorderWidth: 15,
+        pointRadius: 4,
+        data: this.COPCalorCarlos,
+      },{
+        label: "Dato predicho",
+        fill: true,
+        backgroundColor: gradientStroke,
+        borderColor: '#00d6b4',
+        borderWidth: 2,
+        borderDash: [],
+        borderDashOffset: 0.0,
+        pointBackgroundColor: '#00d6b4',
+        pointBorderColor: 'rgba(255,255,255,0)',
+        pointHoverBackgroundColor: '#00d6b4',
+        pointBorderWidth: 20,
+        pointHoverRadius: 4,
+        pointHoverBorderWidth: 15,
+        pointRadius: 4,
+        data: this.COPCalorCarlosPre,
+      }]
+    };
+
+    this.myChartCOPCalorCarlos = new Chart(this.ctx, {
+      type: 'line',
+      data: dataCOPCarlorCarlos,
+      options: {gradientChartOptionsConfigurationWithTooltipGreen,
+        maintainAspectRatio: false,
+        scales:{yAxes:[{ticks:{max:20,min:0}}],xAxes: [{
+          ticks: {
+              display: false //this will remove only the label
+          }
+      }]},
+        legend:{display:false},
+      }
+
+    });
+    
+    //grafica Potencia Calor Carlos
+    this.canvas = document.getElementById("chartPotenciaCalorCarlos");
+    this.ctx = this.canvas.getContext("2d");
+    var gradientStroke = this.ctx.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
+    gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
+    gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
+
+
+    this.myChartPotenciaCalorCarlos= new Chart(this.ctx, {
+      type: 'line',
+      responsive: true,
+      legend: {
+        display: false
+      },
+      data: {
+        labels: this.time,
+        datasets: [{
+          label: "Potencia",
+          fill: true,
+          backgroundColor: gradientStroke,
+          hoverBackgroundColor: gradientStroke,
+          borderColor: '#1f8ef1',
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
+          data: this.potenciaCalorCarlos,
+        }]
+      },
+      options: {gradientChartOptionsConfigurationWithTooltipRed,
+        maintainAspectRatio: false,
+        scales:{yAxes:[{ticks:{suggestedMin:0,suggestedMax:20}}],xAxes: [{
+          ticks: {
+              display: false //this will remove only the label
+          }
+      }]},
+        legend:{display:false},
+      }
+    });
+
+    //Grafica COP Calor Felipe
+    this.canvas = document.getElementById("chartCOPCalorFelipe");
+    this.ctx = this.canvas.getContext("2d");
+
+
+    var gradientStroke = this.ctx.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke.addColorStop(1, 'rgba(66,134,121,0.15)');
+    gradientStroke.addColorStop(0.4, 'rgba(66,134,121,0.0)'); //green colors
+    gradientStroke.addColorStop(0, 'rgba(66,134,121,0)'); //green colors
+
+    var dataCOPCarlorFelipe = {
+      labels: this.time,
+      datasets: [{
+        label: "Dato Leído",
+        fill: true,
+        backgroundColor: gradientStroke,
+        borderColor: '#d600c4',
+        borderWidth: 2,
+        borderDash: [],
+        borderDashOffset: 0.0,
+        pointBackgroundColor: '#d600c4',
+        pointBorderColor: 'rgba(255,255,255,0)',
+        pointHoverBackgroundColor: '#d600c4',
+        pointBorderWidth: 20,
+        pointHoverRadius: 4,
+        pointHoverBorderWidth: 15,
+        pointRadius: 4,
+        data: this.COPCalorFelipe,
+      },{
+        label: "Dato predicho",
+        fill: true,
+        backgroundColor: gradientStroke,
+        borderColor: '#00d6b4',
+        borderWidth: 2,
+        borderDash: [],
+        borderDashOffset: 0.0,
+        pointBackgroundColor: '#00d6b4',
+        pointBorderColor: 'rgba(255,255,255,0)',
+        pointHoverBackgroundColor: '#00d6b4',
+        pointBorderWidth: 20,
+        pointHoverRadius: 4,
+        pointHoverBorderWidth: 15,
+        pointRadius: 4,
+        data: this.COPCalorFelipePre,
+      }]
+    };
+
+    this.myChartCOPCalorFelipe = new Chart(this.ctx, {
+      type: 'line',
+      data: dataCOPCarlorFelipe,
+      options: {gradientChartOptionsConfigurationWithTooltipGreen,
+        maintainAspectRatio: false,
+        scales:{yAxes:[{ticks:{max:20,min:0}}],xAxes: [{
+          ticks: {
+              display: false //this will remove only the label
+          }
+      }]},
+        legend:{display:false},
+      }
+
+    });
+
+    //grafica Potencia Calor Felipe
+    this.canvas = document.getElementById("chartPotenciaCalorFelipe");
+    this.ctx = this.canvas.getContext("2d");
+    var gradientStroke = this.ctx.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
+    gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
+    gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
+
+
+    this.myChartPotenciaCalorFelipe= new Chart(this.ctx, {
+      type: 'line',
+      responsive: true,
+      legend: {
+        display: false
+      },
+      data: {
+        labels: this.time,
+        datasets: [{
+          label: "Potencia",
+          fill: true,
+          backgroundColor: gradientStroke,
+          hoverBackgroundColor: gradientStroke,
+          borderColor: '#1f8ef1',
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
+          data: this.potenciaCalorFelipe,
+        }]
+      },
+      options: {gradientChartOptionsConfigurationWithTooltipRed,
+        maintainAspectRatio: false,
+        scales:{yAxes:[{ticks:{suggestedMin:0,suggestedMax:20}}],xAxes: [{
+          ticks: {
+              display: false //this will remove only the label
+          }
+      }]},
+        legend:{display:false},
+      }
     });
 
   }
   public updateOptions() {
-    this.myChartData.data.datasets[0].data = this.data;
+    this.myChartData.data.datasets[0].data = this.tempExt;
     this.myChartData.update();
+    this.myChartPotenciaFrio1.data.datasets[0].data=this.potenciaFrio1
+    this.myChartPotenciaFrio1.update();
+    this.myChartCOPFrio1.data.datasets[0].data=this.COPFrio1;
+    this.myChartCOPFrio1.data.datasets[1].data=this.COPFrio1Pre;
+    this.myChartCOPFrio1.update();
+    this.myChartCOPFrio2.data.datasets[0].data=this.COPFrio2;
+    this.myChartCOPFrio2.data.datasets[1].data=this.COPFrio2Pre;
+    this.myChartCOPFrio2.update();
+    this.myChartPotenciaFrio2.data.datasets[0].data=this.potenciaFrio2
+    this.myChartPotenciaFrio2.update();
+    this.myChartCOPCalorCarlos.data.datasets[0].data=this.COPCalorCarlos;
+    this.myChartCOPCalorCarlos.data.datasets[1].data=this.COPCalorCarlosPre;
+    this.myChartCOPCalorCarlos.update();
+    this.myChartPotenciaCalorCarlos.data.datasets[0].data=this.potenciaCalorCarlos
+    this.myChartPotenciaCalorCarlos.update();
+    this.myChartCOPCalorFelipe.data.datasets[0].data=this.COPCalorFelipe;
+    this.myChartCOPCalorFelipe.data.datasets[1].data=this.COPCalorFelipePre;
+    this.myChartCOPCalorFelipe.update();
+    this.myChartPotenciaCalorFelipe.data.datasets[0].data=this.potenciaCalorFelipe
+    this.myChartPotenciaCalorFelipe.update();
   }
 }
