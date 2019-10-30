@@ -30,13 +30,13 @@ class KMeans_:
         maxTempExterior = 27
         for cluster in clusters:
             if not ((centroids[cluster][0] > minPotenciaFrio1) and (centroids[cluster][0] <= maxPotenciaFrio1)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA GRUPO FRÍO 1 que es ' + str(X[0][0])) 
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA GRUPO FRÍO 1.') 
             if not ((centroids[cluster][1] > minPotenciaTermicaFrio1) and (centroids[cluster][1] <= maxPotenciaTermicaFrio1)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TERMICA GRUPO FRIO 1 que es ' + str(X[0][1]))
+                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TERMICA GRUPO FRIO 1.')
             if not ((centroids[cluster][2] > minTempExterior) and (centroids[cluster][2] <= maxTempExterior)):
-                diagnosticos.append('La TEMPERATURA EXTERIOR con valor de:' + str(X[0][2]) + 'C esta generando una anomalia en el climatizador')
+                diagnosticos.append('La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'COP malo, pero no sabemos la razon'
+            diagnostico = 'COP malo por razón no definida.'
         else:
             for i in range(len(diagnosticos) - 1):
                 if (len(diagnosticos) == 1):
@@ -70,13 +70,13 @@ class KMeans_:
         maxTempExterior = 27.313549000000002
         for cluster in clusters:
             if not ((centroids[cluster][0] > minPotenciaFrio2) and (centroids[cluster][0] <= maxPotenciaFrio2)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA GRUPO FRÍO 2 que es ' + str(X[0][0])) 
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA GRUPO FRÍO 2.') 
             if not ((centroids[cluster][1] > minPotenciaTermicaFrio2) and (centroids[cluster][1] <= maxPotenciaTermicaFrio2)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TERMICA GRUPO FRIO 2 que es ' + str(X[0][1]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TERMICA GRUPO FRIO 2.')
             if not ((centroids[cluster][2] > minTempExterior) and (centroids[cluster][2] <= maxTempExterior)):
-                diagnosticos.append('La TEMPERATURA EXTERIOR con valor de:' + str(X[0][2]) + 'C esta generando una anomalia en el climatizador')
+                diagnosticos.append('La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'COP malo, pero no sabemos la razon'
+            diagnostico = 'COP malo por razón no definida.'
         else:
             for i in range(len(diagnosticos) - 1):
                 if (len(diagnosticos) == 1):
@@ -113,15 +113,15 @@ class KMeans_:
         maxTempSalidaCarlos = 43
         for cluster in clusters:
             if not ((centroids[cluster][0] > minPotenciaCarlos) and (centroids[cluster][0] <= maxPotenciaCarlos)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA BOMBA CALOR CARLOS que es ' + str(X[0][0])) 
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA BOMBA CALOR CARLOS.') 
             if not ((centroids[cluster][1] > minPotenciaTermicaCarlos) and (centroids[cluster][1] <= maxPotenciaTermicaCarlos)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TERMICA BOMBA CALOR CARLOS que es ' + str(X[0][1]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TERMICA BOMBA CALOR CARLOS.')
             if not ((centroids[cluster][2] > minTempExterior) and (centroids[cluster][2] <= maxTempExterior)):
-                diagnosticos.append('La TEMPERATURA EXTERIOR con valor de:' + str(X[0][2]) + 'C esta generando una anomalia en el climatizador')
+                diagnosticos.append('La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.')
             if not ((centroids[cluster][3] > minTempSalidaCarlos) and (centroids[cluster][3] <= maxTempSalidaCarlos)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la TEMPERATURA SALIDA BOMBA CALOR CARLOS que es ' + str(X[0][3]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la TEMPERATURA SALIDA BOMBA CALOR CARLOS.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'COP malo, pero no sabemos la razon'
+            diagnostico = 'COP malo por razón no definida.'
         else:
             for i in range(len(diagnosticos) - 1):
                 if (len(diagnosticos) == 1):
@@ -158,15 +158,15 @@ class KMeans_:
         maxTempSalidaFelipe = 42
         for cluster in clusters:
             if not ((centroids[cluster][0] > minPotenciaFelipe) and (centroids[cluster][0] <= maxPotenciaFelipe)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA BOMBA CALOR FELIPE que es ' + str(X[0][0])) 
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA BOMBA CALOR FELIPE.') 
             if not ((centroids[cluster][1] > minPotenciaTermicaFelipe) and (centroids[cluster][1] <= maxPotenciaTermicaFelipe)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TERMICA BOMBA CALOR FELIPE que es ' + str(X[0][1]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TERMICA BOMBA CALOR FELIPE.')
             if not ((centroids[cluster][2] > minTempExterior) and (centroids[cluster][2] <= maxTempExterior)):
-                diagnosticos.append('La TEMPERATURA EXTERIOR con valor de:' + str(X[0][2]) + 'C esta generando una anomalia en el climatizador')
+                diagnosticos.append('La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.')
             if not ((centroids[cluster][3] > minTempSalidaFelipe) and (centroids[cluster][3] <= maxTempSalidaFelipe)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la TEMPERATURA SALIDA BOMBA CALOR FELIPE que es ' + str(X[0][3]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la TEMPERATURA SALIDA BOMBA CALOR FELIPE.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'COP malo, pero no sabemos la razon'
+            diagnostico = 'COP malo por razón no definida.'
         else:
             for i in range(len(diagnosticos) - 1):
                 if (len(diagnosticos) == 1):
@@ -215,25 +215,25 @@ class KMeans_:
         maxTempExterior = 27
         for cluster in clusters:
             if not ((centroids[cluster][0] > minPotenciaTermicaFrio1) and (centroids[cluster][0] <= maxPotenciaTermicaFrio1)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TERMICA GRUPO FRIO 1 que es ' + str(X[0][0])) 
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TERMICA GRUPO FRIO 1.') 
             if not ((centroids[cluster][1] > minEntradaAgua1) and (centroids[cluster][1] <= maxEntradaAgua1)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la ENTRADA AGUA A TORRE 1 que es ' + str(X[0][1])) 
+                diagnosticos.append('Revisar la anomalia derivada al valor de la ENTRADA AGUA A TORRE 1.') 
             if not ((centroids[cluster][2] > minSalidaAgua1) and (centroids[cluster][2] <= maxSalidaAgua1)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la SALIDA AGUA TORRE 1 que es ' + str(X[0][2]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la SALIDA AGUA TORRE 1.')
             if not ((centroids[cluster][3] > minPotTrafo4) and (centroids[cluster][3] <= maxPotTrafo4)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TRAFO 4 que es ' + str(X[0][3]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TRAFO 4.')
             if not ((centroids[cluster][4] > minPotTrafo5) and (centroids[cluster][4] <= maxPotTrafo5)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TRAFO 5 que es ' + str(X[0][4]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TRAFO 5.')
             if not ((centroids[cluster][5] > minPotMediaConectada) and (centroids[cluster][5] <= maxPotMediaConectada)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA MEDIA CONECTADA que es ' + str(X[0][5]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA MEDIA CONECTADA.')
             if not ((centroids[cluster][6] > minControlFrio) and (centroids[cluster][6] <= maxControlFrio)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de el CONTROL FRÍO que es ' + str(X[0][6]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de el CONTROL FRÍO.')
             if not ((centroids[cluster][7] > minKigoFrigorias1) and (centroids[cluster][7] <= maxKigoFrigorias1)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de las KIGO FRIGORÍAS GENERADAS GRUPO DE FRÍO 1 que es ' + str(X[0][7]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de las KIGO FRIGORÍAS GENERADAS GRUPO DE FRÍO 1.')
             if not ((centroids[cluster][8] > minTempExterior) and (centroids[cluster][8] <= maxTempExterior)):
-                diagnosticos.append('La TEMPERATURA EXTERIOR con valor de:' + str(X[0][8]) + 'C esta generando una anomalia en el climatizador')
+                diagnosticos.append('La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'Potencia mala, pero no sabemos la razon'
+            diagnostico = 'Potencia mala por razón no definida.'
         elif (len(diagnosticos) == 1):
             diagnostico = diagnosticos[0]
         else:
@@ -280,25 +280,25 @@ class KMeans_:
         maxTempExterior = 27
         for cluster in clusters:
             if not ((centroids[cluster][0] > minPotenciaTermicaFrio2) and (centroids[cluster][0] <= maxPotenciaTermicaFrio2)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TERMICA GRUPO FRIO 2 que es ' + str(X[0][0])) 
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TERMICA GRUPO FRIO 2.') 
             if not ((centroids[cluster][1] > minEntradaAgua2) and (centroids[cluster][1] <= maxEntradaAgua2)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la ENTRADA AGUA A TORRE 2 que es ' + str(X[0][1])) 
+                diagnosticos.append('Revisar la anomalia derivada al valor de la ENTRADA AGUA A TORRE 2.') 
             if not ((centroids[cluster][2] > minSalidaAgua2) and (centroids[cluster][2] <= maxSalidaAgua2)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la SALIDA AGUA TORRE 2 que es ' + str(X[0][2]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la SALIDA AGUA TORRE 2.')
             if not ((centroids[cluster][3] > minPotTrafo4) and (centroids[cluster][3] <= maxPotTrafo4)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TRAFO 4 que es ' + str(X[0][3]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TRAFO 4.')
             if not ((centroids[cluster][4] > minPotTrafo5) and (centroids[cluster][4] <= maxPotTrafo5)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TRAFO 5 que es ' + str(X[0][4]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TRAFO 5.')
             if not ((centroids[cluster][5] > minPotMediaConectada) and (centroids[cluster][5] <= maxPotMediaConectada)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA MEDIA CONECTADA que es ' + str(X[0][5]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA MEDIA CONECTADA.')
             if not ((centroids[cluster][6] > minControlFrio) and (centroids[cluster][6] <= maxControlFrio)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de el CONTROL FRÍO que es ' + str(X[0][6]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de el CONTROL FRÍO.')
             if not ((centroids[cluster][7] > minKigoFrigorias2) and (centroids[cluster][7] <= maxKigoFrigorias2)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de las KIGO FRIGORÍAS GENERADAS GRUPO DE FRÍO 2 que es ' + str(X[0][7]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de las KIGO FRIGORÍAS GENERADAS GRUPO DE FRÍO 2.')
             if not ((centroids[cluster][8] > minTempExterior) and (centroids[cluster][8] <= maxTempExterior)):
-                diagnosticos.append('La TEMPERATURA EXTERIOR con valor de:' + str(X[0][8]) + 'C esta generando una anomalia en el climatizador')
+                diagnosticos.append('La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'Potencia mala, pero no sabemos la razon'
+            diagnostico = 'Potencia mala por razón no definida.'
         elif (len(diagnosticos) == 1):
             diagnostico = diagnosticos[0]
         else:
@@ -341,21 +341,21 @@ class KMeans_:
         maxTempAmbienteCarlos = 26.429133999999998
         for cluster in clusters:
             if not ((centroids[cluster][0] > minTempSalidaCarlos) and (centroids[cluster][0] <= maxTempSalidaCarlos)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la TEMPERATURA SALIDA BOMBA CALOR CARLOS que es ' + str(X[0][0]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la TEMPERATURA SALIDA BOMBA CALOR CARLOS.')
             if not ((centroids[cluster][1] > minPotenciaTermicaCarlos) and (centroids[cluster][1] <= maxPotenciaTermicaCarlos)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TERMICA BOMBA CALOR CARLOS que es ' + str(X[0][1]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TERMICA BOMBA CALOR CARLOS.')
             if not ((centroids[cluster][2] > minCOPCarlos) and (centroids[cluster][2] <= maxCOPCarlos)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de el C_O_P BOMBA CALOR CARLOS que es ' + str(X[0][2]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de el C_O_P BOMBA CALOR CARLOS.')
             if not ((centroids[cluster][3] > minPotTrafo4) and (centroids[cluster][3] <= maxPotTrafo4)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TRAFO 4 que es ' + str(X[0][3]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TRAFO 4.')
             if not ((centroids[cluster][4] > minPotTrafo5) and (centroids[cluster][4] <= maxPotTrafo5)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TRAFO 5 que es ' + str(X[0][4]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TRAFO 5.')
             if not ((centroids[cluster][5] > minTempExterior) and (centroids[cluster][5] <= maxTempExterior)):
-                diagnosticos.append('La TEMPERATURA EXTERIOR con valor de:' + str(X[0][5]) + 'C esta generando una anomalia en el climatizador')
+                diagnosticos.append('La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.')
             if not ((centroids[cluster][6] > minTempAmbienteCarlos) and (centroids[cluster][6] <= maxTempAmbienteCarlos)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la TEMPERATURA AMBIENTE BOMBA CALOR CARLOS que es ' + str(X[0][6]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la TEMPERATURA AMBIENTE BOMBA CALOR CARLOS.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'Potencia mala, pero no sabemos la razon'
+            diagnostico = 'Potencia mala por razón no definida.'
         elif (len(diagnosticos) == 1):
             diagnostico = diagnosticos[0]
         else:
@@ -398,21 +398,21 @@ class KMeans_:
         maxTempAmbienteFelipe = 27
         for cluster in clusters:
             if not ((centroids[cluster][0] > minTempSalidaFelipe) and (centroids[cluster][0] <= maxTempSalidaFelipe)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la TEMPERATURA SALIDA BOMBA CALOR FELIPE que es ' + str(X[0][0]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la TEMPERATURA SALIDA BOMBA CALOR FELIPE.')
             if not ((centroids[cluster][1] > minPotenciaTermicaFelipe) and (centroids[cluster][1] <= maxPotenciaTermicaFelipe)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TERMICA BOMBA CALOR FELIPE que es ' + str(X[0][1]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TERMICA BOMBA CALOR FELIPE.')
             if not ((centroids[cluster][2] > minCOPFelipe) and (centroids[cluster][2] <= maxCOPFelipe)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de el C_O_P BOMBA CALOR FELIPE que es ' + str(X[0][2]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de el C_O_P BOMBA CALOR FELIPE.')
             if not ((centroids[cluster][3] > minPotTrafo4) and (centroids[cluster][3] <= maxPotTrafo4)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TRAFO 4 que es ' + str(X[0][3]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TRAFO 4.')
             if not ((centroids[cluster][4] > minPotTrafo5) and (centroids[cluster][4] <= maxPotTrafo5)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la POTENCIA TRAFO 5 que es ' + str(X[0][4]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TRAFO 5.')
             if not ((centroids[cluster][5] > minTempExterior) and (centroids[cluster][5] <= maxTempExterior)):
-                diagnosticos.append('La TEMPERATURA EXTERIOR con valor de:' + str(X[0][5]) + 'C esta generando una anomalia en el climatizador')
+                diagnosticos.append('La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.')
             if not ((centroids[cluster][6] > minTempAmbienteFelipe) and (centroids[cluster][6] <= maxTempAmbienteFelipe)):
-                diagnosticos.append('Revisar la anomalia derivado al valor de la TEMPERATURA AMBIENTE BOMBA CALOR FELIPE que es ' + str(X[0][6]))
+                diagnosticos.append('Revisar la anomalia derivada al valor de la TEMPERATURA AMBIENTE BOMBA CALOR FELIPE.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'Potencia mala, pero no sabemos la razon'
+            diagnostico = 'Potencia mala por razón no definida.'
         elif (len(diagnosticos) == 1):
             diagnostico = diagnosticos[0]
         else:
