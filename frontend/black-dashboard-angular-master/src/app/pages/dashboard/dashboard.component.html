@@ -3,66 +3,72 @@
     <div class=" col-12">
       <div class=" card card-chart">
         <div class=" card-header">
-          <div class="row">
+             <h2>NOTIFICACIONES</h2>     
+        </div>
+        <div class=" card-body">
+        <div class="row">
             <div *ngFor="let error of errores"class="col-lg-3">
                 <app-alert [error]="error"></app-alert>
             </div>
-        </div>         
-        </div>
+        </div> 
+      </div>
       </div>
     </div>
   </div>
   <div class=" row">
       <div class=" col-12">
         <div class=" card card-chart">
+            <div class=" card-header">
+                <h2>ESTADO ACTUAL</h2>     
+           </div>
             <div class=" card-body">
                 <div class="row">
                     <div class="col-lg-3">
                         <ngb-alert [type]="'info'" [dismissible]="false">
-                            <h3>{{this.labels2[0]}}</h3>
-                            <h4> {{this.datosTiempoReal[0]}} </h4>
+                            <h4>{{this.labels2[0]}}</h4>
+                            <h3> {{this.datosTiempoReal[0]}} </h3>
                         </ngb-alert>
                     </div>
                     <div class="col-lg-3">
                         <ngb-alert [type]="'info'" [dismissible]="false">
-                            <h3>{{this.labels2[1]}}</h3>
-                            <h4> {{this.datosTiempoReal[1]}} </h4>
+                            <h4>{{this.labels2[1]}}</h4>
+                            <h3> {{this.datosTiempoReal[1]}} </h3>
                         </ngb-alert>
                     </div>
                     <div class="col-lg-3">
                         <ngb-alert [type]="'info'" [dismissible]="false">
-                            <h3>{{this.labels2[2]}}</h3>
-                            <h4> {{this.datosTiempoReal[2]}} </h4>
+                            <h4>{{this.labels2[2]}}</h4>
+                            <h3> {{this.datosTiempoReal[2]}} </h3>
                         </ngb-alert>
                     </div>
                     <div class="col-lg-3">
                         <ngb-alert [type]="'info'" [dismissible]="false">
-                            <h3>{{this.labels2[3]}}</h3>
-                            <h4> {{this.datosTiempoReal[3]}} </h4>
+                            <h4>{{this.labels2[3]}}</h4>
+                            <h3> {{this.datosTiempoReal[3]}} </h3>
                         </ngb-alert>
                     </div>
                     <div class="col-lg-3">
                         <ngb-alert [type]="'info'" [dismissible]="false">
-                            <h3>{{this.labels2[4]}}</h3>
-                            <h4> {{this.datosTiempoReal[4]}} </h4>
+                            <h4>{{this.labels2[4]}}</h4>
+                            <h3> {{this.datosTiempoReal[4]}} </h3>
                         </ngb-alert>
                     </div>
                     <div class="col-lg-3">
                         <ngb-alert [type]="'info'" [dismissible]="false">
-                            <h3>{{this.labels2[5]}}</h3>
-                            <h4> {{this.datosTiempoReal[5]}} </h4>
+                            <h4>{{this.labels2[5]}}</h4>
+                            <h3> {{this.datosTiempoReal[5]}} </h3>
                         </ngb-alert>
                     </div>
                     <div class="col-lg-3">
                         <ngb-alert [type]="'info'" [dismissible]="false">
-                            <h3>{{this.labels2[6]}}</h3>
-                            <h4> {{this.datosTiempoReal[6]}} </h4>
+                            <h4>{{this.labels2[6]}}</h4>
+                            <h3> {{this.datosTiempoReal[6]}} </h3>
                         </ngb-alert>
                     </div>
                     <div class="col-lg-3">
                         <ngb-alert [type]="'info'" [dismissible]="false">
-                            <h3>{{this.labels2[7]}}</h3>
-                            <h4> {{this.datosTiempoReal[7]}} </h4>
+                            <h4>{{this.labels2[7]}}</h4>
+                            <h3> {{this.datosTiempoReal[7]}} </h3>
                         </ngb-alert>
                     </div>
                 </div>

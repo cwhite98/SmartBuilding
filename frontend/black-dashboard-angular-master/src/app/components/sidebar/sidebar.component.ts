@@ -15,17 +15,11 @@ export const ROUTES: RouteInfo[] = [
     icon: "icon-chart-pie-36",
     class: ""
   },
-  {
-    path: "/notifications",
-    title: "Variables",
-    rtlTitle: "إخطارات",
-    icon: "icon-bell-55",
-    class: ""
-  },
+
 
   {
     path: "/user",
-    title: "User Profile",
+    title: "variables",
     rtlTitle: "ملف تعريفي للمستخدم",
     icon: "icon-single-02",
     class: ""
