@@ -25,6 +25,10 @@ export class DashboardComponent implements OnInit {
   public potenciaCalorCarlos = [];
   public potenciaCalorFelipe = [];
   public datosTiempoReal = [];
+  public potenciaFrio1Real = [];
+  public potenciaFrio2Real = [];
+  public potenciaCalorCarlosReal = [];
+  public potenciaCalorFelipeReal = [];
   public labels2 = ["COP FRIO 1", "COP FRIO 2", "COP CALOR CARLOS", "COP CALOR FELIPE", "POTENCIA FRIO 1", "POTENCIA FRIO 2", "POTENCIA CALOR CARLOS", "POTENCIA CALOR FELIPE"]
   public canvas: any;
   public ctx;
@@ -114,16 +118,24 @@ export class DashboardComponent implements OnInit {
     this.COPCalorFelipePre.push(this.predFelipe_cop[this.registros]["C_O_P BOMBA CALOR FELIPE PREDICHO"])
     this.myChartCOPCalorFelipe.update()
     this.potenciaFrio1.push(this.predFrio1_potencia[this.registros]["POTENCIA GRUPO FRÍO 1 PREDICHA"])
+    this.potenciaFrio1Real.push(this.predFrio1_cop[this.registros]["POTENCIA GRUPO FRÍO 1"])
     this.myChartPotenciaFrio1.data.datasets[0].data = this.potenciaFrio1
+    this.myChartPotenciaFrio1.data.datasets[1].data = this.potenciaFrio1Real
     this.myChartPotenciaFrio1.update();
     this.potenciaFrio2.push(this.predFrio2_potencia[this.registros]["POTENCIA GRUPO FRÍO 2 PREDICHA"])
+    this.potenciaFrio2Real.push(this.predFrio2_cop[this.registros]["POTENCIA GRUPO FRÍO 2"])
     this.myChartPotenciaFrio2.data.datasets[0].data = this.potenciaFrio2
+    this.myChartPotenciaFrio2.data.datasets[1].data = this.potenciaFrio2Real
     this.myChartPotenciaFrio2.update();
     this.potenciaCalorCarlos.push(this.predCarlos_potencia[this.registros]["POTENCIA BOMBA CALOR CARLOS PREDICHA"])
+    this.potenciaCalorCarlosReal.push(this.predCarlos_cop[this.registros]["POTENCIA BOMBA CALOR CARLOS"])
     this.myChartPotenciaCalorCarlos.data.datasets[0].data = this.potenciaCalorCarlos
+    this.myChartPotenciaCalorCarlos.data.datasets[1].data = this.potenciaCalorCarlosReal
     this.myChartPotenciaCalorCarlos.update();
     this.potenciaCalorFelipe.push(this.predFelipe_potencia[this.registros]["POTENCIA BOMBA CALOR FELIPE PREDICHA"])
+    this.potenciaCalorFelipeReal.push(this.predFelipe_cop[this.registros]["POTENCIA BOMBA CALOR FELIPE"])
     this.myChartPotenciaCalorFelipe.data.datasets[0].data = this.potenciaCalorFelipe
+    this.myChartPotenciaCalorFelipe.data.datasets[1].data = this.potenciaCalorFelipeReal
     this.myChartPotenciaCalorFelipe.update();
     //Temperatura externa
     this.myChartData.data.datasets[0].data = this.tempExt;
@@ -134,6 +146,7 @@ export class DashboardComponent implements OnInit {
     this.datosTiempoReal.push(this.predFrio1_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 2"])
     this.datosTiempoReal.push(this.predFrio1_cop[this.registros]["C_O_P BOMBA CALOR CARLOS"])
     this.datosTiempoReal.push(this.predFrio1_cop[this.registros]["C_O_P BOMBA CALOR FELIPE"])
+
     this.datosTiempoReal.push(this.predFrio1_potencia[this.registros]["POTENCIA GRUPO FRÍO 1 PREDICHA"])
     this.datosTiempoReal.push(this.predFrio2_potencia[this.registros]["POTENCIA GRUPO FRÍO 2 PREDICHA"])
     this.datosTiempoReal.push(this.predCarlos_potencia[this.registros]["POTENCIA BOMBA CALOR CARLOS PREDICHA"])
@@ -524,13 +537,13 @@ export class DashboardComponent implements OnInit {
         label: "Dato leído",
         fill: true,
         backgroundColor: gradientStroke,
-        borderColor: '#ec250d',
+        borderColor: '#d600c4',
         borderWidth: 2,
         borderDash: [],
         borderDashOffset: 0.0,
-        pointBackgroundColor: '#ec250d',
+        pointBackgroundColor: '#d600c4',
         pointBorderColor: 'rgba(255,255,255,0)',
-        pointHoverBackgroundColor: '#ec250d',
+        pointHoverBackgroundColor: '#d600c4',
         pointBorderWidth: 20,
         pointHoverRadius: 4,
         pointHoverBorderWidth: 15,
@@ -540,13 +553,13 @@ export class DashboardComponent implements OnInit {
         label: "Dato predicho",
         fill: true,
         backgroundColor: gradientStroke,
-        borderColor: '#6aec0d',
+        borderColor: '#00d6b4',
         borderWidth: 2,
         borderDash: [],
         borderDashOffset: 0.0,
-        pointBackgroundColor: '#6aec0d',
+        pointBackgroundColor: '#00d6b4',
         pointBorderColor: 'rgba(255,255,255,0)',
-        pointHoverBackgroundColor: '#ec250d',
+        pointHoverBackgroundColor: '#00d6b4',
         pointBorderWidth: 20,
         pointHoverRadius: 4,
         pointHoverBorderWidth: 15,
@@ -591,7 +604,7 @@ export class DashboardComponent implements OnInit {
       data: {
         labels: this.time,
         datasets: [{
-          label: "Potencia",
+          label: "Potencia Predicha",
           fill: true,
           backgroundColor: gradientStroke,
           hoverBackgroundColor: gradientStroke,
@@ -600,6 +613,16 @@ export class DashboardComponent implements OnInit {
           borderDash: [],
           borderDashOffset: 0.0,
           data: this.potenciaFrio1,
+        },{
+          label: "Potencia Real",
+          fill: true,
+          backgroundColor: gradientStroke,
+          hoverBackgroundColor: gradientStroke,
+          borderColor: '#dfe364',
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
+          data: this.potenciaFrio1Real,
         }]
       },
       options: {
@@ -703,7 +726,7 @@ export class DashboardComponent implements OnInit {
       data: {
         labels: this.time,
         datasets: [{
-          label: "Potencia",
+          label: "Potencia Predicha",
           fill: true,
           backgroundColor: gradientStroke,
           hoverBackgroundColor: gradientStroke,
@@ -712,7 +735,16 @@ export class DashboardComponent implements OnInit {
           borderDash: [],
           borderDashOffset: 0.0,
           data: this.potenciaFrio2,
-        }]
+        },{label: "Potencia Real",
+        fill: true,
+        backgroundColor: gradientStroke,
+        hoverBackgroundColor: gradientStroke,
+        borderColor: '#dfe364',
+        borderWidth: 2,
+        borderDash: [],
+        borderDashOffset: 0.0,
+        data: this.potenciaFrio2Real,
+      }]
       },
       options: {
         gradientChartOptionsConfigurationWithTooltipRed,
@@ -813,7 +845,7 @@ export class DashboardComponent implements OnInit {
       data: {
         labels: this.time,
         datasets: [{
-          label: "Potencia",
+          label: "Potencia Predicha",
           fill: true,
           backgroundColor: gradientStroke,
           hoverBackgroundColor: gradientStroke,
@@ -822,6 +854,16 @@ export class DashboardComponent implements OnInit {
           borderDash: [],
           borderDashOffset: 0.0,
           data: this.potenciaCalorCarlos,
+        },{
+          label: "Potencia Real",
+          fill: true,
+          backgroundColor: gradientStroke,
+          hoverBackgroundColor: gradientStroke,
+          borderColor: '#dfe364',
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
+          data: this.potenciaCalorCarlosReal,
         }]
       },
       options: {
@@ -923,7 +965,7 @@ export class DashboardComponent implements OnInit {
       data: {
         labels: this.time,
         datasets: [{
-          label: "Potencia",
+          label: "Potencia Predicha",
           fill: true,
           backgroundColor: gradientStroke,
           hoverBackgroundColor: gradientStroke,
@@ -932,6 +974,16 @@ export class DashboardComponent implements OnInit {
           borderDash: [],
           borderDashOffset: 0.0,
           data: this.potenciaCalorFelipe,
+        },{
+          label: "Potencia Real",
+          fill: true,
+          backgroundColor: gradientStroke,
+          hoverBackgroundColor: gradientStroke,
+          borderColor: '#dfe364',
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
+          data: this.potenciaCalorFelipeReal,
         }]
       },
       options: {
