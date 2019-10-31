@@ -9,23 +9,23 @@ import Chart from 'chart.js';
 })
 export class DashboardComponent implements OnInit {
   //arreglos para mostrar datos
-  public errores=[];
-  public tempExt=[];
-  public time=[];
-  public COPFrio1=[];
-  public COPFrio1Pre=[];
-  public COPFrio2=[];
-  public COPFrio2Pre=[];
-  public COPCalorCarlos=[];
-  public COPCalorCarlosPre=[];
-  public COPCalorFelipe=[];
-  public COPCalorFelipePre=[];
-  public potenciaFrio1=[];
-  public potenciaFrio2=[];
-  public potenciaCalorCarlos=[];
-  public potenciaCalorFelipe=[];
-  public datosTiempoReal=[];
-  public labels2=["COP FRIO 1","COP FRIO 2","COP CALOR CARLOS","COP CALOR FELIPE","POTENCIA FRIO 1","POTENCIA FRIO 2","POTENCIA CALOR CARLOS","POTENCIA CALOR FELIPE"]
+  public errores = [];
+  public tempExt = [];
+  public time = [];
+  public COPFrio1 = [];
+  public COPFrio1Pre = [];
+  public COPFrio2 = [];
+  public COPFrio2Pre = [];
+  public COPCalorCarlos = [];
+  public COPCalorCarlosPre = [];
+  public COPCalorFelipe = [];
+  public COPCalorFelipePre = [];
+  public potenciaFrio1 = [];
+  public potenciaFrio2 = [];
+  public potenciaCalorCarlos = [];
+  public potenciaCalorFelipe = [];
+  public datosTiempoReal = [];
+  public labels2 = ["COP FRIO 1", "COP FRIO 2", "COP CALOR CARLOS", "COP CALOR FELIPE", "POTENCIA FRIO 1", "POTENCIA FRIO 2", "POTENCIA CALOR CARLOS", "POTENCIA CALOR FELIPE"]
   public canvas: any;
   public ctx;
   //donde se guardan los datos traidos del http
@@ -61,19 +61,19 @@ export class DashboardComponent implements OnInit {
   }
   public recibirRegistros() {
     if (this.registros == -1) {
-      this.errores=[];
+      this.errores = [];
       this.predict_frio_1();
       this.predict_frio_2();
       this.predict_carlos();
       this.predict_felipe();
       this.registros++;
-    } else if(this.registros > 9){
+    } else if (this.registros > 9) {
       this.registros = -1;
     } else {
-      if(this.contador<10){
+      if (this.contador < 10) {
         this.actualizar()
       }
-      else{
+      else {
         this.tempExt.shift()
         this.COPFrio1.shift()
         this.COPFrio1Pre.shift()
@@ -94,50 +94,50 @@ export class DashboardComponent implements OnInit {
       this.contador++;
     }
   }
-  public actualizar(){
-        this.tempExt.push(this.predFrio1_cop[this.registros]["TEMPERATURA EXTERIOR"]) 
-        this.COPFrio1.push(this.predFrio1_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 1"])
-        this.COPFrio1Pre.push(this.predFrio1_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 1 PREDICHO"])
-        this.time.push(this.predFrio1_cop[this.registros]["Fecha- hora de lectura"])
-        this.myChartCOPFrio1.data.datasets[0].data=this.COPFrio1;
-        this.myChartCOPFrio1.data.datasets[1].data=this.COPFrio1Pre;
-        this.myChartCOPFrio1.update()
-        this.COPFrio2.push(this.predFrio2_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 2"])
-        this.COPFrio2Pre.push(this.predFrio2_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 2 PREDICHO"])
-        this.myChartCOPFrio2.data.datasets[0].data=this.COPFrio2;
-        this.myChartCOPFrio2.data.datasets[1].data=this.COPFrio2Pre;
-        this.myChartCOPFrio2.update()
-        this.COPCalorCarlos.push(this.predCarlos_cop[this.registros]["C_O_P BOMBA CALOR CARLOS"])
-        this.COPCalorCarlosPre.push(this.predCarlos_cop[this.registros]["C_O_P BOMBA CALOR CARLOS PREDICHO"])
-        this.myChartCOPCalorCarlos.update()
-        this.COPCalorFelipe.push(this.predFelipe_cop[this.registros]["C_O_P BOMBA CALOR FELIPE"])
-        this.COPCalorFelipePre.push(this.predFelipe_cop[this.registros]["C_O_P BOMBA CALOR FELIPE PREDICHO"])
-        this.myChartCOPCalorFelipe.update()
-        this.potenciaFrio1.push(this.predFrio1_potencia[this.registros]["POTENCIA GRUPO FRÍO 1 PREDICHA"])
-        this.myChartPotenciaFrio1.data.datasets[0].data=this.potenciaFrio1
-        this.myChartPotenciaFrio1.update();
-        this.potenciaFrio2.push(this.predFrio2_potencia[this.registros]["POTENCIA GRUPO FRÍO 2 PREDICHA"])
-        this.myChartPotenciaFrio2.data.datasets[0].data=this.potenciaFrio2
-        this.myChartPotenciaFrio2.update();
-        this.potenciaCalorCarlos.push(this.predCarlos_potencia[this.registros]["POTENCIA BOMBA CALOR CARLOS PREDICHA"])
-        this.myChartPotenciaCalorCarlos.data.datasets[0].data=this.potenciaCalorCarlos
-        this.myChartPotenciaCalorCarlos.update();
-        this.potenciaCalorFelipe.push(this.predFelipe_potencia[this.registros]["POTENCIA BOMBA CALOR FELIPE PREDICHA"])
-        this.myChartPotenciaCalorFelipe.data.datasets[0].data=this.potenciaCalorFelipe
-        this.myChartPotenciaCalorFelipe.update();
-        //Temperatura externa
-        this.myChartData.data.datasets[0].data = this.tempExt;
-        this.myChartData.update();
-        //datos tiempo real
-        this.datosTiempoReal=[]
-        this.datosTiempoReal.push(this.predFrio1_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 1"])
-        this.datosTiempoReal.push(this.predFrio1_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 2"])
-        this.datosTiempoReal.push(this.predFrio1_cop[this.registros]["C_O_P BOMBA CALOR CARLOS"])
-        this.datosTiempoReal.push(this.predFrio1_cop[this.registros]["C_O_P BOMBA CALOR FELIPE"])
-        this.datosTiempoReal.push(this.predFrio1_potencia[this.registros]["POTENCIA GRUPO FRÍO 1 PREDICHA"])
-        this.datosTiempoReal.push(this.predFrio2_potencia[this.registros]["POTENCIA GRUPO FRÍO 2 PREDICHA"])
-        this.datosTiempoReal.push(this.predCarlos_potencia[this.registros]["POTENCIA BOMBA CALOR CARLOS PREDICHA"])
-        this.datosTiempoReal.push(this.predFelipe_potencia[this.registros]["POTENCIA BOMBA CALOR FELIPE PREDICHA"])
+  public actualizar() {
+    this.tempExt.push(this.predFrio1_cop[this.registros]["TEMPERATURA EXTERIOR"])
+    this.COPFrio1.push(this.predFrio1_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 1"])
+    this.COPFrio1Pre.push(this.predFrio1_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 1 PREDICHO"])
+    this.time.push(this.predFrio1_cop[this.registros]["Fecha- hora de lectura"])
+    this.myChartCOPFrio1.data.datasets[0].data = this.COPFrio1;
+    this.myChartCOPFrio1.data.datasets[1].data = this.COPFrio1Pre;
+    this.myChartCOPFrio1.update()
+    this.COPFrio2.push(this.predFrio2_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 2"])
+    this.COPFrio2Pre.push(this.predFrio2_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 2 PREDICHO"])
+    this.myChartCOPFrio2.data.datasets[0].data = this.COPFrio2;
+    this.myChartCOPFrio2.data.datasets[1].data = this.COPFrio2Pre;
+    this.myChartCOPFrio2.update()
+    this.COPCalorCarlos.push(this.predCarlos_cop[this.registros]["C_O_P BOMBA CALOR CARLOS"])
+    this.COPCalorCarlosPre.push(this.predCarlos_cop[this.registros]["C_O_P BOMBA CALOR CARLOS PREDICHO"])
+    this.myChartCOPCalorCarlos.update()
+    this.COPCalorFelipe.push(this.predFelipe_cop[this.registros]["C_O_P BOMBA CALOR FELIPE"])
+    this.COPCalorFelipePre.push(this.predFelipe_cop[this.registros]["C_O_P BOMBA CALOR FELIPE PREDICHO"])
+    this.myChartCOPCalorFelipe.update()
+    this.potenciaFrio1.push(this.predFrio1_potencia[this.registros]["POTENCIA GRUPO FRÍO 1 PREDICHA"])
+    this.myChartPotenciaFrio1.data.datasets[0].data = this.potenciaFrio1
+    this.myChartPotenciaFrio1.update();
+    this.potenciaFrio2.push(this.predFrio2_potencia[this.registros]["POTENCIA GRUPO FRÍO 2 PREDICHA"])
+    this.myChartPotenciaFrio2.data.datasets[0].data = this.potenciaFrio2
+    this.myChartPotenciaFrio2.update();
+    this.potenciaCalorCarlos.push(this.predCarlos_potencia[this.registros]["POTENCIA BOMBA CALOR CARLOS PREDICHA"])
+    this.myChartPotenciaCalorCarlos.data.datasets[0].data = this.potenciaCalorCarlos
+    this.myChartPotenciaCalorCarlos.update();
+    this.potenciaCalorFelipe.push(this.predFelipe_potencia[this.registros]["POTENCIA BOMBA CALOR FELIPE PREDICHA"])
+    this.myChartPotenciaCalorFelipe.data.datasets[0].data = this.potenciaCalorFelipe
+    this.myChartPotenciaCalorFelipe.update();
+    //Temperatura externa
+    this.myChartData.data.datasets[0].data = this.tempExt;
+    this.myChartData.update();
+    //datos tiempo real
+    this.datosTiempoReal = []
+    this.datosTiempoReal.push(this.predFrio1_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 1"])
+    this.datosTiempoReal.push(this.predFrio1_cop[this.registros]["C_O_P MÁQUINA GRUPO FRÍO 2"])
+    this.datosTiempoReal.push(this.predFrio1_cop[this.registros]["C_O_P BOMBA CALOR CARLOS"])
+    this.datosTiempoReal.push(this.predFrio1_cop[this.registros]["C_O_P BOMBA CALOR FELIPE"])
+    this.datosTiempoReal.push(this.predFrio1_potencia[this.registros]["POTENCIA GRUPO FRÍO 1 PREDICHA"])
+    this.datosTiempoReal.push(this.predFrio2_potencia[this.registros]["POTENCIA GRUPO FRÍO 2 PREDICHA"])
+    this.datosTiempoReal.push(this.predCarlos_potencia[this.registros]["POTENCIA BOMBA CALOR CARLOS PREDICHA"])
+    this.datosTiempoReal.push(this.predFelipe_potencia[this.registros]["POTENCIA BOMBA CALOR FELIPE PREDICHA"])
   }
   //------------------------------------------------------------------------------------------------------
   //------------------------------------------------------------------------------------------------------
@@ -152,19 +152,18 @@ export class DashboardComponent implements OnInit {
     this.http.get('http://127.0.0.1:8081/api/predict_frio_1_cop').subscribe(
       res => {
         this.predFrio1_cop = this.json2array(res)
-        for(var i=0;i<10;i++){
-          if(this.errores.includes(this.predFrio1_cop[i]["Diagnostico"])||(this.predFrio1_cop[i]["Diagnostico"]==" ")){
-            
-          }
-          else{
-            /*if(this.predFrio1_cop[i]["Diagnostico"].includes("|")){
+        for (var i = 0; i < 10; i++) {
+          if (!this.errores.includes(this.predFrio1_cop[i]["Diagnostico"]) && (this.predFrio1_cop[i]["Diagnostico"] != " ")) {
+            if (this.predFrio1_cop[i]["Diagnostico"].includes("|")) {
               var diagnosticos = this.predFrio1_cop[i]["Diagnostico"].split("|")
-              for(var i = 0; i < diagnosticos.length; i++){
-                this.errores.push(diagnosticos[i])
+              for (var j = 0; j < diagnosticos.length; j++) {
+                if (!this.errores.includes(diagnosticos[j])) {
+                  this.errores.push(diagnosticos[j])
+                }
               }
-            }else{*/
+            } else {
               this.errores.push(this.predFrio1_cop[i]["Diagnostico"])
-            //}
+            }
           }
         }
       },
@@ -175,21 +174,20 @@ export class DashboardComponent implements OnInit {
 
     this.http.get('http://127.0.0.1:8081/api/predict_frio_1_potencia').subscribe(
       res => {
-        this.predFrio1_potencia= this.json2array(res)
-        for(var i=0;i<10;i++){
-          if(this.errores.includes(this.predFrio1_potencia[i]["Diagnostico"])||(this.predFrio1_potencia[i]["Diagnostico"]==" ")){
-            
-          }
-          else{
-           /* if(this.predFrio1_potencia[i]["Diagnostico"].includes("|")){
+        this.predFrio1_potencia = this.json2array(res)
+        for (var i = 0; i < 10; i++) {
+          if (!this.errores.includes(this.predFrio1_potencia[i]["Diagnostico"]) && (this.predFrio1_potencia[i]["Diagnostico"] != " ")) {
+            if (this.predFrio1_potencia[i]["Diagnostico"].includes("|")) {
               var diagnosticos = this.predFrio1_potencia[i]["Diagnostico"].split("|")
-              for(var i = 0; i < diagnosticos.length; i++){
-                this.errores.push(diagnosticos[i])
+              for (var j = 0; j < diagnosticos.length; j++) {
+                if (!this.errores.includes(diagnosticos[j])) {
+                  this.errores.push(diagnosticos[j])
+                }
               }
-            }else{*/
+            } else {
               this.errores.push(this.predFrio1_potencia[i]["Diagnostico"])
-            //}
-          }         
+            }
+          }
         }
       },
       err => {
@@ -202,24 +200,21 @@ export class DashboardComponent implements OnInit {
     this.http.get('http://127.0.0.1:8081/api/predict_frio_2_cop').subscribe(
       res => {
         this.predFrio2_cop = this.json2array(res)
-        for(var i=0;i<10;i++){
-          if(this.errores.includes(this.predFrio2_cop[i]["Diagnostico"])||(this.predFrio2_cop[i]["Diagnostico"]==" ")){
-            
-          }
-          else{
-            if(this.predFrio2_cop[i]["Diagnostico"].includes("|")){
+        for (var i = 0; i < 10; i++) {
+          if (!this.errores.includes(this.predFrio2_cop[i]["Diagnostico"]) && (this.predFrio2_cop[i]["Diagnostico"] != " ")) {
+            if (this.predFrio2_cop[i]["Diagnostico"].includes("|")) {
               var diagnosticos = this.predFrio2_cop[i]["Diagnostico"].split("|")
-              console.log(diagnosticos.length)
-              /*for(var i = 0; i < diagnosticos.length; i++){
-                //this.errores.push(diagnosticos[i])
-                console.log(diagnosticos[i])
+              for (var j = 0; j < diagnosticos.length; j++) {
+                if (!this.errores.includes(diagnosticos[j])) {
+                  this.errores.push(diagnosticos[j])
+                }
               }
-            }else{*/
+            } else {
               this.errores.push(this.predFrio2_cop[i]["Diagnostico"])
-            //}}
-          }    
+            }
+          }
         }
-      }},
+      },
       err => {
         console.log(err);
       }
@@ -228,19 +223,16 @@ export class DashboardComponent implements OnInit {
     this.http.get('http://127.0.0.1:8081/api/predict_frio_2_potencia').subscribe(
       res => {
         this.predFrio2_potencia = this.json2array(res)
-        for(var i=0;i<10;i++){
-          if(this.errores.includes(this.predFrio2_potencia[i]["Diagnostico"])||(this.predFrio2_potencia[i]["Diagnostico"]==" ")){
-           
-          }
-          else{
-            if(this.predFrio2_potencia[i]["Diagnostico"].includes("|")){
+        for (var i = 0; i < 10; i++) {
+          if (!this.errores.includes(this.predFrio2_potencia[i]["Diagnostico"]) && (this.predFrio2_potencia[i]["Diagnostico"] != " ")) {
+            if (this.predFrio2_potencia[i]["Diagnostico"].includes("|")) {
               var diagnosticos = this.predFrio2_potencia[i]["Diagnostico"].split("|")
-              //console.log(diagnosticos.length)
-              /*for(var i = 0; i < diagnosticos.length; i++){
-                this.errores.push(diagnosticos[i])
-                console.log(diagnosticos[i])
-              }*/
-            }else{
+              for (var j = 0; j < diagnosticos.length; j++) {
+                if (!this.errores.includes(diagnosticos[j])) {
+                  this.errores.push(diagnosticos[j])
+                }
+              }
+            } else {
               this.errores.push(this.predFrio2_potencia[i]["Diagnostico"])
             }
           }
@@ -256,12 +248,18 @@ export class DashboardComponent implements OnInit {
     this.http.get('http://127.0.0.1:8081/api/predict_carlos_cop').subscribe(
       res => {
         this.predCarlos_cop = this.json2array(res)
-        for(var i=0;i<10;i++){
-          if(this.errores.includes(this.predCarlos_cop[i]["Diagnostico"])||(this.predCarlos_cop[i]["Diagnostico"]==" ")){
-            
-          }
-          else{
-            this.errores.push(this.predCarlos_cop[i]["Diagnostico"])
+        for (var i = 0; i < 10; i++) {
+          if (!this.errores.includes(this.predCarlos_cop[i]["Diagnostico"]) && (this.predCarlos_cop[i]["Diagnostico"] != " ")) {
+            if (this.predCarlos_cop[i]["Diagnostico"].includes("|")) {
+              var diagnosticos = this.predCarlos_cop[i]["Diagnostico"].split("|")
+              for (var j = 0; j < diagnosticos.length; j++) {
+                if (!this.errores.includes(diagnosticos[j])) {
+                  this.errores.push(diagnosticos[j])
+                }
+              }
+            } else {
+              this.errores.push(this.predCarlos_cop[i]["Diagnostico"])
+            }
           }
         }
       },
@@ -273,12 +271,18 @@ export class DashboardComponent implements OnInit {
     this.http.get('http://127.0.0.1:8081/api/predict_carlos_potencia').subscribe(
       res => {
         this.predCarlos_potencia = this.json2array(res)
-        for(var i=0;i<10;i++){
-          if(this.errores.includes(this.predCarlos_potencia[i]["Diagnostico"])||(this.predCarlos_potencia[i]["Diagnostico"]==" ")){
-            
-          }
-          else{
-            this.errores.push(this.predCarlos_potencia[i]["Diagnostico"])
+        for (var i = 0; i < 10; i++) {
+          if (!this.errores.includes(this.predCarlos_potencia[i]["Diagnostico"]) && (this.predCarlos_potencia[i]["Diagnostico"] != " ")) {
+            if (this.predCarlos_potencia[i]["Diagnostico"].includes("|")) {
+              var diagnosticos = this.predCarlos_potencia[i]["Diagnostico"].split("|")
+              for (var j = 0; j < diagnosticos.length; j++) {
+                if (!this.errores.includes(diagnosticos[j])) {
+                  this.errores.push(diagnosticos[j])
+                }
+              }
+            } else {
+              this.errores.push(this.predCarlos_potencia[i]["Diagnostico"])
+            }
           }
         }
       },
@@ -292,12 +296,18 @@ export class DashboardComponent implements OnInit {
     this.http.get('http://127.0.0.1:8081/api/predict_felipe_cop').subscribe(
       res => {
         this.predFelipe_cop = this.json2array(res)
-        for(var i=0;i<10;i++){
-          if(this.errores.includes(this.predFelipe_cop[i]["Diagnostico"])||(this.predFelipe_cop[i]["Diagnostico"]==" ")){
-    
-          }
-          else{
-            this.errores.push(this.predFelipe_cop[i]["Diagnostico"])
+        for (var i = 0; i < 10; i++) {
+          if (!this.errores.includes(this.predFelipe_cop[i]["Diagnostico"]) && (this.predFelipe_cop[i]["Diagnostico"] != " ")) {
+            if (this.predFelipe_cop[i]["Diagnostico"].includes("|")) {
+              var diagnosticos = this.predFelipe_cop[i]["Diagnostico"].split("|")
+              for (var j = 0; j < diagnosticos.length; j++) {
+                if (!this.errores.includes(diagnosticos[j])) {
+                  this.errores.push(diagnosticos[j])
+                }
+              }
+            } else {
+              this.errores.push(this.predFelipe_cop[i]["Diagnostico"])
+            }
           }
         }
       },
@@ -309,12 +319,18 @@ export class DashboardComponent implements OnInit {
     this.http.get('http://127.0.0.1:8081/api/predict_felipe_potencia').subscribe(
       res => {
         this.predFelipe_potencia = this.json2array(res)
-        for(var i=0;i<10;i++){
-          if(this.errores.includes(this.predFelipe_potencia[i]["Diagnostico"])||(this.predFelipe_potencia[i]["Diagnostico"]==" ")){
-          
-          }
-          else{
-            this.errores.push(this.predFelipe_potencia[i]["Diagnostico"])
+        for (var i = 0; i < 10; i++) {
+          if (!this.errores.includes(this.predFelipe_potencia[i]["Diagnostico"]) && (this.predFelipe_potencia[i]["Diagnostico"] != " ")) {
+            if (this.predFelipe_potencia[i]["Diagnostico"].includes("|")) {
+              var diagnosticos = this.predFelipe_potencia[i]["Diagnostico"].split("|")
+              for (var j = 0; j < diagnosticos.length; j++) {
+                if (!this.errores.includes(diagnosticos[j])) {
+                  this.errores.push(diagnosticos[j])
+                }
+              }
+            } else {
+              this.errores.push(this.predFelipe_potencia[i]["Diagnostico"])
+            }
           }
         }
       },
@@ -323,6 +339,7 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
+
   //metodo que pasa de json a array
   public json2array(json) {
     var result = [];
@@ -332,6 +349,7 @@ export class DashboardComponent implements OnInit {
     });
     return result;
   }
+  
   ngOnInit() {
 
     var gradientChartOptionsConfigurationWithTooltipRed: any = {
@@ -472,14 +490,17 @@ export class DashboardComponent implements OnInit {
           data: this.tempExt,
         }]
       },
-      options: {gradientChartOptionsConfigurationWithTooltipRed,
+      options: {
+        gradientChartOptionsConfigurationWithTooltipRed,
         maintainAspectRatio: false,
-        scales:{yAxes:[{ticks:{suggestedMin:0,suggestedMan:20}}],xAxes: [{
-          ticks: {
+        scales: {
+          yAxes: [{ ticks: { suggestedMin: 0, suggestedMan: 20 } }], xAxes: [{
+            ticks: {
               display: false //this will remove only the label
-          }
-      }]},
-        legend:{display:false},
+            }
+          }]
+        },
+        legend: { display: false },
       }
     };
     this.myChartData = new Chart(this.ctx, config);
@@ -537,14 +558,17 @@ export class DashboardComponent implements OnInit {
     this.myChartCOPFrio1 = new Chart(this.ctx, {
       type: 'line',
       data: dataCOPFrio1,
-      options: {gradientChartOptionsConfigurationWithTooltipRed,
+      options: {
+        gradientChartOptionsConfigurationWithTooltipRed,
         maintainAspectRatio: false,
-        scales:{yAxes:[{ticks:{max:10,min:0}}],xAxes: [{
-          ticks: {
+        scales: {
+          yAxes: [{ ticks: { max: 10, min: 0 } }], xAxes: [{
+            ticks: {
               display: false //this will remove only the label
-          }
-      }]},
-        legend:{display:true,position:"bottom"},
+            }
+          }]
+        },
+        legend: { display: true, position: "bottom" },
       }
     });
 
@@ -578,14 +602,17 @@ export class DashboardComponent implements OnInit {
           data: this.potenciaFrio1,
         }]
       },
-      options: {gradientChartOptionsConfigurationWithTooltipRed,
+      options: {
+        gradientChartOptionsConfigurationWithTooltipRed,
         maintainAspectRatio: false,
-        scales:{yAxes:[{ticks:{suggestedMin:0,suggestedMax:20}}],xAxes: [{
-          ticks: {
+        scales: {
+          yAxes: [{ ticks: { suggestedMin: 0, suggestedMax: 20 } }], xAxes: [{
+            ticks: {
               display: false //this will remove only the label
-          }
-      }]},
-      legend:{display:true,position:"bottom"},
+            }
+          }]
+        },
+        legend: { display: true, position: "bottom" },
       }
     });
 
@@ -621,7 +648,7 @@ export class DashboardComponent implements OnInit {
         pointHoverBorderWidth: 15,
         pointRadius: 4,
         data: this.COPFrio2,
-      },{
+      }, {
         label: "Dato predicho",
         fill: true,
         backgroundColor: gradientStroke,
@@ -643,14 +670,17 @@ export class DashboardComponent implements OnInit {
     this.myChartCOPFrio2 = new Chart(this.ctx, {
       type: 'line',
       data: dataCOPFrio2,
-      options: {gradientChartOptionsConfigurationWithTooltipGreen,
+      options: {
+        gradientChartOptionsConfigurationWithTooltipGreen,
         maintainAspectRatio: false,
-        scales:{yAxes:[{ticks:{max:20,min:0}}],xAxes: [{
-          ticks: {
+        scales: {
+          yAxes: [{ ticks: { max: 20, min: 0 } }], xAxes: [{
+            ticks: {
               display: false //this will remove only the label
-          }
-      }]},
-      legend:{display:true,position:"bottom"},
+            }
+          }]
+        },
+        legend: { display: true, position: "bottom" },
       }
 
     });
@@ -684,14 +714,17 @@ export class DashboardComponent implements OnInit {
           data: this.potenciaFrio2,
         }]
       },
-      options: {gradientChartOptionsConfigurationWithTooltipRed,
+      options: {
+        gradientChartOptionsConfigurationWithTooltipRed,
         maintainAspectRatio: false,
-        scales:{yAxes:[{ticks:{suggestedMin:0,suggestedMax:20}}],xAxes: [{
-          ticks: {
+        scales: {
+          yAxes: [{ ticks: { suggestedMin: 0, suggestedMax: 20 } }], xAxes: [{
+            ticks: {
               display: false //this will remove only the label
-          }
-      }]},
-      legend:{display:true,position:"bottom"},
+            }
+          }]
+        },
+        legend: { display: true, position: "bottom" },
       }
     });
 
@@ -724,7 +757,7 @@ export class DashboardComponent implements OnInit {
         pointHoverBorderWidth: 15,
         pointRadius: 4,
         data: this.COPCalorCarlos,
-      },{
+      }, {
         label: "Dato predicho",
         fill: true,
         backgroundColor: gradientStroke,
@@ -746,18 +779,21 @@ export class DashboardComponent implements OnInit {
     this.myChartCOPCalorCarlos = new Chart(this.ctx, {
       type: 'line',
       data: dataCOPCarlorCarlos,
-      options: {gradientChartOptionsConfigurationWithTooltipGreen,
+      options: {
+        gradientChartOptionsConfigurationWithTooltipGreen,
         maintainAspectRatio: false,
-        scales:{yAxes:[{ticks:{max:20,min:0}}],xAxes: [{
-          ticks: {
+        scales: {
+          yAxes: [{ ticks: { max: 20, min: 0 } }], xAxes: [{
+            ticks: {
               display: false //this will remove only the label
-          }
-      }]},
-      legend:{display:true,position:"bottom"},
+            }
+          }]
+        },
+        legend: { display: true, position: "bottom" },
       }
 
     });
-    
+
     //grafica Potencia Calor Carlos
     this.canvas = document.getElementById("chartPotenciaCalorCarlos");
     this.ctx = this.canvas.getContext("2d");
@@ -768,7 +804,7 @@ export class DashboardComponent implements OnInit {
     gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
 
 
-    this.myChartPotenciaCalorCarlos= new Chart(this.ctx, {
+    this.myChartPotenciaCalorCarlos = new Chart(this.ctx, {
       type: 'line',
       responsive: true,
       legend: {
@@ -788,14 +824,17 @@ export class DashboardComponent implements OnInit {
           data: this.potenciaCalorCarlos,
         }]
       },
-      options: {gradientChartOptionsConfigurationWithTooltipRed,
+      options: {
+        gradientChartOptionsConfigurationWithTooltipRed,
         maintainAspectRatio: false,
-        scales:{yAxes:[{ticks:{suggestedMin:0,suggestedMax:20}}],xAxes: [{
-          ticks: {
+        scales: {
+          yAxes: [{ ticks: { suggestedMin: 0, suggestedMax: 20 } }], xAxes: [{
+            ticks: {
               display: false //this will remove only the label
-          }
-      }]},
-      legend:{display:true,position:"bottom"},
+            }
+          }]
+        },
+        legend: { display: true, position: "bottom" },
       }
     });
 
@@ -828,7 +867,7 @@ export class DashboardComponent implements OnInit {
         pointHoverBorderWidth: 15,
         pointRadius: 4,
         data: this.COPCalorFelipe,
-      },{
+      }, {
         label: "Dato predicho",
         fill: true,
         backgroundColor: gradientStroke,
@@ -850,14 +889,17 @@ export class DashboardComponent implements OnInit {
     this.myChartCOPCalorFelipe = new Chart(this.ctx, {
       type: 'line',
       data: dataCOPCarlorFelipe,
-      options: {gradientChartOptionsConfigurationWithTooltipGreen,
+      options: {
+        gradientChartOptionsConfigurationWithTooltipGreen,
         maintainAspectRatio: false,
-        scales:{yAxes:[{ticks:{max:20,min:0}}],xAxes: [{
-          ticks: {
+        scales: {
+          yAxes: [{ ticks: { max: 20, min: 0 } }], xAxes: [{
+            ticks: {
               display: false //this will remove only the label
-          }
-      }]},
-      legend:{display:true,position:"bottom"},
+            }
+          }]
+        },
+        legend: { display: true, position: "bottom" },
       }
 
     });
@@ -872,7 +914,7 @@ export class DashboardComponent implements OnInit {
     gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
 
 
-    this.myChartPotenciaCalorFelipe= new Chart(this.ctx, {
+    this.myChartPotenciaCalorFelipe = new Chart(this.ctx, {
       type: 'line',
       responsive: true,
       legend: {
@@ -892,14 +934,17 @@ export class DashboardComponent implements OnInit {
           data: this.potenciaCalorFelipe,
         }]
       },
-      options: {gradientChartOptionsConfigurationWithTooltipRed,
+      options: {
+        gradientChartOptionsConfigurationWithTooltipRed,
         maintainAspectRatio: false,
-        scales:{yAxes:[{ticks:{suggestedMin:0,suggestedMax:20}}],xAxes: [{
-          ticks: {
+        scales: {
+          yAxes: [{ ticks: { suggestedMin: 0, suggestedMax: 20 } }], xAxes: [{
+            ticks: {
               display: false //this will remove only the label
-          }
-      }]},
-      legend:{display:true,position:"bottom"},
+            }
+          }]
+        },
+        legend: { display: true, position: "bottom" },
       }
     });
 
