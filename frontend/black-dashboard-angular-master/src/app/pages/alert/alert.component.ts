@@ -6,10 +6,19 @@ import { Component, OnInit,Input } from '@angular/core';
   styleUrls: ["./alert.component.scss"]
 })
 export class AlertComponent implements OnInit {
+  public show=false
   @Input('error') error:any;
-  constructor() { }
+  constructor() { 
+    
+  }
 
   ngOnInit() {
+    if(this.error.includes("apagada")){
+      this.show=true
+    }
+    else{
+      this.show=false
+    }
   }
 
 }

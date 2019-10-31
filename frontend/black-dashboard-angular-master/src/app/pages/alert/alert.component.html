@@ -1,8 +1,22 @@
-<ngb-alert [type]="'secondary'" *ngIf="!staticAlertClosed7" [dismissible]="false">
-    <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close"
-        (click)="staticAlertClosed7 = true">
-        <i class="tim-icons icon-simple-remove"></i>
-    </button>
-    <img src="http://www.pngall.com/wp-content/uploads/2017/05/Alert-Download-PNG.png" width="40dp" height="auto">
-    <h4> {{this.error}} </h4>
-</ngb-alert>
+<div *ngIf="show">
+    <ngb-alert [type]="'success'" *ngIf="!staticAlertClosed7" [dismissible]="false">
+        <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close"
+            (click)="staticAlertClosed7 = true">
+            <i class="tim-icons icon-simple-remove"></i>
+        </button>
+        <img src="http://www.pngall.com/wp-content/uploads/2017/05/Alert-Download-PNG.png" width="40dp" height="auto">
+        <div *ngIf="show">
+            <h4> {{this.error}} </h4>
+        </div>
+    </ngb-alert>
+</div>
+<div *ngIf="!show">
+    <ngb-alert [type]="'secondary'" *ngIf="!staticAlertClosed7" [dismissible]="false">
+        <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close"
+            (click)="staticAlertClosed7 = true">
+            <i class="tim-icons icon-simple-remove"></i>
+        </button>
+        <img src="http://www.pngall.com/wp-content/uploads/2017/05/Alert-Download-PNG.png" width="40dp" height="auto">
+        <h4> {{this.error}} </h4>
+    </ngb-alert>
+</div>
