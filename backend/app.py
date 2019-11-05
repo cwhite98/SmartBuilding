@@ -5,6 +5,17 @@ import cop_prediction as cop
 import potencia_prediction as potencia
 import clustering
 import dataset
+import pandas as pd
+import joblib
+import io
+
+import boto3
+s3 = boto3.client('s3',
+                  aws_access_key_id='***********',
+                  aws_secret_access_key='***********',
+                  region_name='us-east-2')
+BUCKET_NAME = 'smart-building-integrador'
+
 
 # declare constants
 HOST = '0.0.0.0'
@@ -16,17 +27,18 @@ app = Flask(__name__)
 CORS(app)
 
 # Datos
-obj = dataset.Dataset()
-data = obj.read_dataset_lectura()
-dataFrio1_cop = copy.deepcopy(data)
-dataFrio2_cop = copy.deepcopy(data)
-dataCarlos_cop = copy.deepcopy(data)
-dataFelipe_cop = copy.deepcopy(data)
-dataFrio1_potencia = copy.deepcopy(data)
-dataFrio2_potencia = copy.deepcopy(data)
-dataCarlos_potencia = copy.deepcopy(data)
-dataFelipe_potencia = copy.deepcopy(data)
+obj = s3.get_object(Bucket=BUCKET_NAME, Key='HVAC.csv')
+fileInfo = obj['Body'].read()
+dataFrio1_cop = pd.read_csv(io.BytesIO(fileInfo))
+dataFrio2_cop = pd.read_csv(io.BytesIO(fileInfo))
+dataCarlos_cop = pd.read_csv(io.BytesIO(fileInfo))
+dataFelipe_cop = pd.read_csv(io.BytesIO(fileInfo))
+dataFrio1_potencia = pd.read_csv(io.BytesIO(fileInfo))
+dataFrio2_potencia = pd.read_csv(io.BytesIO(fileInfo))
+dataCarlos_potencia = pd.read_csv(io.BytesIO(fileInfo))
+dataFelipe_potencia = pd.read_csv(io.BytesIO(fileInfo))
 valorToleranciaPotencia = 0.25
+
 
 # Prediccion COP
 @app.route('/api/train_frio_1_cop', methods=['GET'])
