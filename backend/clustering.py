@@ -1,6 +1,13 @@
 from sklearn.cluster import KMeans
-from sklearn.externals import joblib
+import joblib
 import dataset
+import boto3
+
+s3 = boto3.client('s3',
+                  aws_access_key_id='*******',
+                  aws_secret_access_key='*******',
+                  region_name='us-east-2')
+BUCKET_NAME = 'smart-building-integrador'
 
 
 class KMeans_:
@@ -17,7 +24,8 @@ class KMeans_:
         return str(centroids)
 
     def predict_frio_1_cop(self, X):
-        kmeans = joblib.load('kmeans_frio_1_cop.pkl')
+        s3.download_file(BUCKET_NAME, 'models/kmeans_frio_1_cop.pkl', '/tmp/kmeans_frio_1_cop.pkl')
+        kmeans = joblib.load('/tmp/kmeans_frio_1_cop.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
         diagnostico = ''
@@ -57,7 +65,8 @@ class KMeans_:
         return str(centroids)
 
     def predict_frio_2_cop(self, X):
-        kmeans = joblib.load('kmeans_frio_2_cop.pkl')
+        s3.download_file(BUCKET_NAME, 'models/kmeans_frio_2_cop.pkl', '/tmp/kmeans_frio_2_cop.pkl')
+        kmeans = joblib.load('/tmp/kmeans_frio_2_cop.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
         diagnostico = ''
@@ -98,7 +107,8 @@ class KMeans_:
         return str(centroids)
 
     def predict_carlos_cop(self, X):
-        kmeans = joblib.load('kmeans_carlos_cop.pkl')
+        s3.download_file(BUCKET_NAME, 'models/kmeans_carlos_cop.pkl', '/tmp/kmeans_carlos_cop.pkl')
+        kmeans = joblib.load('/tmp/kmeans_carlos_cop.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
         diagnostico = ''
@@ -143,7 +153,8 @@ class KMeans_:
         return str(centroids)
 
     def predict_felipe_cop(self, X):
-        kmeans = joblib.load('kmeans_felipe_cop.pkl')
+        s3.download_file(BUCKET_NAME, 'models/kmeans_felipe_cop.pkl', '/tmp/kmeans_felipe_cop.pkl')
+        kmeans = joblib.load('/tmp/kmeans_felipe_cop.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
         diagnostico = ''
@@ -190,7 +201,8 @@ class KMeans_:
         return str(centroids)
 
     def predict_frio_1_potencia(self, X):
-        kmeans = joblib.load('kmeans_frio_1_potencia.pkl')
+        s3.download_file(BUCKET_NAME, 'models/kmeans_frio_1_potencia.pkl', '/tmp/kmeans_frio_1_potencia.pkl')
+        kmeans = joblib.load('/tmp/kmeans_frio_1_potencia.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
         diagnostico = ''
@@ -255,7 +267,8 @@ class KMeans_:
         return str(centroids)
 
     def predict_frio_2_potencia(self, X):
-        kmeans = joblib.load('kmeans_frio_2_potencia.pkl')
+        s3.download_file(BUCKET_NAME, 'models/kmeans_frio_2_potencia.pkl', '/tmp/kmeans_frio_2_potencia.pkl')
+        kmeans = joblib.load('/tmp/kmeans_frio_2_potencia.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
         diagnostico = ''
@@ -320,7 +333,8 @@ class KMeans_:
         return str(centroids)
 
     def predict_carlos_potencia(self, X):
-        kmeans = joblib.load('kmeans_carlos_potencia.pkl')
+        s3.download_file(BUCKET_NAME, 'models/kmeans_carlos_potencia.pkl', '/tmp/kmeans_carlos_potencia.pkl')
+        kmeans = joblib.load('/tmp/kmeans_carlos_potencia.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
         diagnostico = ''
@@ -377,7 +391,8 @@ class KMeans_:
         return str(centroids)
 
     def predict_felipe_potencia(self, X):
-        kmeans = joblib.load('kmeans_felipe_potencia.pkl')
+        s3.download_file(BUCKET_NAME, 'models/kmeans_felipe_potencia.pkl', '/tmp/kmeans_felipe_potencia.pkl')
+        kmeans = joblib.load('/tmp/kmeans_felipe_potencia.pkl')
         clusters = kmeans.predict(X)
         centroids = kmeans.cluster_centers_
         diagnostico = ''

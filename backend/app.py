@@ -7,14 +7,7 @@ import clustering
 import dataset
 import pandas as pd
 import joblib
-import io
-
-import boto3
-s3 = boto3.client('s3',
-                  aws_access_key_id='***********',
-                  aws_secret_access_key='***********',
-                  region_name='us-east-2')
-BUCKET_NAME = 'smart-building-integrador'
+import s3fs
 
 
 # declare constants
@@ -27,16 +20,15 @@ app = Flask(__name__)
 CORS(app)
 
 # Datos
-obj = s3.get_object(Bucket=BUCKET_NAME, Key='HVAC.csv')
-fileInfo = obj['Body'].read()
-dataFrio1_cop = pd.read_csv(io.BytesIO(fileInfo))
-dataFrio2_cop = pd.read_csv(io.BytesIO(fileInfo))
-dataCarlos_cop = pd.read_csv(io.BytesIO(fileInfo))
-dataFelipe_cop = pd.read_csv(io.BytesIO(fileInfo))
-dataFrio1_potencia = pd.read_csv(io.BytesIO(fileInfo))
-dataFrio2_potencia = pd.read_csv(io.BytesIO(fileInfo))
-dataCarlos_potencia = pd.read_csv(io.BytesIO(fileInfo))
-dataFelipe_potencia = pd.read_csv(io.BytesIO(fileInfo))
+url = 'https://smart-building-integrador.s3.us-east-2.amazonaws.com/HVAC.csv'
+dataFrio1_cop = pd.read_csv(url)
+dataFrio2_cop = pd.read_csv(url)
+dataCarlos_cop = pd.read_csv(url)
+dataFelipe_cop = pd.read_csv(url)
+dataFrio1_potencia = pd.read_csv(url)
+dataFrio2_potencia = pd.read_csv(url)
+dataCarlos_potencia = pd.read_csv(url)
+dataFelipe_potencia = pd.read_csv(url)
 valorToleranciaPotencia = 0.25
 
 

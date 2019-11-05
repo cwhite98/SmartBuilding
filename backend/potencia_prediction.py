@@ -1,7 +1,14 @@
 import dataset
-from sklearn.externals import joblib
+import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
+import boto3
+
+s3 = boto3.client('s3',
+                  aws_access_key_id='*******',
+                  aws_secret_access_key='*******',
+                  region_name='us-east-2')
+BUCKET_NAME = 'smart-building-integrador'
 
 class Potencia:
 
@@ -19,7 +26,8 @@ class Potencia:
         joblib.dump(regr, 'rf_frio_1.pkl')
 
     def predict_grupo_frio_1(self, X):
-        regr = joblib.load('rf_frio_1.pkl')
+        s3.download_file(BUCKET_NAME, 'models/rf_frio_1.pkl', '/tmp/rf_frio_1.pkl')
+        regr = joblib.load('/tmp/rf_frio_1.pkl')
         predicts = regr.predict(X)
         return predicts
 
@@ -37,7 +45,8 @@ class Potencia:
         joblib.dump(regr, 'rf_frio_2.pkl')
 
     def predict_grupo_frio_2(self, X):
-        regr = joblib.load('rf_frio_2.pkl')
+        s3.download_file(BUCKET_NAME, 'models/rf_frio_2.pkl', '/tmp/rf_frio_2.pkl')
+        regr = joblib.load('/tmp/rf_frio_2.pkl')
         predicts = regr.predict(X)
         return predicts
 
@@ -55,7 +64,8 @@ class Potencia:
         joblib.dump(regr, 'rf_carlos.pkl')
 
     def predict_carlos(self, X):
-        regr = joblib.load('rf_carlos.pkl')
+        s3.download_file(BUCKET_NAME, 'models/rf_carlos.pkl', '/tmp/rf_carlos.pkl')
+        regr = joblib.load('/tmp/rf_carlos.pkl')
         predicts = regr.predict(X)
         return predicts
 
@@ -73,6 +83,7 @@ class Potencia:
         joblib.dump(regr, 'rf_felipe.pkl')
 
     def predict_felipe(self, X):
-        regr = joblib.load('rf_felipe.pkl')
+        s3.download_file(BUCKET_NAME, 'models/rf_felipe.pkl', '/tmp/rf_felipe.pkl')
+        regr = joblib.load('/tmp/rf_felipe.pkl')
         predicts = regr.predict(X)
         return predicts

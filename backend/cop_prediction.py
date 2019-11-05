@@ -6,8 +6,8 @@ from sklearn.neighbors import KNeighborsRegressor
 #For S3
 import boto3
 s3 = boto3.client('s3',
-                  aws_access_key_id='***********',
-                  aws_secret_access_key='***********',
+                  aws_access_key_id='*******',
+                  aws_secret_access_key='*****',
                   region_name='us-east-2')
 BUCKET_NAME = 'smart-building-integrador'
 
@@ -23,11 +23,9 @@ class COP:
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
         neigh.fit(X_train, y_train) 
         # persist model
-        #joblib.dump(neigh, 'neigh_frio_1.pkl')
         joblib.dump(neigh, open('neigh_frio_1.pkl', 'wb'))
     
     def predict_grupo_frio_1(self, X):
-        #neigh = joblib.load('neigh_frio_1.pkl')        
         s3.download_file(BUCKET_NAME, 'models/neigh_frio_1.pkl', '/tmp/neigh_frio_1.pkl')
         neigh = joblib.load('/tmp/neigh_frio_1.pkl')
         predicts = neigh.predict(X)
@@ -46,7 +44,8 @@ class COP:
         joblib.dump(neigh, 'neigh_frio_2.pkl')
     
     def predict_grupo_frio_2(self, X):
-        neigh = joblib.load('neigh_frio_2.pkl')
+        s3.download_file(BUCKET_NAME, 'models/neigh_frio_2.pkl', '/tmp/neigh_frio_2.pkl')
+        neigh = joblib.load('/tmp/neigh_frio_2.pkl')
         predicts = neigh.predict(X)
         return predicts
 
@@ -63,7 +62,8 @@ class COP:
         joblib.dump(neigh, 'neigh_carlos.pkl')
 
     def predict_carlos(self, X):
-        neigh = joblib.load('neigh_carlos.pkl')
+        s3.download_file(BUCKET_NAME, 'models/neigh_carlos.pkl', '/tmp/neigh_carlos.pkl')
+        neigh = joblib.load('/tmp/neigh_carlos.pkl')
         predicts = neigh.predict(X)
         return predicts
 
@@ -80,6 +80,7 @@ class COP:
         joblib.dump(neigh, 'neigh_felipe.pkl')
 
     def predict_felipe(self, X):
-        neigh = joblib.load('neigh_felipe.pkl')
+        s3.download_file(BUCKET_NAME, 'models/neigh_felipe.pkl', '/tmp/neigh_felipe.pkl')
+        neigh = joblib.load('/tmp/neigh_felipe.pkl')
         predicts = neigh.predict(X)
         return predicts
