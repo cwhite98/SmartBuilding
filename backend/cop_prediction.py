@@ -1,7 +1,16 @@
 import dataset
-from sklearn.externals import joblib
+##from sklearn.externals import joblib
+import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsRegressor
+
+#For S3
+import boto3
+s3 = boto3.client('s3',
+                  aws_access_key_id='AKIAJJQYB6EN75OXWVGA',
+                  aws_secret_access_key='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',
+                  region_name='us-east-2')
+BUCKET_NAME = 'smart-building-integrador'
 
 
 class COP:
@@ -15,11 +24,16 @@ class COP:
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
         neigh.fit(X_train, y_train) 
         # persist model
-        joblib.dump(neigh, 'neigh_frio_1.pkl')
+        #joblib.dump(neigh, 'neigh_frio_1.pkl')
+        joblib.dump(neigh, open('neigh_frio_1.pkl', 'wb'))
     
     def predict_grupo_frio_1(self, X):
-        neigh = joblib.load('neigh_frio_1.pkl')
+        #neigh = joblib.load('neigh_frio_1.pkl')        
+        s3.download_file(BUCKET_NAME, 'models/neigh_frio_1.pkl', '/tmp/neigh_frio_1.pkl')
+        neigh = joblib.load('/tmp/neigh_frio_1.pkl')
+        print("PASE")
         predicts = neigh.predict(X)
+        print(predicts)
         return predicts
 
     def fit_grupo_frio_2(self):
