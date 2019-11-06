@@ -89,9 +89,13 @@ export class DashboardComponent implements OnInit {
         this.COPCalorFelipe.shift()
         this.COPCalorFelipePre.shift()
         this.potenciaFrio1.shift()
+        this.potenciaFrio1Real.shift()
         this.potenciaFrio2.shift()
+        this.potenciaFrio2Real.shift()
         this.potenciaCalorCarlos.shift()
+        this.potenciaCalorCarlosReal.shift()
         this.potenciaCalorFelipe.shift()
+        this.potenciaCalorFelipeReal.shift()
         this.actualizar()
       }
       this.registros++;
