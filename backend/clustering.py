@@ -4,8 +4,8 @@ import dataset
 import boto3
 
 s3 = boto3.client('s3',
-                  aws_access_key_id='**********',
-                  aws_secret_access_key='**********',
+                  aws_access_key_id='****',
+                  aws_secret_access_key='******',
                   region_name='us-east-2')
 BUCKET_NAME = 'smart-building-integrador'
 
@@ -44,7 +44,7 @@ class KMeans_:
             if not ((centroids[cluster][2] > minTempExterior) and (centroids[cluster][2] <= maxTempExterior)):
                 diagnosticos.append('La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'COP malo por razón no definida.'
+            diagnostico = 'Máquina GRUPO FRÍO 1 apagada o iniciando.'
         else:
             for i in range(len(diagnosticos) - 1):
                 if (len(diagnosticos) == 1):
@@ -75,8 +75,8 @@ class KMeans_:
         maxPotenciaFrio2 = 27
         minPotenciaTermicaFrio2 = 0
         maxPotenciaTermicaFrio2 = 97
-        minTempExterior = 10.102595
-        maxTempExterior = 27.313549000000002
+        minTempExterior = 10
+        maxTempExterior = 27
         for cluster in clusters:
             if not ((centroids[cluster][0] > minPotenciaFrio2) and (centroids[cluster][0] <= maxPotenciaFrio2)):
                 diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA GRUPO FRÍO 2.') 
@@ -85,7 +85,7 @@ class KMeans_:
             if not ((centroids[cluster][2] > minTempExterior) and (centroids[cluster][2] <= maxTempExterior)):
                 diagnosticos.append('La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'COP malo por razón no definida.'
+            diagnostico = 'Máquina GRUPO FRÍO 2 apagada o iniciando.'
         else:
             for i in range(len(diagnosticos) - 1):
                 if (len(diagnosticos) == 1):
@@ -131,7 +131,7 @@ class KMeans_:
             if not ((centroids[cluster][3] > minTempSalidaCarlos) and (centroids[cluster][3] <= maxTempSalidaCarlos)):
                 diagnosticos.append('Revisar la anomalia derivada al valor de la TEMPERATURA SALIDA BOMBA CALOR CARLOS.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'COP malo por razón no definida.'
+            diagnostico = 'Máquina BOMBA CALOR CARLOS apagada o iniciando.'
         else:
             for i in range(len(diagnosticos) - 1):
                 if (len(diagnosticos) == 1):
@@ -177,7 +177,7 @@ class KMeans_:
             if not ((centroids[cluster][3] > minTempSalidaFelipe) and (centroids[cluster][3] <= maxTempSalidaFelipe)):
                 diagnosticos.append('Revisar la anomalia derivada al valor de la TEMPERATURA SALIDA BOMBA CALOR FELIPE.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'COP malo por razón no definida.'
+            diagnostico = 'Máquina BOMBA CALOR FELIPE apagada o iniciando.'
         else:
             for i in range(len(diagnosticos) - 1):
                 if (len(diagnosticos) == 1):
@@ -186,7 +186,7 @@ class KMeans_:
                     diagnostico += diagnosticos[i] + ' | '
                     diagnostico += diagnosticos[-1]
         return diagnostico
-
+        
     # Clustering Potencia
     def kmeans_frio_1_potencia(self):
         obj = dataset.Dataset()
@@ -245,7 +245,7 @@ class KMeans_:
             if not ((centroids[cluster][8] > minTempExterior) and (centroids[cluster][8] <= maxTempExterior)):
                 diagnosticos.append('La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'Potencia mala por razón no definida.'
+            diagnostico = 'Máquina GRUPO FRÍO 1 apagada o iniciando.'
         elif (len(diagnosticos) == 1):
             diagnostico = diagnosticos[0]
         else:
@@ -311,7 +311,7 @@ class KMeans_:
             if not ((centroids[cluster][8] > minTempExterior) and (centroids[cluster][8] <= maxTempExterior)):
                 diagnosticos.append('La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'Potencia mala por razón no definida.'
+            diagnostico = 'Máquina GRUPO FRÍO 2 apagada o iniciando.'
         elif (len(diagnosticos) == 1):
             diagnostico = diagnosticos[0]
         else:
@@ -343,16 +343,16 @@ class KMeans_:
         maxTempSalidaCarlos = 43.095148
         minPotenciaTermicaCarlos = 0 
         maxPotenciaTermicaCarlos = 132
-        minCOPCarlos = 3.2656959999999997  #mean - std
-        maxCOPCarlos = 4.0215179999999995
+        minCOPCarlos = 3  #mean - std
+        maxCOPCarlos = 4
         minPotTrafo4 = 0 
         maxPotTrafo4 = 318
         minPotTrafo5 = 0
         maxPotTrafo5 = 348
         minTempExterior = 10
         maxTempExterior = 28
-        minTempAmbienteCarlos = 3.73738 #mean - std
-        maxTempAmbienteCarlos = 26.429133999999998
+        minTempAmbienteCarlos = 4 #mean - std
+        maxTempAmbienteCarlos = 26
         for cluster in clusters:
             if not ((centroids[cluster][0] > minTempSalidaCarlos) and (centroids[cluster][0] <= maxTempSalidaCarlos)):
                 diagnosticos.append('Revisar la anomalia derivada al valor de la TEMPERATURA SALIDA BOMBA CALOR CARLOS.')
@@ -369,7 +369,7 @@ class KMeans_:
             if not ((centroids[cluster][6] > minTempAmbienteCarlos) and (centroids[cluster][6] <= maxTempAmbienteCarlos)):
                 diagnosticos.append('Revisar la anomalia derivada al valor de la TEMPERATURA AMBIENTE BOMBA CALOR CARLOS.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'Potencia mala por razón no definida.'
+            diagnostico = 'Máquina BOMBA CALOR CARLOS apagada o iniciando.'
         elif (len(diagnosticos) == 1):
             diagnostico = diagnosticos[0]
         else:
@@ -427,7 +427,7 @@ class KMeans_:
             if not ((centroids[cluster][6] > minTempAmbienteFelipe) and (centroids[cluster][6] <= maxTempAmbienteFelipe)):
                 diagnosticos.append('Revisar la anomalia derivada al valor de la TEMPERATURA AMBIENTE BOMBA CALOR FELIPE.')
         if (len(diagnosticos) == 0):
-            diagnostico = 'Potencia mala por razón no definida.'
+            diagnostico = 'Máquina BOMBA CALOR FELIPE apagada o iniciando.'
         elif (len(diagnosticos) == 1):
             diagnostico = diagnosticos[0]
         else:

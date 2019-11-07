@@ -61,13 +61,16 @@ def predict_frio_1_cop():
             kmeans_ = clustering.KMeans_()
             kmeans_prediction = kmeans_.predict_frio_1_cop(X)
         # Diccionario con todas las variables de un registro que se va retornar
-        df.loc['Diagnostico'] = kmeans_prediction
         df.loc['C_O_P MÁQUINA GRUPO FRÍO 1 PREDICHO'] = prediction
+        df.loc['Diagnostico'] = kmeans_prediction
+        col = df.size
+        for j in range(1, col-1): # la primera y la ultima posicion no la cojo por ser la fecha y el diagnostico
+            df.iloc[j] = round(float(df.iloc[j]), 3)
         registro_dict = df.to_dict()
         diccionario.append(registro_dict)
     data['grupo_frio1_cop'] = valorDataFrio1_cop + 10
     bytes_to_write = data.to_csv(None, index=False).encode()
-    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    fs = s3fs.S3FileSystem(key='****', secret='******')
     with fs.open('s3://smart-building-integrador/indices/indexFrio1_COP.csv', 'wb') as f:
         f.write(bytes_to_write)
     return jsonify(diccionario)
@@ -100,13 +103,16 @@ def predict_frio_2_cop():
             kmeans_ = clustering.KMeans_()
             kmeans_prediction = kmeans_.predict_frio_2_cop(X)
         # Diccionario con todas las variables de un registro que se va retornar
-        df.loc['Diagnostico'] = kmeans_prediction
         df.loc['C_O_P MÁQUINA GRUPO FRÍO 2 PREDICHO'] = prediction
+        df.loc['Diagnostico'] = kmeans_prediction
+        col = df.size
+        for j in range(1, col-1): # la primera y la ultima posicion no la cojo por ser la fecha y el diagnostico
+            df.iloc[j] = round(float(df.iloc[j]), 3)
         registro_dict = df.to_dict()
         diccionario.append(registro_dict)
     data['grupo_frio2_cop'] = valorDataFrio2_cop + 10
     bytes_to_write = data.to_csv(None, index=False).encode()
-    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    fs = s3fs.S3FileSystem(key='****', secret='******')
     with fs.open('s3://smart-building-integrador/indices/indexFrio2_COP.csv', 'wb') as f:
         f.write(bytes_to_write)
     return jsonify(diccionario)
@@ -139,13 +145,16 @@ def predict_carlos_cop():
             kmeans_ = clustering.KMeans_()
             kmeans_prediction = kmeans_.predict_carlos_cop(X)
         # Diccionario con todas las variables de un registro que se va retornar
-        df.loc['Diagnostico'] = kmeans_prediction
         df.loc['C_O_P BOMBA CALOR CARLOS PREDICHO'] = prediction
+        df.loc['Diagnostico'] = kmeans_prediction
+        col = df.size
+        for j in range(1, col-1): # la primera y la ultima posicion no la cojo por ser la fecha y el diagnostico
+            df.iloc[j] = round(float(df.iloc[j]), 3)
         registro_dict = df.to_dict()
         diccionario.append(registro_dict)
     data['carlos_cop'] = valorCarlos_cop + 10
     bytes_to_write = data.to_csv(None, index=False).encode()
-    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    fs = s3fs.S3FileSystem(key='****', secret='******')
     with fs.open('s3://smart-building-integrador/indices/indexCarlos_COP.csv', 'wb') as f:
         f.write(bytes_to_write)
     return jsonify(diccionario)
@@ -178,13 +187,16 @@ def predict_felipe_cop():
             kmeans_ = clustering.KMeans_()
             kmeans_prediction = kmeans_.predict_felipe_cop(X)
         # Diccionario con todas las variables de un registro que se va retornar
-        df.loc['Diagnostico'] = kmeans_prediction
         df.loc['C_O_P BOMBA CALOR FELIPE PREDICHO'] = prediction
+        df.loc['Diagnostico'] = kmeans_prediction
+        col = df.size
+        for j in range(1, col-1): # la primera y la ultima posicion no la cojo por ser la fecha y el diagnostico
+            df.iloc[j] = round(float(df.iloc[j]), 3)
         registro_dict = df.to_dict()
         diccionario.append(registro_dict)
     data['felipe_cop'] = valorFelipe_cop + 10
     bytes_to_write = data.to_csv(None, index=False).encode()
-    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    fs = s3fs.S3FileSystem(key='****', secret='******')
     with fs.open('s3://smart-building-integrador/indices/indexFelipe_COP.csv', 'wb') as f:
         f.write(bytes_to_write)
     return jsonify(diccionario)
@@ -219,11 +231,11 @@ def predict_frio_1_potencia():
             kmeans_ = clustering.KMeans_()
             kmeans_prediction = kmeans_.predict_frio_1_potencia(X)
         # Diccionario con todas las variables de un registro que se va retornar
-        resultado = {'Diagnostico': kmeans_prediction, 'POTENCIA GRUPO FRÍO 1 PREDICHA' : prediction}
+        resultado = {'Diagnostico': kmeans_prediction, 'POTENCIA GRUPO FRÍO 1 PREDICHA' : round(prediction, 3)}
         diccionario.append(resultado)
     data['grupo_frio1_potencia'] = valorFrio1_potencia + 10
     bytes_to_write = data.to_csv(None, index=False).encode()
-    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    fs = s3fs.S3FileSystem(key='****', secret='******')
     with fs.open('s3://smart-building-integrador/indices/indexFrio1_potencia.csv', 'wb') as f:
         f.write(bytes_to_write)
     return jsonify(diccionario)
@@ -257,11 +269,11 @@ def predict_frio_2_potencia():
             kmeans_ = clustering.KMeans_()
             kmeans_prediction = kmeans_.predict_frio_2_potencia(X)
         # Diccionario con todas las variables de un registro que se va retornar
-        resultado = {'Diagnostico': kmeans_prediction, 'POTENCIA GRUPO FRÍO 2 PREDICHA' : prediction}
+        resultado = {'Diagnostico': kmeans_prediction, 'POTENCIA GRUPO FRÍO 2 PREDICHA' : round(prediction, 3)}
         diccionario.append(resultado)
     data['grupo_frio2_potencia'] = valorFrio2_potencia + 10
     bytes_to_write = data.to_csv(None, index=False).encode()
-    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    fs = s3fs.S3FileSystem(key='****', secret='******')
     with fs.open('s3://smart-building-integrador/indices/indexFrio2_potencia.csv', 'wb') as f:
         f.write(bytes_to_write)
     return jsonify(diccionario)
@@ -294,11 +306,11 @@ def predict_carlos_potencia():
             kmeans_ = clustering.KMeans_()
             kmeans_prediction = kmeans_.predict_carlos_potencia(X)
         # Diccionario con todas las variables de un registro que se va retornar
-        resultado = {'Diagnostico': kmeans_prediction, 'POTENCIA BOMBA CALOR CARLOS PREDICHA' : prediction}
+        resultado = {'Diagnostico': kmeans_prediction, 'POTENCIA BOMBA CALOR CARLOS PREDICHA' : round(prediction, 3)}
         diccionario.append(resultado)
     data['carlos_potencia'] = valorCarlos_potencia + 10
     bytes_to_write = data.to_csv(None, index=False).encode()
-    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    fs = s3fs.S3FileSystem(key='****', secret='******')
     with fs.open('s3://smart-building-integrador/indices/indexCarlos_potencia.csv', 'wb') as f:
         f.write(bytes_to_write)
     return jsonify(diccionario)
@@ -331,11 +343,11 @@ def predict_felipe_potencia():
             kmeans_ = clustering.KMeans_()
             kmeans_prediction = kmeans_.predict_felipe_potencia(X)
         # Diccionario con todas las variables de un registro que se va retornar
-        resultado = {'Diagnostico': kmeans_prediction, 'POTENCIA BOMBA CALOR FELIPE PREDICHA' : prediction}
+        resultado = {'Diagnostico': kmeans_prediction, 'POTENCIA BOMBA CALOR FELIPE PREDICHA' : round(prediction, 3)}
         diccionario.append(resultado)
     data['felipe_potencia'] = valorFelipe_potencia + 10
     bytes_to_write = data.to_csv(None, index=False).encode()
-    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    fs = s3fs.S3FileSystem(key='****', secret='******')
     with fs.open('s3://smart-building-integrador/indices/indexFelipe_potencia.csv', 'wb') as f:
         f.write(bytes_to_write)
     return jsonify(diccionario)
