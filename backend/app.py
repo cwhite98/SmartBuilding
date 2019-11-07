@@ -54,8 +54,11 @@ def predict_frio_1_cop():
             kmeans_ = clustering.KMeans_()
             kmeans_prediction = kmeans_.predict_frio_1_cop(X)
         # Diccionario con todas las variables de un registro que se va retornar
-        df.loc['Diagnostico'] = kmeans_prediction
         df.loc['C_O_P MÁQUINA GRUPO FRÍO 1 PREDICHO'] = prediction
+        df.loc['Diagnostico'] = kmeans_prediction
+        col = df.size
+        for j in range(1, col-1): # la primera y la ultima posicion no la cojo por ser la fecha y el diagnostico
+            df.iloc[j] = round(float(df.iloc[j]), 3)
         registro_dict = df.to_dict()
         diccionario.append(registro_dict)
     dataFrio1_cop.drop(range(0, 10), inplace=True)
