@@ -43,7 +43,10 @@ def train_frio_1_cop():
 def predict_frio_1_cop():
     cop_model = cop.COP()
     diccionario = []
-    for i in range(0, 10):
+    urlContadores = 'https://smart-building-integrador.s3.us-east-2.amazonaws.com/indices/indexFrio1_COP.csv'
+    data = pd.read_csv(urlContadores, sep='\s*,\s*', header=0, encoding='ascii', engine='python')
+    valorDataFrio1_cop = data['grupo_frio1_cop']
+    for i in range(int(valorDataFrio1_cop), int(valorDataFrio1_cop+10)):
         df = dataFrio1_cop.iloc[i]
         # get data to be predicted
         X = [[float(df['POTENCIA GRUPO FRÍO 1']), float(df['POTENCIA TERMICA GRUPO FRIO 1']),
@@ -62,8 +65,11 @@ def predict_frio_1_cop():
         df.loc['C_O_P MÁQUINA GRUPO FRÍO 1 PREDICHO'] = prediction
         registro_dict = df.to_dict()
         diccionario.append(registro_dict)
-    dataFrio1_cop.drop(range(0, 10), inplace=True)
-    dataFrio1_cop.reset_index(drop=True, inplace=True)
+    data['grupo_frio1_cop'] = valorDataFrio1_cop + 10
+    bytes_to_write = data.to_csv(None, index=False).encode()
+    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    with fs.open('s3://smart-building-integrador/indices/indexFrio1_COP.csv', 'wb') as f:
+        f.write(bytes_to_write)
     return jsonify(diccionario)
 
 @app.route('/api/train_frio_2_cop', methods=['GET'])
@@ -76,7 +82,10 @@ def train_frio_2_cop():
 def predict_frio_2_cop():
     cop_model = cop.COP()
     diccionario = []
-    for i in range(0, 10):
+    urlContadores = 'https://smart-building-integrador.s3.us-east-2.amazonaws.com/indices/indexFrio2_COP.csv'
+    data = pd.read_csv(urlContadores, sep='\s*,\s*', header=0, encoding='ascii', engine='python')
+    valorDataFrio2_cop = data['grupo_frio2_cop']
+    for i in range(int(valorDataFrio2_cop), int(valorDataFrio2_cop)+10):
         df = dataFrio2_cop.iloc[i]
         # get data to be predicted
         X = [[float(df['POTENCIA GRUPO FRÍO 2']), float(df['POTENCIA TERMICA GRUPO FRIO 2']),
@@ -95,8 +104,11 @@ def predict_frio_2_cop():
         df.loc['C_O_P MÁQUINA GRUPO FRÍO 2 PREDICHO'] = prediction
         registro_dict = df.to_dict()
         diccionario.append(registro_dict)
-    dataFrio2_cop.drop(range(0, 10), inplace=True)
-    dataFrio2_cop.reset_index(drop=True, inplace=True)
+    data['grupo_frio2_cop'] = valorDataFrio2_cop + 10
+    bytes_to_write = data.to_csv(None, index=False).encode()
+    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    with fs.open('s3://smart-building-integrador/indices/indexFrio2_COP.csv', 'wb') as f:
+        f.write(bytes_to_write)
     return jsonify(diccionario)
 
 @app.route('/api/train_carlos_cop', methods=['GET'])
@@ -109,7 +121,10 @@ def train_carlos_cop():
 def predict_carlos_cop():
     cop_model = cop.COP()
     diccionario = []
-    for i in range(0, 10):
+    urlContadores = 'https://smart-building-integrador.s3.us-east-2.amazonaws.com/indices/indexCarlos_COP.csv'
+    data = pd.read_csv(urlContadores, sep='\s*,\s*', header=0, encoding='ascii', engine='python')
+    valorCarlos_cop = data['carlos_cop']
+    for i in range(int(valorCarlos_cop), int(valorCarlos_cop)+10):
         df = dataCarlos_cop.iloc[i]
         # get data to be predicted
         X = [[float(df['POTENCIA BOMBA CALOR CARLOS']), float(df['POTENCIA TERMICA BOMBA CALOR CARLOS']),
@@ -128,8 +143,11 @@ def predict_carlos_cop():
         df.loc['C_O_P BOMBA CALOR CARLOS PREDICHO'] = prediction
         registro_dict = df.to_dict()
         diccionario.append(registro_dict)
-    dataCarlos_cop.drop(range(0, 10), inplace=True)
-    dataCarlos_cop.reset_index(drop=True, inplace=True)
+    data['carlos_cop'] = valorCarlos_cop + 10
+    bytes_to_write = data.to_csv(None, index=False).encode()
+    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    with fs.open('s3://smart-building-integrador/indices/indexCarlos_COP.csv', 'wb') as f:
+        f.write(bytes_to_write)
     return jsonify(diccionario)
 
 @app.route('/api/train_felipe_cop', methods=['GET'])
@@ -142,7 +160,10 @@ def train_felipe_cop():
 def predict_felipe_cop():
     cop_model = cop.COP()
     diccionario = []
-    for i in range(0, 10):
+    urlContadores = 'https://smart-building-integrador.s3.us-east-2.amazonaws.com/indices/indexFelipe_COP.csv'
+    data = pd.read_csv(urlContadores, sep='\s*,\s*', header=0, encoding='ascii', engine='python')
+    valorFelipe_cop = data['felipe_cop']
+    for i in range(int(valorFelipe_cop), int(valorFelipe_cop)+10):
         df = dataFelipe_cop.iloc[i]
         # get data to be predicted
         X = [[float(df['POTENCIA BOMBA CALOR FELIPE']), float(df['POTENCIA TERMICA BOMBA CALOR FELIPE']),
@@ -161,8 +182,11 @@ def predict_felipe_cop():
         df.loc['C_O_P BOMBA CALOR FELIPE PREDICHO'] = prediction
         registro_dict = df.to_dict()
         diccionario.append(registro_dict)
-    dataFelipe_cop.drop(range(0, 10), inplace=True)
-    dataFelipe_cop.reset_index(drop=True, inplace=True)
+    data['felipe_cop'] = valorFelipe_cop + 10
+    bytes_to_write = data.to_csv(None, index=False).encode()
+    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    with fs.open('s3://smart-building-integrador/indices/indexFelipe_COP.csv', 'wb') as f:
+        f.write(bytes_to_write)
     return jsonify(diccionario)
 
 # Prediccion Potencia
@@ -176,7 +200,10 @@ def train_frio_1_potencia():
 def predict_frio_1_potencia():
     potencia_model = potencia.Potencia()
     diccionario = []
-    for i in range(0, 10):
+    urlContadores = 'https://smart-building-integrador.s3.us-east-2.amazonaws.com/indices/indexFrio1_potencia.csv'
+    data = pd.read_csv(urlContadores, sep='\s*,\s*', header=0, encoding='ascii', engine='python')
+    valorFrio1_potencia = data['grupo_frio1_potencia']
+    for i in range(int(valorFrio1_potencia), int(valorFrio1_potencia)+10):
         df = dataFrio1_potencia.iloc[i]
         # get data to be predicted
         X = [[float(df['POTENCIA TERMICA GRUPO FRIO 1']), float(df['ENTRADA AGUA A TORRE 1']), float(df['SALIDA AGUA TORRE 1']),
@@ -194,8 +221,11 @@ def predict_frio_1_potencia():
         # Diccionario con todas las variables de un registro que se va retornar
         resultado = {'Diagnostico': kmeans_prediction, 'POTENCIA GRUPO FRÍO 1 PREDICHA' : prediction}
         diccionario.append(resultado)
-    dataFrio1_potencia.drop(range(0, 10), inplace=True)
-    dataFrio1_potencia.reset_index(drop=True, inplace=True)
+    data['grupo_frio1_potencia'] = valorFrio1_potencia + 10
+    bytes_to_write = data.to_csv(None, index=False).encode()
+    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    with fs.open('s3://smart-building-integrador/indices/indexFrio1_potencia.csv', 'wb') as f:
+        f.write(bytes_to_write)
     return jsonify(diccionario)
 
 @app.route('/api/train_frio_2_potencia', methods=['GET'])
@@ -208,7 +238,10 @@ def train_frio_2_potencia():
 def predict_frio_2_potencia():
     potencia_model = potencia.Potencia()
     diccionario = []
-    for i in range(0, 10):
+    urlContadores = 'https://smart-building-integrador.s3.us-east-2.amazonaws.com/indices/indexFrio2_potencia.csv'
+    data = pd.read_csv(urlContadores, sep='\s*,\s*', header=0, encoding='ascii', engine='python')
+    valorFrio2_potencia = data['grupo_frio2_potencia']
+    for i in range(int(valorFrio2_potencia), int(valorFrio2_potencia)+10):
         df = dataFrio2_potencia.iloc[i]
         # get data to be predicted
         X = [[float(df['POTENCIA TERMICA GRUPO FRIO 2']), float(df['ENTRADA AGUA A TORRE 2']), float(df['SALIDA AGUA TORRE 2']),
@@ -226,8 +259,11 @@ def predict_frio_2_potencia():
         # Diccionario con todas las variables de un registro que se va retornar
         resultado = {'Diagnostico': kmeans_prediction, 'POTENCIA GRUPO FRÍO 2 PREDICHA' : prediction}
         diccionario.append(resultado)
-    dataFrio2_potencia.drop(range(0, 10), inplace=True)
-    dataFrio2_potencia.reset_index(drop=True, inplace=True)
+    data['grupo_frio2_potencia'] = valorFrio2_potencia + 10
+    bytes_to_write = data.to_csv(None, index=False).encode()
+    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    with fs.open('s3://smart-building-integrador/indices/indexFrio2_potencia.csv', 'wb') as f:
+        f.write(bytes_to_write)
     return jsonify(diccionario)
 
 @app.route('/api/train_carlos_potencia', methods=['GET'])
@@ -240,7 +276,10 @@ def train_carlos_potencia():
 def predict_carlos_potencia():
     potencia_model = potencia.Potencia()
     diccionario = []
-    for i in range(0, 10):
+    urlContadores = 'https://smart-building-integrador.s3.us-east-2.amazonaws.com/indices/indexCarlos_potencia.csv'
+    data = pd.read_csv(urlContadores, sep='\s*,\s*', header=0, encoding='ascii', engine='python')
+    valorCarlos_potencia = data['carlos_potencia']
+    for i in range(int(valorCarlos_potencia), int(valorCarlos_potencia)+10):
         df = dataCarlos_potencia.iloc[i]
         # get data to be predicted
         X = [[float(df['TEMPERATURA SALIDA BOMBA CALOR CARLOS']), float(df['POTENCIA TERMICA BOMBA CALOR CARLOS']), float(df['C_O_P BOMBA CALOR CARLOS']),
@@ -257,8 +296,11 @@ def predict_carlos_potencia():
         # Diccionario con todas las variables de un registro que se va retornar
         resultado = {'Diagnostico': kmeans_prediction, 'POTENCIA BOMBA CALOR CARLOS PREDICHA' : prediction}
         diccionario.append(resultado)
-    dataCarlos_potencia.drop(range(0, 10), inplace=True)
-    dataCarlos_potencia.reset_index(drop=True, inplace=True)
+    data['carlos_potencia'] = valorCarlos_potencia + 10
+    bytes_to_write = data.to_csv(None, index=False).encode()
+    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    with fs.open('s3://smart-building-integrador/indices/indexCarlos_potencia.csv', 'wb') as f:
+        f.write(bytes_to_write)
     return jsonify(diccionario)
 
 @app.route('/api/train_felipe_potencia', methods=['GET'])
@@ -271,6 +313,9 @@ def train_felipe_potencia():
 def predict_felipe_potencia():
     potencia_model = potencia.Potencia()
     diccionario = []
+    urlContadores = 'https://smart-building-integrador.s3.us-east-2.amazonaws.com/indices/indexFelipe_potencia.csv'
+    data = pd.read_csv(urlContadores, sep='\s*,\s*', header=0, encoding='ascii', engine='python')
+    valorFelipe_potencia = data['felipe_potencia']
     for i in range(0, 10):
         df = dataFelipe_potencia.iloc[i]
         # get data to be predicted
@@ -288,8 +333,11 @@ def predict_felipe_potencia():
         # Diccionario con todas las variables de un registro que se va retornar
         resultado = {'Diagnostico': kmeans_prediction, 'POTENCIA BOMBA CALOR FELIPE PREDICHA' : prediction}
         diccionario.append(resultado)
-    dataFelipe_potencia.drop(range(0, 10), inplace=True)
-    dataFelipe_potencia.reset_index(drop=True, inplace=True)
+    data['felipe_potencia'] = valorFelipe_potencia + 10
+    bytes_to_write = data.to_csv(None, index=False).encode()
+    fs = s3fs.S3FileSystem(key='AKIAJTDQ4JRTPCAGYCOQ', secret='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')
+    with fs.open('s3://smart-building-integrador/indices/indexFelipe_potencia.csv', 'wb') as f:
+        f.write(bytes_to_write)
     return jsonify(diccionario)
 
 # Clustering COP

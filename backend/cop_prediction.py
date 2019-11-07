@@ -6,8 +6,8 @@ from sklearn.neighbors import KNeighborsRegressor
 #For S3
 import boto3
 s3 = boto3.client('s3',
-                  aws_access_key_id='*******',
-                  aws_secret_access_key='*****',
+                  aws_access_key_id='**********',
+                  aws_secret_access_key='**********',
                   region_name='us-east-2')
 BUCKET_NAME = 'smart-building-integrador'
 
@@ -29,7 +29,6 @@ class COP:
         s3.download_file(BUCKET_NAME, 'models/neigh_frio_1.pkl', '/tmp/neigh_frio_1.pkl')
         neigh = joblib.load('/tmp/neigh_frio_1.pkl')
         predicts = neigh.predict(X)
-        print(predicts)
         return predicts
 
     def fit_grupo_frio_2(self):
