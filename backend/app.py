@@ -233,9 +233,6 @@ def predict_frio_2_potencia():
             kmeans_prediction = kmeans_.predict_frio_2_potencia(X)
         # Diccionario con todas las variables de un registro que se va retornar
         resultado = {'Diagnostico': kmeans_prediction, 'POTENCIA GRUPO FRÍO 2 PREDICHA' : round(prediction, 3)}
-        col = df.size
-        for j in range(1, col-1): # la primera y la ultima posicion no la cojo por ser la fecha y el diagnostico
-            df.iloc[j] = round(float(df.iloc[j]), 3)
         diccionario.append(resultado)
     dataFrio2_potencia.drop(range(0, 10), inplace=True)
     dataFrio2_potencia.reset_index(drop=True, inplace=True)
