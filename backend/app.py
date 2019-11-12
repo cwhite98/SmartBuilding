@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
+import pandas as pd
 import copy
 import cop_prediction as cop
 import potencia_prediction as potencia
@@ -56,10 +57,11 @@ def predict_frio_1_cop():
         # Diccionario con todas las variables de un registro que se va retornar
         df.loc['C_O_P MÁQUINA GRUPO FRÍO 1 PREDICHO'] = prediction
         df.loc['Diagnostico'] = kmeans_prediction
-        col = df.size
-        for j in range(1, col-1): # la primera y la ultima posicion no la cojo por ser la fecha y el diagnostico
-            df.iloc[j] = round(float(df.iloc[j]), 3)
-        registro_dict = df.to_dict()
+        df2 = df.drop(labels=['Diagnostico', 'Fecha- hora de lectura'])
+        df2 = df2.apply(lambda x: round(float(x), 3))
+        dfAux = df[['Diagnostico', 'Fecha- hora de lectura']]
+        dfR = pd.concat([df2, dfAux], axis=0, sort=False)
+        registro_dict = dfR.to_dict()
         diccionario.append(registro_dict)
     dataFrio1_cop.drop(range(0, 10), inplace=True)
     dataFrio1_cop.reset_index(drop=True, inplace=True)
@@ -92,10 +94,11 @@ def predict_frio_2_cop():
         # Diccionario con todas las variables de un registro que se va retornar
         df.loc['C_O_P MÁQUINA GRUPO FRÍO 2 PREDICHO'] = prediction
         df.loc['Diagnostico'] = kmeans_prediction
-        col = df.size
-        for j in range(1, col-1): # la primera y la ultima posicion no la cojo por ser la fecha y el diagnostico
-            df.iloc[j] = round(float(df.iloc[j]), 3)
-        registro_dict = df.to_dict()
+        df2 = df.drop(labels=['Diagnostico', 'Fecha- hora de lectura'])
+        df2 = df2.apply(lambda x: round(float(x), 3))
+        dfAux = df[['Diagnostico', 'Fecha- hora de lectura']]
+        dfR = pd.concat([df2, dfAux], axis=0, sort=False)
+        registro_dict = dfR.to_dict()
         diccionario.append(registro_dict)
     dataFrio2_cop.drop(range(0, 10), inplace=True)
     dataFrio2_cop.reset_index(drop=True, inplace=True)
@@ -128,10 +131,11 @@ def predict_carlos_cop():
         # Diccionario con todas las variables de un registro que se va retornar
         df.loc['C_O_P BOMBA CALOR CARLOS PREDICHO'] = prediction
         df.loc['Diagnostico'] = kmeans_prediction
-        col = df.size
-        for j in range(1, col-1): # la primera y la ultima posicion no la cojo por ser la fecha y el diagnostico
-            df.iloc[j] = round(float(df.iloc[j]), 3)
-        registro_dict = df.to_dict()
+        df2 = df.drop(labels=['Diagnostico', 'Fecha- hora de lectura'])
+        df2 = df2.apply(lambda x: round(float(x), 3))
+        dfAux = df[['Diagnostico', 'Fecha- hora de lectura']]
+        dfR = pd.concat([df2, dfAux], axis=0, sort=False)
+        registro_dict = dfR.to_dict()
         diccionario.append(registro_dict)
     dataCarlos_cop.drop(range(0, 10), inplace=True)
     dataCarlos_cop.reset_index(drop=True, inplace=True)
@@ -164,10 +168,11 @@ def predict_felipe_cop():
         # Diccionario con todas las variables de un registro que se va retornar
         df.loc['C_O_P BOMBA CALOR FELIPE PREDICHO'] = prediction
         df.loc['Diagnostico'] = kmeans_prediction
-        col = df.size
-        for j in range(1, col-1): # la primera y la ultima posicion no la cojo por ser la fecha y el diagnostico
-            df.iloc[j] = round(float(df.iloc[j]), 3)
-        registro_dict = df.to_dict()
+        df2 = df.drop(labels=['Diagnostico', 'Fecha- hora de lectura'])
+        df2 = df2.apply(lambda x: round(float(x), 3))
+        dfAux = df[['Diagnostico', 'Fecha- hora de lectura']]
+        dfR = pd.concat([df2, dfAux], axis=0, sort=False)
+        registro_dict = dfR.to_dict()
         diccionario.append(registro_dict)
     dataFelipe_cop.drop(range(0, 10), inplace=True)
     dataFelipe_cop.reset_index(drop=True, inplace=True)
