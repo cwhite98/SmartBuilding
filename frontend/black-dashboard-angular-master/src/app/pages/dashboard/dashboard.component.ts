@@ -63,13 +63,13 @@ export class DashboardComponent implements OnInit {
       this.recibirRegistros();
     });
   }
-  public recibirRegistros() {
+  async recibirRegistros() {
     if (this.registros == -1) {
       this.errores = [];
-      this.predict_frio_1();
-      this.predict_frio_2();
-      this.predict_carlos();
-      this.predict_felipe();
+      await this.predict_frio_1();
+      await this.predict_frio_2();
+      await this.predict_carlos();
+      await this.predict_felipe();
       this.registros++;
     } else if (this.registros > 9) {
       this.registros = -1;
@@ -165,8 +165,24 @@ export class DashboardComponent implements OnInit {
   //------------------------------------------------------------------------------------------------------
   //------------------------------------------------------------------------------------------------------
   //Peticiones http
-  public predict_frio_1() {
-    this.http.get('http://127.0.0.1:8081/api/predict_frio_1_cop').subscribe(
+  async predict_frio_1() {
+    const response = await this.http.get('http://127.0.0.1:8081/api/predict_frio_1_cop').toPromise();
+    this.predFrio1_cop = this.json2array(response)
+    for (var i = 0; i < 10; i++) {
+      if (!this.errores.includes(this.predFrio1_cop[i]["Diagnostico"]) && (this.predFrio1_cop[i]["Diagnostico"] != " ")) {
+        if (this.predFrio1_cop[i]["Diagnostico"].includes("|")) {
+          var diagnosticos = this.predFrio1_cop[i]["Diagnostico"].split("|")
+          for (var j = 0; j < diagnosticos.length; j++) {
+            if (!this.errores.includes(diagnosticos[j])) {
+              this.errores.push(diagnosticos[j])
+            }
+          }
+        } else {
+          this.errores.push(this.predFrio1_cop[i]["Diagnostico"])
+        }
+      }
+    }
+    /*this.http.get('http://127.0.0.1:8081/api/predict_frio_1_cop').subscribe(
       res => {
         this.predFrio1_cop = this.json2array(res)
         for (var i = 0; i < 10; i++) {
@@ -187,9 +203,24 @@ export class DashboardComponent implements OnInit {
       err => {
         console.log(err);
       }
-    );
-
-    this.http.get('http://127.0.0.1:8081/api/predict_frio_1_potencia').subscribe(
+    );*/
+    const response1 = await this.http.get('http://127.0.0.1:8081/api/predict_frio_1_potencia').toPromise();
+    this.predFrio1_potencia = this.json2array(response1)
+    for (var i = 0; i < 10; i++) {
+      if (!this.errores.includes(this.predFrio1_potencia[i]["Diagnostico"]) && (this.predFrio1_potencia[i]["Diagnostico"] != " ")) {
+        if (this.predFrio1_potencia[i]["Diagnostico"].includes("|")) {
+          var diagnosticos = this.predFrio1_potencia[i]["Diagnostico"].split("|")
+          for (var j = 0; j < diagnosticos.length; j++) {
+            if (!this.errores.includes(diagnosticos[j])) {
+              this.errores.push(diagnosticos[j])
+            }
+          }
+        } else {
+          this.errores.push(this.predFrio1_potencia[i]["Diagnostico"])
+        }
+      }
+    }
+    /*this.http.get('http://127.0.0.1:8081/api/predict_frio_1_potencia').subscribe(
       res => {
         this.predFrio1_potencia = this.json2array(res)
         for (var i = 0; i < 10; i++) {
@@ -210,11 +241,27 @@ export class DashboardComponent implements OnInit {
       err => {
         console.log(err);
       }
-    );
+    );*/
   }
 
-  public predict_frio_2() {
-    this.http.get('http://127.0.0.1:8081/api/predict_frio_2_cop').subscribe(
+  async predict_frio_2() {
+    const response = await this.http.get('http://127.0.0.1:8081/api/predict_frio_2_cop').toPromise();
+    this.predFrio2_cop = this.json2array(response)
+    for (var i = 0; i < 10; i++) {
+      if (!this.errores.includes(this.predFrio2_cop[i]["Diagnostico"]) && (this.predFrio2_cop[i]["Diagnostico"] != " ")) {
+        if (this.predFrio2_cop[i]["Diagnostico"].includes("|")) {
+          var diagnosticos = this.predFrio2_cop[i]["Diagnostico"].split("|")
+          for (var j = 0; j < diagnosticos.length; j++) {
+            if (!this.errores.includes(diagnosticos[j])) {
+              this.errores.push(diagnosticos[j])
+            }
+          }
+        } else {
+          this.errores.push(this.predFrio2_cop[i]["Diagnostico"])
+        }
+      }
+    }
+    /*this.http.get('http://127.0.0.1:8081/api/predict_frio_2_cop').subscribe(
       res => {
         this.predFrio2_cop = this.json2array(res)
         for (var i = 0; i < 10; i++) {
@@ -235,9 +282,24 @@ export class DashboardComponent implements OnInit {
       err => {
         console.log(err);
       }
-    );
-
-    this.http.get('http://127.0.0.1:8081/api/predict_frio_2_potencia').subscribe(
+    );*/
+    const response1 = await this.http.get('http://127.0.0.1:8081/api/predict_frio_2_potencia').toPromise();
+    this.predFrio2_potencia = this.json2array(response1)
+    for (var i = 0; i < 10; i++) {
+      if (!this.errores.includes(this.predFrio2_potencia[i]["Diagnostico"]) && (this.predFrio2_potencia[i]["Diagnostico"] != " ")) {
+        if (this.predFrio2_potencia[i]["Diagnostico"].includes("|")) {
+          var diagnosticos = this.predFrio2_potencia[i]["Diagnostico"].split("|")
+          for (var j = 0; j < diagnosticos.length; j++) {
+            if (!this.errores.includes(diagnosticos[j])) {
+              this.errores.push(diagnosticos[j])
+            }
+          }
+        } else {
+          this.errores.push(this.predFrio2_potencia[i]["Diagnostico"])
+        }
+      }
+    }
+    /*this.http.get('http://127.0.0.1:8081/api/predict_frio_2_potencia').subscribe(
       res => {
         this.predFrio2_potencia = this.json2array(res)
         for (var i = 0; i < 10; i++) {
@@ -258,11 +320,27 @@ export class DashboardComponent implements OnInit {
       err => {
         console.log(err);
       }
-    );
+    );*/
   }
 
-  public predict_carlos() {
-    this.http.get('http://127.0.0.1:8081/api/predict_carlos_cop').subscribe(
+  async predict_carlos() {
+    const response = await this.http.get('http://127.0.0.1:8081/api/predict_carlos_cop').toPromise();
+    this.predCarlos_cop = this.json2array(response)
+    for (var i = 0; i < 10; i++) {
+      if (!this.errores.includes(this.predCarlos_cop[i]["Diagnostico"]) && (this.predCarlos_cop[i]["Diagnostico"] != " ")) {
+        if (this.predCarlos_cop[i]["Diagnostico"].includes("|")) {
+          var diagnosticos = this.predCarlos_cop[i]["Diagnostico"].split("|")
+          for (var j = 0; j < diagnosticos.length; j++) {
+            if (!this.errores.includes(diagnosticos[j])) {
+              this.errores.push(diagnosticos[j])
+            }
+          }
+        } else {
+          this.errores.push(this.predCarlos_cop[i]["Diagnostico"])
+        }
+      }
+    }
+    /*this.http.get('http://127.0.0.1:8081/api/predict_carlos_cop').subscribe(
       res => {
         this.predCarlos_cop = this.json2array(res)
         for (var i = 0; i < 10; i++) {
@@ -283,9 +361,24 @@ export class DashboardComponent implements OnInit {
       err => {
         console.log(err);
       }
-    );
-
-    this.http.get('http://127.0.0.1:8081/api/predict_carlos_potencia').subscribe(
+    );*/
+    const response1 = await this.http.get('http://127.0.0.1:8081/api/predict_carlos_potencia').toPromise();
+    this.predCarlos_potencia = this.json2array(response1)
+    for (var i = 0; i < 10; i++) {
+      if (!this.errores.includes(this.predCarlos_potencia[i]["Diagnostico"]) && (this.predCarlos_potencia[i]["Diagnostico"] != " ")) {
+        if (this.predCarlos_potencia[i]["Diagnostico"].includes("|")) {
+          var diagnosticos = this.predCarlos_potencia[i]["Diagnostico"].split("|")
+          for (var j = 0; j < diagnosticos.length; j++) {
+            if (!this.errores.includes(diagnosticos[j])) {
+              this.errores.push(diagnosticos[j])
+            }
+          }
+        } else {
+          this.errores.push(this.predCarlos_potencia[i]["Diagnostico"])
+        }
+      }
+    }
+    /*this.http.get('http://127.0.0.1:8081/api/predict_carlos_potencia').subscribe(
       res => {
         this.predCarlos_potencia = this.json2array(res)
         for (var i = 0; i < 10; i++) {
@@ -306,11 +399,27 @@ export class DashboardComponent implements OnInit {
       err => {
         console.log(err);
       }
-    );
+    );*/
   }
 
-  public predict_felipe() {
-    this.http.get('http://127.0.0.1:8081/api/predict_felipe_cop').subscribe(
+  async predict_felipe() {
+    const response = await this.http.get('http://127.0.0.1:8081/api/predict_felipe_cop').toPromise();
+    this.predFelipe_cop = this.json2array(response)
+    for (var i = 0; i < 10; i++) {
+      if (!this.errores.includes(this.predFelipe_cop[i]["Diagnostico"]) && (this.predFelipe_cop[i]["Diagnostico"] != " ")) {
+        if (this.predFelipe_cop[i]["Diagnostico"].includes("|")) {
+          var diagnosticos = this.predFelipe_cop[i]["Diagnostico"].split("|")
+          for (var j = 0; j < diagnosticos.length; j++) {
+            if (!this.errores.includes(diagnosticos[j])) {
+              this.errores.push(diagnosticos[j])
+            }
+          }
+        } else {
+          this.errores.push(this.predFelipe_cop[i]["Diagnostico"])
+        }
+      }
+    }
+    /*this.http.get('http://127.0.0.1:8081/api/predict_felipe_cop').subscribe(
       res => {
         this.predFelipe_cop = this.json2array(res)
         for (var i = 0; i < 10; i++) {
@@ -331,9 +440,24 @@ export class DashboardComponent implements OnInit {
       err => {
         console.log(err);
       }
-    );
-
-    this.http.get('http://127.0.0.1:8081/api/predict_felipe_potencia').subscribe(
+    );*/
+    const response1 = await this.http.get('http://127.0.0.1:8081/api/predict_felipe_potencia').toPromise();
+    this.predFelipe_potencia = this.json2array(response1)
+    for (var i = 0; i < 10; i++) {
+      if (!this.errores.includes(this.predFelipe_potencia[i]["Diagnostico"]) && (this.predFelipe_potencia[i]["Diagnostico"] != " ")) {
+        if (this.predFelipe_potencia[i]["Diagnostico"].includes("|")) {
+          var diagnosticos = this.predFelipe_potencia[i]["Diagnostico"].split("|")
+          for (var j = 0; j < diagnosticos.length; j++) {
+            if (!this.errores.includes(diagnosticos[j])) {
+              this.errores.push(diagnosticos[j])
+            }
+          }
+        } else {
+          this.errores.push(this.predFelipe_potencia[i]["Diagnostico"])
+        }
+      }
+    }
+    /*this.http.get('http://127.0.0.1:8081/api/predict_felipe_potencia').subscribe(
       res => {
         this.predFelipe_potencia = this.json2array(res)
         for (var i = 0; i < 10; i++) {
@@ -354,7 +478,7 @@ export class DashboardComponent implements OnInit {
       err => {
         console.log(err);
       }
-    );
+    );*/
   }
 
   //metodo que pasa de json a array
