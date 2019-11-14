@@ -1,0 +1,93 @@
+import json
+import joblib
+import boto3
+import pandas as pd
+from sklearn.cluster import KMeans
+from sklearn.neighbors import KNeighborsRegressor
+import s3fs
+import os
+
+key = os.environ['aws_key']
+secret_key = os.environ['aws_secret_key']
+
+s3 = boto3.client('s3',
+                  aws_access_key_id=key,
+                  aws_secret_access_key=secret_key,
+                  region_name='us-east-2')
+BUCKET_NAME = 'smart-building-integrador'
+
+url = 'https://smart-building-integrador.s3.us-east-2.amazonaws.com/HVAC.csv'
+dataCarlos_cop = pd.read_csv(url)
+
+def predict_carlos_cop(kmeans, clusters):
+        centroids = kmeans.cluster_centers_
+        diagnostico = ''
+        diagnosticos = []
+        minPotenciaCarlos = 0.02
+        maxPotenciaCarlos = 34
+        minPotenciaTermicaCarlos = 0.2
+        maxPotenciaTermicaCarlos = 134
+        minTempExterior = 10
+        maxTempExterior = 28
+        minTempSalidaCarlos = 17
+        maxTempSalidaCarlos = 43
+        for cluster in clusters:
+            if not ((centroids[cluster][0] > minPotenciaCarlos) and (centroids[cluster][0] <= maxPotenciaCarlos)):
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA BOMBA CALOR CARLOS.') 
+            if not ((centroids[cluster][1] > minPotenciaTermicaCarlos) and (centroids[cluster][1] <= maxPotenciaTermicaCarlos)):
+                diagnosticos.append('Revisar la anomalia derivada al valor de la POTENCIA TERMICA BOMBA CALOR CARLOS.')
+            if not ((centroids[cluster][2] > minTempExterior) and (centroids[cluster][2] <= maxTempExterior)):
+                diagnosticos.append('La TEMPERATURA EXTERIOR esta generando una anomalia en el climatizador.')
+            if not ((centroids[cluster][3] > minTempSalidaCarlos) and (centroids[cluster][3] <= maxTempSalidaCarlos)):
+                diagnosticos.append('Revisar la anomalia derivada al valor de la TEMPERATURA SALIDA BOMBA CALOR CARLOS.')
+        if (len(diagnosticos) == 0):
+            diagnostico = 'Máquina BOMBA CALOR CARLOS apagada o iniciando.'
+        else:
+            for i in range(len(diagnosticos) - 1):
+                if (len(diagnosticos) == 1):
+                    diagnostico = diagnosticos[0]
+                else:
+                    diagnostico += diagnosticos[i] + ' | '
+                    diagnostico += diagnosticos[-1]
+        return diagnostico
+
+def lambda_handler(event, context):
+    diccionario = []
+    urlContadores = 'https://smart-building-integrador.s3.us-east-2.amazonaws.com/indices/indexCarlos_COP.csv'
+    data = pd.read_csv(urlContadores, sep='\s*,\s*', header=0, encoding='ascii', engine='python')
+    valorCarlos_cop = data['carlos_cop']
+    
+    #Cargar modelos
+    s3.download_file(BUCKET_NAME, 'models/neigh_carlos.pkl', '/tmp/neigh_carlos.pkl')
+    neigh = joblib.load('/tmp/neigh_carlos.pkl')
+    s3.download_file(BUCKET_NAME, 'models/kmeans_carlos_cop.pkl', '/tmp/kmeans_carlos_cop.pkl')
+    kmeans = joblib.load('/tmp/kmeans_carlos_cop.pkl')
+    
+    for i in range(int(valorCarlos_cop), int(valorCarlos_cop)+10):
+        df = dataCarlos_cop.iloc[i]
+        # get data to be predicted
+        X = [[float(df['POTENCIA BOMBA CALOR CARLOS']), float(df['POTENCIA TERMICA BOMBA CALOR CARLOS']),
+              float(df['TEMPERATURA EXTERIOR']), float(df['TEMPERATURA SALIDA BOMBA CALOR CARLOS'])]]
+        prediction_ = neigh.predict(X)
+        prediction = float(prediction_[0])
+        valorReal = float(df['C_O_P BOMBA CALOR CARLOS'])
+        # COP malo --> diagnostico (clustering)
+        kmeans_prediction = ' '
+        if (((valorReal <= 3.5) or (valorReal >= 4.5)) and ((prediction <= 3.5) or (prediction >= 4.5))
+                or (valorReal <= prediction - 0.5) or (valorReal >= prediction + 0.5)):
+            clusters = kmeans.predict(X)
+            kmeans_prediction = predict_carlos_cop(kmeans, clusters)
+        # Diccionario con todas las variables de un registro que se va retornar
+        df.loc['C_O_P BOMBA CALOR CARLOS PREDICHO'] = prediction
+        df.loc['Diagnostico'] = kmeans_prediction
+        #col = df.size
+        #for j in range(1, col-1): # la primera y la ultima posicion no la cojo por ser la fecha y el diagnostico
+        #    df.iloc[j] = round(float(df.iloc[j]), 3)
+        registro_dict = df.to_dict()
+        diccionario.append(registro_dict)
+    data['carlos_cop'] = valorCarlos_cop + 10
+    bytes_to_write = data.to_csv(None, index=False).encode()
+    fs = s3fs.S3FileSystem(key=key, secret=secret_key)
+    with fs.open('s3://smart-building-integrador/indices/indexCarlos_COP.csv', 'wb') as f:
+        f.write(bytes_to_write)
+    return(diccionario)

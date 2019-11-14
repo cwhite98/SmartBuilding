@@ -87,4 +87,3 @@ def lambda_handler(event, context):
     with fs.open('s3://smart-building-integrador/indices/indexFrio1_COP.csv', 'wb') as f:
         f.write(bytes_to_write)
     return diccionario
-    
