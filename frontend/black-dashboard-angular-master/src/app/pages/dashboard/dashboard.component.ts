@@ -182,28 +182,7 @@ export class DashboardComponent implements OnInit {
         }
       }
     }
-    /*this.http.get('http://127.0.0.1:8081/api/predict_frio_1_cop').subscribe(
-      res => {
-        this.predFrio1_cop = this.json2array(res)
-        for (var i = 0; i < 10; i++) {
-          if (!this.errores.includes(this.predFrio1_cop[i]["Diagnostico"]) && (this.predFrio1_cop[i]["Diagnostico"] != " ")) {
-            if (this.predFrio1_cop[i]["Diagnostico"].includes("|")) {
-              var diagnosticos = this.predFrio1_cop[i]["Diagnostico"].split("|")
-              for (var j = 0; j < diagnosticos.length; j++) {
-                if (!this.errores.includes(diagnosticos[j])) {
-                  this.errores.push(diagnosticos[j])
-                }
-              }
-            } else {
-              this.errores.push(this.predFrio1_cop[i]["Diagnostico"])
-            }
-          }
-        }
-      },
-      err => {
-        console.log(err);
-      }
-    );*/
+
     const response1 = await this.http.get('http://127.0.0.1:8081/api/predict_frio_1_potencia').toPromise();
     this.predFrio1_potencia = this.json2array(response1)
     for (var i = 0; i < 10; i++) {
