@@ -144,7 +144,7 @@ export class UserComponent implements OnInit {
     }
   }
   public predict_frio_1() {
-    this.http.get('http://127.0.0.1:8081/api/predict_frio_1_cop').subscribe(
+    this.http.get('https://3f3sok0dv9.execute-api.us-east-2.amazonaws.com/v1/predict-frio-1-cop').subscribe(
       res => {
         this.predFrio1_cop = this.json2array(res)
       },
