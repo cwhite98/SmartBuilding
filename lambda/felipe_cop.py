@@ -78,7 +78,11 @@ def lambda_handler(event, context):
         # Diccionario con todas las variables de un registro que se va retornar
         df.loc['C_O_P BOMBA CALOR FELIPE PREDICHO'] = prediction
         df.loc['Diagnostico'] = kmeans_prediction
-        registro_dict = df.to_dict()
+        df2 = df.drop(labels=['Diagnostico', 'Fecha- hora de lectura'])
+        df2 = df2.apply(lambda x: round(float(x), 3))
+        dfAux = df[['Diagnostico', 'Fecha- hora de lectura']]
+        dfR = pd.concat([df2, dfAux], axis=0, sort=False)
+        registro_dict = dfR.to_dict()
         diccionario.append(registro_dict)
     data['felipe_cop'] = valorFelipe_cop + 10
     bytes_to_write = data.to_csv(None, index=False).encode()
